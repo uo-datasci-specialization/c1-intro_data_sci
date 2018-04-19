@@ -120,7 +120,7 @@ A basic outline of the final project is due Week 5 of the term. The outline shou
 During weeks 9 and 10, students will be expected to present on their final project, which is expected to still be in progress. These presentations are expected to be informal. Students will be encouraged to discuss their process and the struggles they encountered along the way. Learning R is a difficult task, and we should all take solace knowing that others are struggling along with us. The final presentation should be equal parts “journey” and substantive findings/conclusions/results. Students are expected to present for approximately 10 minutes each, although the time may change depending on the enrollment of the class.
 
 # Grading Components
-|  Lower point range |  | Grade | Upper point range |  |
+|  **Lower percent** |**Lower point range**  | **Grade** | **Upper point range**  | **Upper percent**|
 |  :------: | ------ | :------: | :------: | ------ |
 |  0.97 | (276 pts) | A+ |  |  |
 |  0.93 | (265 pts) | A | (276 pts) | 0.97 |
