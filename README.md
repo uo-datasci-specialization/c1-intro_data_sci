@@ -30,19 +30,90 @@ By the end of this course, students should be able to:
 * Use R Markdown to create reproducible dynamic reports
 * Understand and create different types of data visualizations
 
-# Course Reading List
+# Course Reading List And Other Resources
+All course readings are freely available online or will be provided by the instructor. 
+
+### Books (required)
+* Wickham, H. and Grolemund, G. (2017). *[R for data science](http://r4ds.had.co.nz)*. Sebastopol, CA: O'Reilly. 
+	+ This will be the primary text for the course. It is freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
+* Ismay, C. and Kim, A. Y. (2018).*[Modern dive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
+* Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
+* Healy, K. (2018) *[Data visualization: A practical introduction](http://socviz.co)*. New Jersey: Princeton University Press.
+
+
+### Books (not required, but possibly helpful)
+* Wilke, C. O. (2018). *[Fundamentals of data visualization](http://serialmentor.com/dataviz/)*.
+
+### Resources
+#### [Data Camp](https://www.datacamp.com)
+We will have a class subscription to [Data Camp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are available to you. I encourage you to explore the website and play around. There are **far more** topics covered by Data Camp than we will cover in this course or this five-course specialization. 
+
+In addition to having Data Camp as a resource for your own exploration of topics not covered by this class or the specialization, we will use Data Camp content to supplement lectures, and as a place for you to practice the skills you learn in class.
+
+### Blog posts, etc. <font color="red">(NEEDS WORK)</font>
+* Visualizing Distributions <font color="red">(Link is Broken)</font> http://cslu.ohsu.edu/~bedricks/courses/cs631/files/labs/lab4/04-lab.html
+* Visualizing High Dimensions <font color="red">(Link is Broken)</font> http://cslu.ohsu.edu/~bedricks/courses/cs631/files/labs/lab8/08-lab.html
+
+### Helpful People/Groups
+Twitter can be a great place to make connections and learn about new things. If you're not on twitter I would recommend creating an account just so you can follow people. Below is a small list of people I would recommend following to help you learn R and data science.
+
+* [Mara Averick](https://twitter.com/dataandme)
+* [R4DS online learning community](https://twitter.com/R4DScommunity)
+* [Hadley Wickham](https://twitter.com/hadleywickham)
+* [Jenny Bryan](https://twitter.com/JennyBryan)
+* [Jesse Maegan](https://twitter.com/kierisi)
+* [Claus Wilke](https://twitter.com/ClausWilke)
+* [Maëlle Salmon](https://twitter.com/ma_salmon)
+* [Colin Fay](https://twitter.com/_ColinFay)
+* [David Robinson](https://twitter.com/drob?lang=en)
+* [Julia Silge](https://twitter.com/juliasilge)
+* [Alison Hill](https://twitter.com/apreshill)
+* [Chester Ismay](https://twitter.com/old_man_chester)
+
+The last two on this list helped design the content for this course and the specialization as a whole, along with [Andrew Bray](https://andrewpbray.github.io) (and are wonderful amazing people that happen to also be good twitter follows). This list is not intended to be comprehensive in the slightest. There are plenty of other great follows out there that I left off. I tried to focus on people who are active and share lots of good resources.
 
 # Weekly Schedule (Topics, Assignments, and Readings)
+
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRu0OaCy86EMBy_2v2XIg0a1jLbZTJdb5vGwVGTuKBaR46WhG27tebab12Z9cD2E5i0sR6W-9WY9IT9/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+
+# Assignments <font color="red">(NEEDS WORK)</font>
+There will be a total of X assignments...
+
+## Group Projects <font color="red">or weekly assignments?</font>
+
+## Final Project
+The final project in this class is a group project, requiring students use a “real world” dataset to write, essentially, a miniature manuscript, including an introduction (paragraph or two), methods, results, and discussion (again, maybe 2-3 paragraphs). Ideally, students would work with a dataset that includes variables they are interested in using beyond just this class; however, if students do not have access to data, the instructor will provide one. **Students who do not have access to data should plan to meet with the instructor as soon as possible so a dataset can be provided**. Students are required to work in groups of 2-4 people. An outline of the project is due the beginning of Week 5, while the final project is due finals week.
+
+The purpose of the final project is to allow students an opportunity to demonstrate all the skills they have learned throughout the course. The final project must (a) be a reproducible and dynamic document produced with R Markdown, and include references to the extant literature; (b) demonstrate moving data from its raw “messy” format to a tidy data format through the R Markdown file, but not in the final document; (c) include at least two exploratory data visualizations, and (d) include at least summary statistics of the data in tables, although fitted models of any sort are an added bonus (not literally, there are not extra points for fitting a model). The points for the final project are broken down as follows:
+ 
+* Writing (abstract, intro, methods, results, discussion, references): 30 points (25%)
+* Document is fully reproducible: 25 points (21%)
+* Demonstrate use of inline code: 5 points (4%)
+* Demonstrate tidying messy data: 30 points (25%)
+* Two data visualizations: 10 points each, 20 points total (17%)
+* Production of at least one table (of summary statistics or model results): 10 points (8%)
+
+## Final Project Outline (10 points; Due Week 5)
+A basic outline of the final project is due Week 5 of the term. The outline should include a description of the data to be used, a discussion of what preparatory work will need to be done and how the requirements of the final project will be met (i.e., that all functions required are used). This includes describing how specific functions such as `gather` will be used even if it is not strictly necessary (for example, reshaping a dataset to produce a specific figure). The outline is intended to be low-stakes and is primarily designed to be a means for you to obtain feedback on the feasibility of the project and areas to consider. 
+
+## Final Project Presentation (25 points)
+During weeks 9 and 10, students will be expected to present on their final project, which is expected to still be in progress. These presentations are expected to be informal. Students will be encouraged to discuss their process and the struggles they encountered along the way. Learning R is a difficult task, and we should all take solace knowing that others are struggling along with us. The final presentation should be equal parts “journey” and substantive findings/conclusions/results. Students are expected to present for approximately 10 minutes each, although the time may change depending on the enrollment of the class.
 
 # Grading Components
 
 # Student Engagement Inventory
 
 # Attendance and Absence Guidelines
+Attendance at all class and discussion groups is expected.
+
+Students must contact the instructor in case of illness or emergencies that preclude attending class sessions. Messages can be left on the instructor's voice mail or e-mail at any time of the day or night, prior to class. If no prior arrangements have been made before class time, the absence will be unexcused. Excused absences will involve make-up assignments, with make-up assignment procedures to be discussed in class on the first day. 
+
+If you are unable to complete an assignment due to a personal and/or family emergency, you should contact your instructor or discussion leader as soon as possible. On a case-by-case basis, the instructor will determine whether the emergency qualifies as an excused absence. 
 
 # Expected Classroom Behavior
+Students are expected to participate in classroom activities. If use of digital devices or engagement in other non-class activities during class for purposes not regarding classroom activities is critically necessary, the student should engage in these activities while on break, or check with the instructor to arrange for a 10-minute break for unusual circumstances, but only if critically necessary. 
 
-# COURSE POLICIES
+# Course Policies 
 ## Diversity, Equity and Inclusion
 It is the policy of the University of Oregon to support and value equity and diversity and to provide inclusive learning environments for all students.  To do so requires that we: 
 
