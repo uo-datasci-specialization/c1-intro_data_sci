@@ -120,6 +120,18 @@ A basic outline of the final project is due Week 5 of the term. The outline shou
 During weeks 9 and 10, students will be expected to present on their final project, which is expected to still be in progress. These presentations are expected to be informal. Students will be encouraged to discuss their process and the struggles they encountered along the way. Learning R is a difficult task, and we should all take solace knowing that others are struggling along with us. The final presentation should be equal parts “journey” and substantive findings/conclusions/results. Students are expected to present for approximately 10 minutes each, although the time may change depending on the enrollment of the class.
 
 # Grading Components
+|  Lower point range |  | Grade | Upper point range |  |
+|  :------: | ------ | :------: | :------: | ------ |
+|  0.97 | (276 pts) | A+ |  |  |
+|  0.93 | (265 pts) | A | (276 pts) | 0.97 |
+|  0.9 | (256 pts) | A- | (265 pts) | 0.93 |
+|  0.87 | (248 pts) | B+ | (256 pts) | 0.9 |
+|  0.83 | (237 pts) | B | (248 pts) | 0.87 |
+|  0.8 | (228 pts) | B- | (237 pts) | 0.83 |
+|  0.77 | (219 pts) | C+ | (228 pts) | 0.8 |
+|  0.73 | (208 pts) | C | (219 pts) | 0.77 |
+|  0.7 | (200 pts) | C- | (208 pts) | 0.73 |
+|   |  | F | (200 pts) | 0.7 |
 
 # Student Engagement Inventory
 Graduate: 1 credit hour = 40 hours of student engagement (3 credit hours = 120 hours of student engagement) 
