@@ -74,7 +74,7 @@ The last two on this list helped design the content for this course and the spec
 
 # Weekly Schedule (Topics, Assignments, and Readings)
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRu0OaCy86EMBy_2v2XIg0a1jLbZTJdb5vGwVGTuKBaR46WhG27tebab12Z9cD2E5i0sR6W-9WY9IT9/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRu0OaCy86EMBy_2v2XIg0a1jLbZTJdb5vGwVGTuKBaR46WhG27tebab12Z9cD2E5i0sR6W-9WY9IT9/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"> width="100%" height="810" </iframe>
 
 # Assignments <font color="red">(NEEDS WORK)</font>
 There will be a total of X assignments...
