@@ -73,13 +73,33 @@ Twitter can be a great place to make connections and learn about new things. If 
 The last two on this list helped design the content for this course and the specialization as a whole, along with [Andrew Bray](https://andrewpbray.github.io) (and are wonderful amazing people that happen to also be good twitter follows). This list is not intended to be comprehensive in the slightest. There are plenty of other great follows out there that I left off. I tried to focus on people who are active and share lots of good resources.
 
 # Weekly Schedule (Topics, Assignments, and Readings)
+|  **Week** | **Topic**  | **Reading**| **Assignment Assigned** | **Assignment Due** |
+|------ | ------ | ------ | ------ | ------ |
+|  1a | Getting started with data in R | MD 1, 2 |  |  |
+|  1b | Data visualization with ggplot2 | MD 5 |  |  |
+|  2a | More data vis basics with ggplot2 | R4DS 3 |  |  |
+|  2b | Data wrangling with dplyr | MD 5 |  |  |
+|  3a | More data wrangling with dplyr  | R4DS 5 |  |  |
+|  3b | Intro to R Markdown + summarizing data in tidyverse | Hill 1 |  |  |
+|  4a | RStudio projects and GitHub |  Bryan 4-9 |  |  |
+|  4b | Exploratory data analysis (combine all of above, R4DS: Ch 7); also see visualizing distributions with ggplot2  | R4DS 7 |  |  |
+|  5a | Work day/EDA project due  | Bryan 10-18 |  |  |
+|  5b | Importing data | R4DS 11; |  |  |
+|  6a | Taming data  | Hill 2 |  |  |
+|  6b | Taming variables  | Hill 3 |  |  |
+|  7a | Tidying data | MD 4; Hill 4 |  |  |
+|  7b | Work day/project due (import + tame + tidy) | R4DS12 |  |  |
+|  8a | Categorical variables: forcats, circle back to ggplot2  | Robinson |  |  |
+|  8b  | More on ggplot2: colors, axes, labeling, tick marks, gridlines, legends, etc. | Healy 4 |  |  |
+|  9a  | Visualizing high dimensional data: heatmaps, scatterplot matrices, parallel coordinates, bubble plots |  |  |  |
+|  9b  | work day | Bryan 23-28 |  |  |
+|  10a | Group Presentations |  |  |  |
+|  10b | Group Presentations |  |  |  |
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRu0OaCy86EMBy_2v2XIg0a1jLbZTJdb5vGwVGTuKBaR46WhG27tebab12Z9cD2E5i0sR6W-9WY9IT9/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"> width="100%" height="810" </iframe>
-
-# Assignments <font color="red">(NEEDS WORK)</font>
+# Assignments **(NEEDS WORK)**
 There will be a total of X assignments...
 
-## Group Projects <font color="red">or weekly assignments?</font>
+## Group Projects **or weekly assignments?**
 
 ## Final Project
 The final project in this class is a group project, requiring students use a “real world” dataset to write, essentially, a miniature manuscript, including an introduction (paragraph or two), methods, results, and discussion (again, maybe 2-3 paragraphs). Ideally, students would work with a dataset that includes variables they are interested in using beyond just this class; however, if students do not have access to data, the instructor will provide one. **Students who do not have access to data should plan to meet with the instructor as soon as possible so a dataset can be provided**. Students are required to work in groups of 2-4 people. An outline of the project is due the beginning of Week 5, while the final project is due finals week.
@@ -102,6 +122,15 @@ During weeks 9 and 10, students will be expected to present on their final proje
 # Grading Components
 
 # Student Engagement Inventory
+Graduate: 1 credit hour = 40 hours of student engagement (3 credit hours = 120 hours of student engagement) 
+
+|  **Educational activity** | **Hours student engaged** | **Explanatory comments (if any):** |
+|  ------ | :------: | ------ |
+|  Course attendance | 27 | 20 meetings, at 80 minutes per meeting |
+|  Assigned readings | 27 | Weekly readings are assigned, and are expected to take roughly as long to complete as the in-seat time per week. |
+|  Projects | 30 | Final project, as described above |
+|  Homeworks | 36 | A total of 8 homework assignments are expected to take students, on average, 4-5 hours to complete (4.5*8 = 36) |
+|  Total hours: | 120 |  |
 
 # Attendance and Absence Guidelines
 Attendance at all class and discussion groups is expected.
