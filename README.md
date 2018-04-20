@@ -36,7 +36,7 @@ All course readings are freely available online or will be provided by the instr
 ### Books (required)
 * Wickham, H. and Grolemund, G. (2017). *[R for data science](http://r4ds.had.co.nz)*. Sebastopol, CA: O'Reilly. 
 	+ This will be the primary text for the course. It is freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
-* Ismay, C. and Kim, A. Y. (2018).*[Modern dive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
+* Ismay, C. and Kim, A. Y. (2018).*[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
 * Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
 * Healy, K. (2018) *[Data visualization: A practical introduction](http://socviz.co)*. New Jersey: Princeton University Press.
 
@@ -45,8 +45,8 @@ All course readings are freely available online or will be provided by the instr
 * Wilke, C. O. (2018). *[Fundamentals of data visualization](http://serialmentor.com/dataviz/)*.
 
 ### Resources
-#### [Data Camp](https://www.datacamp.com)
-We will have a class subscription to [Data Camp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are available to you. I encourage you to explore the website and play around. There are **far more** topics covered by Data Camp than we will cover in this course or this five-course specialization. 
+#### [DataCamp](https://www.datacamp.com)
+We will have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are available to you. I encourage you to explore the website and play around. There are **far more** topics covered by Data Camp than we will cover in this course or this five-course specialization. 
 
 In addition to having Data Camp as a resource for your own exploration of topics not covered by this class or the specialization, we will use Data Camp content to supplement lectures, and as a place for you to practice the skills you learn in class.
 
