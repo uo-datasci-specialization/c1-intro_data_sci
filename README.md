@@ -46,9 +46,9 @@ All course readings are freely available online or will be provided by the instr
 
 ### Resources
 #### [DataCamp](https://www.datacamp.com)
-We will have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are available to you. I encourage you to explore the website and play around. There are **far more** topics covered by Data Camp than we will cover in this course or this five-course specialization. 
+We will have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are available to you. I encourage you to explore the website and play around. There are **far more** topics covered by DataCamp than we will cover in this course or this five-course specialization. 
 
-In addition to having Data Camp as a resource for your own exploration of topics not covered by this class or the specialization, we will use Data Camp content to supplement lectures, and as a place for you to practice the skills you learn in class.
+In addition to having DataCamp as a resource for your own exploration of topics not covered by this class or the specialization, we will use DataCamp content to supplement lectures, and as a place for you to practice the skills you learn in class.
 
 ### Blog posts, etc. <font color="red">(NEEDS WORK)</font>
 * Visualizing Distributions <font color="red">(Link is Broken)</font> http://cslu.ohsu.edu/~bedricks/courses/cs631/files/labs/lab4/04-lab.html
