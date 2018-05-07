@@ -21,13 +21,13 @@ This is the first course in a five course *data science in educational research*
 # Student Learning Objectives
 By the end of this course, students should be able to:
 
-* Understand the R package ecosystem (how to find them, install, load, and learn what they do)
+* Understand the R package ecosystem (how to find, install, load, and learn about them)
 * Read "flat" (i.e., rectangular) datasets into R 
 * Perform basic data wrangling and transformations in R, using the tidyverse
 	+ Leverage appropriate functions for introductory data science tasks (pipeline)
 	+ "clean up" the dataset using scripts and reproducible workflows
 * Use version control with R via Git through RStudio Projects
-* Use R Markdown to create reproducible dynamic reports
+* Use R Markdown to create reproducible dynamic reports, including APA manuscripts
 * Understand and create different types of data visualizations
 
 # Course Reading List And Other Resources
@@ -35,10 +35,11 @@ All course readings are freely available online or will be provided by the instr
 
 ### Books (required)
 * Wickham, H. and Grolemund, G. (2017). *[R for data science](http://r4ds.had.co.nz)*. Sebastopol, CA: O'Reilly. 
-	+ This will be the primary text for the course. It is freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
+	+ Freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
 * Ismay, C. and Kim, A. Y. (2018).*[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
 * Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
 * Healy, K. (2018) *[Data visualization: A practical introduction](http://socviz.co)*. New Jersey: Princeton University Press.
+* Aust, F. and Barth, M. (2018). *[papaja: Reproducible APA manuscripts with R](https://crsh.github.io/papaja_man/index.html)*
 
 
 ### Books (not required, but possibly helpful)
