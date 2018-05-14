@@ -98,16 +98,42 @@ The last two on this list helped design the content for this course and the spec
 | 10b      |                                                | Student Presentations 2                                                                                                 |                                                                                                   |                                                                    |                                                                         |                                                                                         |
 | 11       | No class: Final papers due                     |                                                                                                                         |                                                                                                   |                                                                    | **Final Project**                                                       |                                                                                         |
 
-# Assignments **(NEEDS WORK)**
-There will be a total of X assignments...
 
-## Group Projects **or weekly assignments?**
+# Assignments 
+As outlined in the table above, most class meetings will include a lab. All labs will also count toward homework assignments, with roughly half the assignment completed during lab, and the other half completed out of class. The DataCamp platform will also be used for additional homework assignments, and the course will conclude with a final project. More detail about each is provided below.
 
-## Final Project
-The final project in this class is a group project, requiring students use a “real world” dataset to write, essentially, a miniature manuscript, including an introduction (paragraph or two), methods, results, and discussion (again, maybe 2-3 paragraphs). Ideally, students would work with a dataset that includes variables they are interested in using beyond just this class; however, if students do not have access to data, the instructor will provide one. **Students who do not have access to data should plan to meet with the instructor as soon as possible so a dataset can be provided**. Students are required to work in groups of 2-4 people. An outline of the project is due the beginning of Week 5, while the final project is due finals week.
+## Attendance (40 points; 8%)
+The course includes a total of fourteen lab sessions, plus three work days. Of the three sessions that do not include lab, two will be reserved for final project presentation. A critical component of learning data science includes receiving structured feedback as you problem-solve coding and data issues. Supporting your classmates is also important, and so attendance during final presentations is also mandatory. Attendance at each class session contributes toward your grade at five points per day, for a total of 40 points.
 
-The purpose of the final project is to allow students an opportunity to demonstrate all the skills they have learned throughout the course. The final project must (a) be a reproducible and dynamic document produced with R Markdown, and include references to the extant literature; (b) demonstrate moving data from its raw “messy” format to a tidy data format through the R Markdown file, but not in the final document; (c) include at least two exploratory data visualizations, and (d) include at least summary statistics of the data in tables, although fitted models of any sort are an added bonus (not literally, there are not extra points for fitting a model). The points for the final project are broken down as follows:
+## Homework (225 points; 48%)
+
+### Labs (140 points)
+There are 14 labs during the course, which must be submitted to the instructor prior to the start of the following class. These labs will be scored on a "best honest effort" basis, which generally implies zero or full credit (i.e., the assignment was or was not fully completed). However, many of the labs require students complete specific portions before moving on to the next sections. If you find yourself stuck and unable to proceed, **please contact the instructor for help rather than submitting incomplete work**. Contacting the instructor is part of the "best honest effort", and can result in full credit for an assignment even if the the work is not fully complete.
+
+### DataCamp Chapters (85 points)
+DataCamp is an excellent resource to  get additional instruction and/or go more in-depth on any of the topics covered in this class. There are also some topics that we will not have the time to cover in much detail, and DataCamp can be helpful for these topics as well. However, in addition to providing supplemental support, select chapters will be assigned and scored as part of homework, at five points per chapter. A total of 17 chapters will be assigned (note that many of these chapters are very brief).
+
+## Final Project (200 points; 43%)
+The final project in this class is a group project, requiring students use a “real world” dataset to write, essentially, a miniature manuscript, including an introduction (paragraph or two), methods, results, and discussion (again, maybe 2-3 paragraphs). Ideally, students would work with a dataset that includes variables they are interested in using beyond just this class; however, if students do not have access to data, the instructor will provide one. **Students who do not have access to data should plan to meet with the instructor as soon as possible so a dataset can be provided**. Additionally, the dataset must be able to be shared publicly, as the full project will be required to be housed on GitHub and be fully reproducible. If making your data publicly available is a problem for you, please contact the instructor as soon as possible. We can work together to either find a dataset that will work for you, or simulate a dataset that is similar to the data you'd like to work with in reality (and then all your code should work for the real dataset, but you can share the simulated data with your classmates). Students are required to work in groups of 2-4 people. The final assignment is assigned during the first class, and groups must be finalized by the end of Week 2 (at which point students who have not self-selected into groups will be randomly assigned).
+
+### Outline (15 points)
+A basic outline of the final project is due at the end of Week 5. The outline should include a description of the data to be used, a discussion of what preparatory work will need to be done and how the requirements of the final project will be met. The outline is intended to be low-stakes and is primarily designed to be a means for you to obtain feedback on the feasibility of the project and areas to consider. 
+
+### Draft Data Preparation Script (25 points)
+At the end of Week 8, you must have a draft of the data preparation complete, including moving the data from its raw to tidy form and a variety of exploratory data visualizations.
+
+### Peer Review of Data Preparation Script (25 points)
+Following the submission of the data preparation scripts, you will be assigned to review your peers code. The purpose of this exercise is to learn from each other. Programming is an immensely open-ended enterprise and there are lots of winding paths that all ultimately end up at the same destination. During your peer review, you must note (a) at least three areas of strength, (b) at least one thing you learned from reviewing their script, and (c) no more than three areas for improvement. 
+
+Making your code publicly available can feel daunting. The purpose of this portion of the final project is to help us all learn from each other, not to denigrate. **Under no circumstances will negative comments be tolerated**. Any comments that could be perceived as negative, and outside the scope of the code, will result in an immediate score of zero. Be constructive in your feedback. Be kind. 
+
+### Final Project Presentation (25 points)
+Each group will present on their final project during Week 10, which is expected to still be in progress. These presentations are expected to be informal, and emphasis what learning occurred during the project. Specifically, the presentations are to commiserate with each other about the failures and challenges experienced along the way, while also celebrating the successes. Learning R is a difficult task, and we should all take solace knowing that others are struggling along with us. The final presentation should be equal parts “journey” and substantive findings/conclusions/results. Students are expected to present for approximately 10 minutes each (20-40 minutes per group), although the time may change depending on the enrollment of the class.
  
+
+### Final Paper (110)
+The purpose of the final project is to allow students an opportunity to demonstrate all the skills they have learned throughout the course. The final project must (a) be a reproducible and dynamic APA manuscript produced with R Markdown, via the [*{papaja}*](https://github.com/crsh/papaja) package and include references to the extant literature; (b) demonstrate moving data from its raw “messy” format to a tidy data format through the R Markdown file, but not in the final document; (c) include at least two exploratory data visualizations, and (d) include at least summary statistics of the data in tables, although fitted models of any sort are an added bonus (not literally, there are not extra points for fitting a model). The points for the final project are broken down as follows:
+
 * Writing (abstract, intro, methods, results, discussion, references): 30 points (25%)
 * Document is fully reproducible: 25 points (21%)
 * Demonstrate use of inline code: 5 points (4%)
@@ -115,39 +141,36 @@ The purpose of the final project is to allow students an opportunity to demonstr
 * Two data visualizations: 10 points each, 20 points total (17%)
 * Production of at least one table (of summary statistics or model results): 10 points (8%)
 
-## Final Project Outline (10 points; Due Week 5)
-A basic outline of the final project is due Week 5 of the term. The outline should include a description of the data to be used, a discussion of what preparatory work will need to be done and how the requirements of the final project will be met (i.e., that all functions required are used). This includes describing how specific functions such as `gather` will be used even if it is not strictly necessary (for example, reshaping a dataset to produce a specific figure). The outline is intended to be low-stakes and is primarily designed to be a means for you to obtain feedback on the feasibility of the project and areas to consider. 
+More information on the final project paper will provided during class.
 
-## Final Project Presentation (25 points)
-During weeks 9 and 10, students will be expected to present on their final project, which is expected to still be in progress. These presentations are expected to be informal. Students will be encouraged to discuss their process and the struggles they encountered along the way. Learning R is a difficult task, and we should all take solace knowing that others are struggling along with us. The final presentation should be equal parts “journey” and substantive findings/conclusions/results. Students are expected to present for approximately 10 minutes each, although the time may change depending on the enrollment of the class.
 
 # Grading Components
 |  **Lower percent** |**Lower point range**  | **Grade** | **Upper point range**  | **Upper percent**|
-|  :------: | ------ | :------: | :------: | ------ |
-|  0.97 | (276 pts) | A+ |  |  |
-|  0.93 | (265 pts) | A | (276 pts) | 0.97 |
-|  0.9 | (256 pts) | A- | (265 pts) | 0.93 |
-|  0.87 | (248 pts) | B+ | (256 pts) | 0.9 |
-|  0.83 | (237 pts) | B | (248 pts) | 0.87 |
-|  0.8 | (228 pts) | B- | (237 pts) | 0.83 |
-|  0.77 | (219 pts) | C+ | (228 pts) | 0.8 |
-|  0.73 | (208 pts) | C | (219 pts) | 0.77 |
-|  0.7 | (200 pts) | C- | (208 pts) | 0.73 |
-|   |  | F | (200 pts) | 0.7 |
+|  :------: | :------   | :-:| :-------: | ----:|
+|  0.97     | (451 pts) | A+ |           |      |
+|  0.93     | (432 pts) | A  | (451 pts) | 0.97 |
+|  0.9      | (418 pts) | A- | (432 pts) | 0.93 |
+|  0.87     | (405 pts) | B+ | (418 pts) | 0.9  |
+|  0.83     | (386 pts) | B  | (405 pts) | 0.87 |
+|  0.8      | (372 pts) | B- | (386 pts) | 0.83 |
+|  0.77     | (358 pts) | C+ | (372 pts) | 0.8  |
+|  0.73     | (339 pts) | C  | (358 pts) | 0.77 |
+|  0.7      | (325 pts) | C- | (339 pts) | 0.73 |
+|           |           | F  | (325 pts) | 0.7  |
 
 # Student Engagement Inventory
 Graduate: 1 credit hour = 40 hours of student engagement (3 credit hours = 120 hours of student engagement) 
 
-|  **Educational activity** | **Hours student engaged** | **Explanatory comments (if any):** |
-|  ------ | :------: | ------ |
-|  Course attendance | 27 | 20 meetings, at 80 minutes per meeting |
-|  Assigned readings | 27 | Weekly readings are assigned, and are expected to take roughly as long to complete as the in-seat time per week. |
-|  Projects | 30 | Final project, as described above |
-|  Homeworks | 36 | A total of 8 homework assignments are expected to take students, on average, 4-5 hours to complete (4.5*8 = 36) |
-|  Total hours: | 120 |  |
+| **Educational activity** | **Hours student engaged** | **Explanatory comments (if any):**                                                                               |
+| :----------------------- | :-----------------------: | :--------------------------------------------------------------------------------------------------------------- |
+| Course attendance        |            26.5             | 20 meetings, at 80 minutes per meeting                                                                           |
+| Assigned readings        |            27             | Weekly readings are assigned, and are expected to take roughly as long to complete as the in-seat time per week. |
+| Projects                 |            30             | Final project, as described above                                                                                |
+| Homeworks                |            36.5           | 14 Labs, at approximately two hours per lab spent out of class (28 hours), plus 17 DataCamp chapters, at approximately 0.5 hours per chapter |
+| Total hours:             |            120            |                                                                                                                  |
 
 # Attendance and Absence Guidelines
-Attendance at all class and discussion groups is expected.
+Attendance at all class and discussion groups is expected and required, as described above.
 
 Students must contact the instructor in case of illness or emergencies that preclude attending class sessions. Messages can be left on the instructor's voice mail or e-mail at any time of the day or night, prior to class. If no prior arrangements have been made before class time, the absence will be unexcused. Excused absences will involve make-up assignments, with make-up assignment procedures to be discussed in class on the first day. 
 
