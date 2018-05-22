@@ -36,7 +36,7 @@ All course readings are freely available online or will be provided by the instr
 ### Books (required)
 * Wickham, H. and Grolemund, G. (2017). *[R for data science](http://r4ds.had.co.nz)*. Sebastopol, CA: O'Reilly. 
 	+ Freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
-* Ismay, C. and Kim, A. Y. (2018).*[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
+* Ismay, C. and Kim, A. Y. (2018). *[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
 * Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
 * Healy, K. (2018) *[Data visualization: A practical introduction](http://socviz.co)*. New Jersey: Princeton University Press.
 * Aust, F. and Barth, M. (2018). *[papaja: Reproducible APA manuscripts with R](https://crsh.github.io/papaja_man/index.html)*
@@ -71,7 +71,7 @@ Twitter can be a great place to make connections and learn about new things. If 
 * [Alison Hill](https://twitter.com/apreshill)
 * [Chester Ismay](https://twitter.com/old_man_chester)
 
-The last two on this list helped design the content for this course and the specialization as a whole, along with [Andrew Bray](https://andrewpbray.github.io) (and are wonderful amazing people that happen to also be good twitter follows). This list is not intended to be comprehensive in the slightest. There are plenty of other great follows out there that I left off. I tried to focus on people who are active and share lots of good resources.
+The last two on this list helped design the content for this course and the specialization as a whole, along with [Andrew Bray](https://andrewpbray.github.io) (and are wonderful, amazing people that happen to also be good twitter follows). This list is not intended to be comprehensive in the slightest. There are plenty of other great follows out there that I left off. I tried to focus on people who are active and share lots of good resources.
 
 # Weekly Schedule (Topics, Assignments, and Readings)
 | **Week** | **Theme**                                      | **Topics**                                                                                                              | **Lab**                                                                                           | **Assignment Assigned**                                            | **Assignment Due**                                                      | **Reading**                                                                             |
@@ -141,7 +141,7 @@ The purpose of the final project is to allow students an opportunity to demonstr
 * Two data visualizations: 10 points each, 20 points total (17%)
 * Production of at least one table (of summary statistics or model results): 10 points (8%)
 
-More information on the final project paper will provided during class.
+More information on the final project paper will be provided during class.
 
 
 # Grading Components
