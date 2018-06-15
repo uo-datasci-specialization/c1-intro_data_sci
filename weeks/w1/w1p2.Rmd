@@ -1,0 +1,399 @@
+---
+title: "Seeing the big picture"
+subtitle: "The R ecosystem, and other tools in the data science pipeline"
+author: "Daniel Anderson "
+date: "Week 1, Class 2 "
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "hygge", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+class: inverse center middle
+background-image: url(assets/img/sky.jpg)
+background-size: cover
+
+# R Packages
+
+---
+# "Out of the box" functionality
+
+.pull-left[
+### Some packages are *pre-loaded* 
+* e.g.
+	+ {base}
+	+ {graphics}
+	+ {stats}
+]
+
+.pull-right[
+### Others are *pre-installed*
+* e.g.
+	+ {boot}
+	+ {MASS}
+	+ {Matrix}
+]
+
+---
+# Pre-loaded vs installed
+
+Pre-loaded packages work on launch. For example, `plot` is part of the {graphics} package, which ships with R.
+
+```{r first_plot, fig.width = 12, fig.height = 5}
+plot(x = 1:10, y = 1:10)
+```
+
+---
+# {base} package
+
+All functions come from a package! What do you get from the following?
+
+.gray[.small[Those are backticks, which are at the top-left of your keyboard]]
+
+```{r base, eval = FALSE}
+?`+`
+```
+
+--
+* Side note - any idea why we have to surround this with backticks?
+
+--
+* See [here](https://stackoverflow.com/questions/36220823/what-do-backticks-do-in-r) 
+
+> A pair of backticks is a way to refer to names or combinations of symbols that are otherwise reserved or illegal
+
+
+--
+
+* Also relevant, backticks define code in markdown (which we'll learn more about later), so you may seem them in error messages to signify `'this bit is code'`
+
+
+---
+class: inverse center middle
+background-image: url(assets/img/base.png)
+background-size: contain
+
+---
+# Pre-installed packages
+* Outside of the packages that are *pre-loaded*, there are a number that come *pre-installed*. e.g.,
+  + {MASS}
+  + {boot}
+  + {cluster}
+  + {lattice}
+
+--
+
+* Packages that are not pre-loaded require an explicit call to the `library` 
+
+---
+# Example with {MASS}
+* Say we want to simulate data from a multivariate normal distribution
+
+```{r first_lib}
+# Set up simulation parameters
+n_obs <- 1000
+means <- c(100, 50) # `c` comes from base - used to create a vector
+error_cv <- matrix(c(100, 44, # `matrix` comes from base
+					     44, 49), byrow = TRUE, ncol = 2) # part of base
+cov2cor(error_cv) # part of stats package
+```
+
+---
+# Simulation, continued
+
+```{r sim}
+library(MASS) # load the pre-installed package
+sim <- mvrnorm(n = n_obs, mu = means, Sigma = error_cv)
+head(sim) # print!
+```
+
+---
+```{r sim_cor_plot, fig.width = 12}
+plot(sim)
+```
+
+---
+```{r check_sim_cor}
+cor(sim)
+```
+<br>
+
+### Overall takeaway
+There is a *ton* of functionality that comes with R right from your initial download. But, the functionality can be extended further by installing other packages.
+
+---
+# Other packages
+
+### On CRAN 
+.pull-left[
+![](assets/img/pkg_growth.png)
+]
+
+.pull-right[
+* Any of these can be installed with `install.packages("pkg_name")`. You will then have access to all the functionality of the package.
+* Notice this plot only goes to **mid-2014**. As of this writing (09/20/17), there are [12,618](https://cran.r-project.org/web/packages/) packages available on CRAN! 
+]
+
+---
+# Other packages
+### On GitHub
+
+.pull-left[
+<div align = "center">
+<img src = assets/img/esvis.png height = 400>
+</div>
+]
+
+.pull-right[
+<div align = "center">
+<img src = assets/img/github_pkgs.png height = 400>
+</div>
+]
+
+---
+# Installing from GitHub
+
+First, install the *devtools* package from CRAN
+
+```{r install_devtools, eval = FALSE}
+install.packages("devtools")
+```
+
+Next, load the *devtools* library to access the `install_github` function. For example, to install my *esvis* package
+
+```{r install_r2Winsteps, eval = FALSE}
+library(devtools)
+install_github("datalorax/esvis")
+```
+
+---
+You then have access to all the functionality of that package once you load it. Let's look at these data:
+
+```{r load_data_esvis, echo = FALSE}
+library(esvis)
+library(ggplot2)
+theme_set(theme_minimal())
+knitr::kable(head(benchmarks), row.names = FALSE, format = "html")
+```
+
+---
+# PP-Plot
+```{r load_esvis, fig.width = 13, fig.height = 6.5}
+library(esvis) 
+pp_plot(benchmarks, reading ~ ell)
+```
+
+---
+# Look at it by FRL eligibility
+```{r byfrl, fig.width = 13, fig.height = 6.5}
+pp_plot(benchmarks, reading ~ ell + frl)
+```
+
+---
+# Binned quantile effect sizes
+```{r esvis_ptile, fig.width = 13, fig.height = 7}
+binned_plot(benchmarks, math ~ ethnicity, qtile_groups = 5)
+```
+
+---
+# Probably overly complicated
+```{r esvis_ptile2, fig.width = 13, fig.height = 7, warning = FALSE}
+binned_plot(benchmarks, math ~ ethnicity + season + frl, qtile_groups = 5)
+```
+
+---
+# ES Calculation
+
+```{r esvis_calcs}
+hedg_g(benchmarks, 
+       math ~ ethnicity + frl, 
+       ref_group = ~White + `Non-FRL`)
+```
+
+---
+# Is this exciting!?! YES!!!
+Why is this such a big deal? 
+* With just a basic knowledge of R you have access to literally thousands of packages
+	+ Expanding on a daily basis
+	+ Provides access to cutting edge and specialized functionality for analysis, data visualization, and data munging
+	+ Some of the most modern thinking on data analysis topics are often represented in these packages
+
+---
+class: inverse center middle
+background-image: url(assets/img/alberta.jpg)
+background-size: cover
+
+# A few examples of amazing packages
+
+---
+### First: the data
+
+https://cepa.stanford.edu/seda/overview
+
+```{r load_seda, include = FALSE}
+library(tidyverse)
+library(here)
+library(fs)
+
+seda <- read_csv(dir_ls(here("weeks", "w1", "data"), regexp = "seda"))
+seda <- seda %>% 
+  mutate(grade = parse_number(grade),
+         time  = grade - 3)
+
+# select cohort
+criteria <- data_frame(year = 2009:2013, grade = 3:7)
+seda <- semi_join(seda, criteria) %>% 
+  select(stateabb, leaname, grade, time, mean_link_ela, mean_link_math)
+```
+
+.gray[.small[(loaded from code not displayed)]]
+
+```{r head_seda}
+seda
+```
+
+---
+# lme4
+Let's fit a multilevel linear growth model for ELA
+
+Question: How much does the progression from Grades 3-7 vary by state?
+
+```{r lme4_demo, message = FALSE}
+# install.packages("lme4")
+library(lme4)
+
+mlm <- lmer(mean_link_ela ~ 1 + time + 
+				(1 + time|leaname) + 
+				(1 + time|stateabb), 
+			data = seda,
+			REML = FALSE)
+```
+
+---
+```{r smry_lme4_lin}
+summary(mlm)
+```
+
+---
+# Prettier output? Use a different package!
+
+```{r pretty_lme4_output, eval = FALSE, warning = FALSE}
+# install.packages("sjPlot")
+library(sjPlot)
+sjt.lmer(mlm, p.kr = FALSE) # Note, second argument generally not necessary
+```
+
+---
+
+`r sjPlot::sjt.lmer(mlm, p.kr = FALSE, no.output = TRUE)$knitr`
+
+
+---
+# Quickly plot differences between states
+
+```{r lme4_state_diff, results = "hide", fig.height = 6, fig.width = 12}
+library(lattice) # pre-installed package
+re <- ranef(mlm, condVar = TRUE)
+qqmath(re)$stateabb
+```
+
+---
+# Compare to a curvilinear model
+
+```{r lme4_curv}
+mlm_c <- lmer(mean_link_ela ~ 1 + poly(time, 2, raw = TRUE) +
+				(1 + time|leaname) + 
+				(1 + time|stateabb), 
+			data = seda,
+			REML = FALSE)
+```
+
+---
+For more abbreviated (and essential) output
+
+```{r mlm_c_smry_echo, eval = FALSE}
+library(arm)
+display(mlm_c, detail = TRUE)
+```
+
+```{r mlm_c_smry_eval, echo = FALSE}
+arm::display(mlm_c, detail = TRUE)
+```
+
+---
+# Compare models
+
+```{r compare_mods}
+anova(mlm, mlm_c)
+```
+
+---
+class: inverse bottom center
+background-image: url(https://i2.wp.com/miamicomedy.com/wp-content/uploads/2016/11/cb5fe4610ffe82b1c25288e1fb04b026.jpg?fit=640%2C353&ssl=1)
+background-size: cover
+
+.major-emph-green[Feeling overwhelmed?]
+
+---
+# There are tools to help!
+
+http://recommendr.info
+
+![](assets/img/recommendr.png)
+
+---
+# There are people to help!
+
+![](assets/img/me.jpg)
+
+
+---
+class: inverse bottom
+background-image: url(https://myareanetwork-photos.s3.amazonaws.com/event_photos/f/258775_1495223084.png)
+background-size: cover
+
+.major-emph-green[You've got this!]
+
+---
+class: inverse center middle
+background-image: url(https://cdn.iconscout.com/public/images/icon/premium/png-512/code-fork-3e7e53ac6a8c0a88-512x512.png)
+background-size: cover
+
+# Tools outside of R
+
+---
+# git and GitHub
+### Why?
+
+--
+
+1. Open, transparent, and public science
+
+--
+
+1. Reproducibility
+
+--
+
+1. Collaborative tool
+
+--
+1. Version control .gray[.smaller[(usually listed as the first reason)]]
+
+---
+### How?
+
+1. Create an account
+1. Get a GUI and/or learn the command-line tools
+  + I'm okay with either or both, as long as you (sort of) know what you're doing 
+1. Develop a solid understanding of the underlying structure, so you know what you want to do, even if you don't know how
+  + stage, commit, push, pull 
+  
+---
+class: inverse
+background-image: url(assets/img/cats.jpg)
+background-size: cover
