@@ -10,6 +10,6 @@
 	+ What's a package? How do you get one? How do you use it?
 
 ## By the end of the week you should:
-* Have R, RStudio, and git installed on your computer and talking to each other
-* Have GitHub account
+* Have R and RStudio installed
+* Have a GitHub account
 * Be setup with DataCamp and working through the introduction to the tidyverse
