@@ -1,0 +1,38 @@
+.major-emph-yellow {
+  display: block;
+  text-align: center;
+  width: 110%;
+  background-color: #E1E000;
+  font-family: 'Philosopher', sans-serif;
+  color: #007935;
+  padding: 20px 50px;
+  margin: 0px -100px 0px;
+  font-weight: bolder;
+  font-size: 175%;
+}
+
+.major-emph-green {
+  display: block;
+  text-align: center;
+  font-family: 'Philosopher', sans-serif;
+  width: 110%;
+  background-color: #007935;
+  color: #fff;
+  padding: 20px 50px;
+  margin: 0px -100px 0px;
+  font-weight: bolder;
+  font-size: 175%;
+}
+
+
+.remark-slide-content:after {
+    content: "Slides available at:";
+    color: #89999E;
+    text-align: left;
+    font-size: 15px;
+    position: absolute;
+    bottom: 2px;
+    left: 20px;
+    height: 30px;
+    width: 100%;
+}
