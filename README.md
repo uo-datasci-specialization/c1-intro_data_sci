@@ -83,9 +83,9 @@ The last two on this list helped design the content for this course and the spec
 | 3a       | Basic data wrangling                           | Data wrangling with dplyr (skimr, ggplot2 with summarized data) <br/>R Sudio Projects<br/>Importing flat files with rio | import different data types<br/>skimr<br/>group_by %>% summarize                                  | Lab                                                                | <br/>Lab (histograms, boxplots, barplots)<br/>Intro to Tidyverse DC 4   | MD 5.1-5.7<br/>R4DS 8<br/>rio vignette (skim)                                           |
 | 3b       |                                                | More data wrangling with dplyr                                                                                          | The lesser known stars of dplyr                                                                   | Lab                                                                | Lab (importing, skimming, and summarizing)                              | R4DS 5<br/>MD 5.9                                                                       |
 | 4a       | Dynamic and reproducible documents             | Intro to R Markdown <br/>Workflow advice (here::here)                                                                   | Put your scripts into an Rmd <br/>(one complete knitted file)                                     | <br/>Lab<br/>R Markdown DC 1-3                                     | <br/>Lab (The lesser known stars of dplyr)                              | R4DS 27<br/>Bryan 4-8 (9 optional), 13<br/>https://github.com/jennybc/here_here         |
-| 4b       |                                                | GitHub                                                                                                                  | Push Rmd + project to GitHub<br/>Case study with dplyr & ggplot2 in Rmd/github_document on GitHub | Lab                                                                | R Markdown DC 1-3<br/>Lab (RMD Script)                                  | Bryan 19, 23-28                                                                         |
+| 4b       |                                                | GitHub                                                                                                                  | Push Rmd + project to GitHub<br/>Case study with dplyr & ggplot2 in Rmd/github_document on GitHub | Lab                                                                | Final Project Outline<br/> R Markdown DC 1-3<br/>Lab (RMD Script)       | Bryan 19, 23-28                                                                         |
 | 5a       | Dynamic and reproducible APA manuscripts       | Intro to the papaja package                                                                                             | Transform your prior Rmd to an APA Doc                                                            | Lab                                                                | <br/>Lab (Push Rmd + project to GitHub)                                 | Aust & Barth: 2                                                                         |
-| 5b       |                                                | Citations, equations, and formatting concerns                                                                           | Prettifying your APA doc                                                                          | Lab<br/>Hill DC 1 & 2                                              | Final Project Outline<br/>Lab (Transform your prior Rmd to an APA Doc)  | Aust & Barth: 3-4                                                                       |
+| 5b       |                                                | Citations, equations, and formatting concerns                                                                           | Prettifying your APA doc                                                                          | Lab<br/>Hill DC 1 & 2                                              | Lab (Transform your prior Rmd to an APA Doc)  							 | Aust & Barth: 3-4                                                                       |
 | 6a       | Tidy data 1                                    | Taming and tidying data                                                                                                 | Hill DC 3                                                                                         | Lab                                                                | Hill DC 1 & 2<br/>LAB (Prettifying your doc)                            | R4DS12<br/>Wickham (2014): http://www.jstatsoft.org/v59/i10/paper<br/>MD 4.1 - 4.2; 4.4 |
 | 6b       |                                                | Taming variables                                                                                                        | Hill DC 4                                                                                         | Lab<br/>erob DC 1-3                                                | <br/>Lab (Hill DC 3)                                                    | R4DS 14, 16                                                                             |
 | 7a       | Taming unwieldy variables                      | Taming variables (Part 2)                                                                                               | erob DC 4                                                                                         | Lab                                                                | Lab (Hill DC 4)<br/>erob DC (Ch 1-3)                                    | R4DS 15                                                                                 |
@@ -102,11 +102,8 @@ The last two on this list helped design the content for this course and the spec
 # Assignments 
 As outlined in the table above, most class meetings will include a lab. All labs will also count toward homework assignments, with roughly half the assignment completed during lab, and the other half completed out of class. The DataCamp platform will also be used for additional homework assignments, and the course will conclude with a final project. More detail about each is provided below.
 
-## Attendance (40 points; 8%)
-The course includes a total of fourteen lab sessions, plus three work days. Of the three sessions that do not include lab, two will be reserved for final project presentation. A critical component of learning data science includes receiving structured feedback as you problem-solve coding and data issues. Supporting your classmates is also important, and so attendance during final presentations is also mandatory. Attendance at each class session contributes toward your grade at five points per day, for a total of 40 points.
-
 ## Homework (225 points; 48%)
-
+ 
 ### Labs (140 points)
 There are 14 labs during the course, which must be submitted to the instructor prior to the start of the following class. These labs will be scored on a "best honest effort" basis, which generally implies zero or full credit (i.e., the assignment was or was not fully completed). However, many of the labs require students complete specific portions before moving on to the next sections. If you find yourself stuck and unable to proceed, **please contact the instructor for help rather than submitting incomplete work**. Contacting the instructor is part of the "best honest effort", and can result in full credit for an assignment even if the the work is not fully complete.
 
@@ -147,16 +144,16 @@ More information on the final project paper will be provided during class.
 # Grading Components
 |  **Lower percent** |**Lower point range**  | **Grade** | **Upper point range**  | **Upper percent**|
 |  :------: | :------   | :-:| :-------: | ----:|
-|  0.97     | (451 pts) | A+ |           |      |
-|  0.93     | (432 pts) | A  | (451 pts) | 0.97 |
-|  0.9      | (418 pts) | A- | (432 pts) | 0.93 |
-|  0.87     | (405 pts) | B+ | (418 pts) | 0.9  |
-|  0.83     | (386 pts) | B  | (405 pts) | 0.87 |
-|  0.8      | (372 pts) | B- | (386 pts) | 0.83 |
-|  0.77     | (358 pts) | C+ | (372 pts) | 0.8  |
-|  0.73     | (339 pts) | C  | (358 pts) | 0.77 |
-|  0.7      | (325 pts) | C- | (339 pts) | 0.73 |
-|           |           | F  | (325 pts) | 0.7  |
+|  0.97     | (422 pts) | A+ |           |      |
+|  0.93     | (405 pts) | A  | (422 pts) | 0.97 |
+|  0.90     | (392 pts) | A- | (405 pts) | 0.93 |
+|  0.87     | (378 pts) | B+ | (392 pts) | 0.90 |
+|  0.83     | (361 pts) | B  | (378 pts) | 0.87 |
+|  0.80     | (348 pts) | B- | (361 pts) | 0.83 |
+|  0.77     | (335 pts) | C+ | (348 pts) | 0.80 |
+|  0.73     | (318 pts) | C  | (335 pts) | 0.77 |
+|  0.70     | (304 pts) | C- | (318 pts) | 0.73 |
+|           |           | F  | (304 pts) | 0.70 |
 
 # Student Engagement Inventory
 Graduate: 1 credit hour = 40 hours of student engagement (3 credit hours = 120 hours of student engagement) 
