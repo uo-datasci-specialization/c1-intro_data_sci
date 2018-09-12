@@ -7,55 +7,81 @@ This repository will house all the materials for the first course in the data sc
 # Syllabus
 ## EDLD 610: Introduction to Data Science with R (CRN: 12074; 3 credit hours)
 * **Term:** Fall 2018
-* **Time:** MW, 10-11:50 
+* **Time:** MW, 10-11:20 
 * **Classroom:** 115 ED
 * **Instructor:** Daniel Anderson, PhD
 	+ *email:* (preferred contact method) [daniela@uoregon.edu](mailto:daniela@uoregon.edu)
 	+ *phone:* 541-346-3317
 	+ *office:* 175 Lokey
+	+ *office hours*: Wednesday, 10-12:00 (shared with multiple regression)
 
 
 # Course Overview
-This is the first course in a five course *data science in educational research* specialization. All courses will be taught through [R](https://cran.r-project.org), a free and open-source statistical computing environment. This course, in particular, will introduce students to R and [RStudio](https://www.rstudio.com), version control with [git](https://git-scm.com) and [GitHub](https://github.com), dynamic and reproducible workflows with [R Markdown](https://rmarkdown.rstudio.com), and basic data wrangling and visualization with the [tidyverse](https://www.tidyverse.org) suite of packages. 
+This is the first course in a sequence of courses that will eventually lead to 
+a *data science in educational research* specialization. The first three
+courses will be offered this fall/winter/spring. All courses will be taught
+through [R](https://cran.r-project.org), a free and open-source statistical
+computing environment. This course, in particular, will introduce students to 
+R and [RStudio](https://www.rstudio.com), version control with 
+[git](https://git-scm.com) and [GitHub](https://github.com), dynamic and 
+reproducible workflows with [R Markdown](https://rmarkdown.rstudio.com), and 
+basic data wrangling and visualization with the [tidyverse](
+https://www.tidyverse.org) suite of packages.
+
+## Prior to the first class
+Please install R from [CRAN](https://cran.r-project.org), as well as the latest
+version of 
+[RStudio](https://www.rstudio.com/products/rstudio/download/#download) for 
+your machine. 
 
 # Student Learning Objectives
 By the end of this course, students should be able to:
-
-* Understand the R package ecosystem (how to find, install, load, and learn about them)
+* Understand the R package ecosystem (how to find, install, load, and learn
+	about package functionality)
 * Read "flat" (i.e., rectangular) datasets into R 
 * Perform basic data wrangling and transformations in R, using the tidyverse
-	+ Leverage appropriate functions for introductory data science tasks (pipeline)
+	+ Leverage appropriate functions for introductory data science tasks 
+	  (pipeline)
 	+ "clean up" the dataset using scripts and reproducible workflows
-* Use version control with R via Git through RStudio Projects
-* Use R Markdown to create reproducible dynamic reports, including APA manuscripts
+* Use version control with R via GitHub
+* Use R Markdown to create reproducible, dynamic reports, including APA 
+  manuscripts
 * Understand and create different types of data visualizations
 
 # Course Reading List And Other Resources
-All course readings are freely available online or will be provided by the instructor. 
+All course readings are freely available online or will be provided by the
+instructor. 
 
-### Books (required)
+## Books (required)
+* Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
+* Ismay, C. and Kim, A. Y. (2018). *[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
 * Wickham, H. and Grolemund, G. (2017). *[R for data science](http://r4ds.had.co.nz)*. Sebastopol, CA: O'Reilly. 
 	+ Freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
-* Ismay, C. and Kim, A. Y. (2018). *[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
-* Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
-* Healy, K. (2018) *[Data visualization: A practical introduction](http://socviz.co)*. New Jersey: Princeton University Press.
+
+## Books (not required, but possibly helpful)
 * Aust, F. and Barth, M. (2018). *[papaja: Reproducible APA manuscripts with R](https://crsh.github.io/papaja_man/index.html)*
-
-
-### Books (not required, but possibly helpful)
+* Healy, K. (2018) *[Data visualization: A practical introduction](http://socviz.co)*. New Jersey: Princeton University Press.
 * Wilke, C. O. (2018). *[Fundamentals of data visualization](http://serialmentor.com/dataviz/)*.
 
-### Resources
-#### [DataCamp](https://www.datacamp.com)
-We will have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are available to you. I encourage you to explore the website and play around. There are **far more** topics covered by DataCamp than we will cover in this course or this five-course specialization. 
+## Resources
+### [DataCamp](https://www.datacamp.com)
+We have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses they offer (which is a lot) are
+available to you. I encourage you to explore the website and play around. There are **far more** topics covered by DataCamp than we will cover in this course or this five-course specialization.
 
-In addition to having DataCamp as a resource for your own exploration of topics not covered by this class or the specialization, we will use DataCamp content to supplement lectures, and as a place for you to practice the skills you learn in class.
+In addition to having DataCamp as a resource for your own exploration of topics not covered by this class, we will use DataCamp content to supplement lectures, and as a place for you to practice the skills you learn in class.
 
-### Blog posts, etc. <font color="red">(NEEDS WORK)</font>
-* Visualizing Distributions <font color="red">(Link is Broken)</font> http://cslu.ohsu.edu/~bedricks/courses/cs631/files/labs/lab4/04-lab.html
-* Visualizing High Dimensions <font color="red">(Link is Broken)</font> http://cslu.ohsu.edu/~bedricks/courses/cs631/files/labs/lab8/08-lab.html
+Our DataCamp website is located [here](https://www.datacamp.com/enterprise/introduction-to-data-science-with-r). 
+I suggest bookmarking the page as we will use it throughout the term.
 
 ### Helpful People/Groups
+#### [R-Ladies](https://rladies.org)
+Regardless of how you identify, but particularly if you identify as a woman or
+gender non-binary, I highly recommend connecting with the
+[R-Ladies](https://rladies.org) group, which is now a global organization. They
+are an amazing organization of incredibly supportive individuals who routinely
+share great information. I cannot speak highly enough of them.
+
+#### Twitter
 Twitter can be a great place to make connections and learn about new things. If you're not on twitter I would recommend creating an account just so you can follow people. Below is a small list of people I would recommend following to help you learn R and data science.
 
 * [Mara Averick](https://twitter.com/dataandme)
@@ -71,7 +97,29 @@ Twitter can be a great place to make connections and learn about new things. If 
 * [Alison Hill](https://twitter.com/apreshill)
 * [Chester Ismay](https://twitter.com/old_man_chester)
 
-The last two on this list helped design the content for this course and the specialization as a whole, along with [Andrew Bray](https://andrewpbray.github.io) (and are wonderful, amazing people that happen to also be good twitter follows). This list is not intended to be comprehensive in the slightest. There are plenty of other great follows out there that I left off. I tried to focus on people who are active and share lots of good resources.
+The last two on this list helped design the content for this course and the
+specialization as a whole, along with [Andrew Bray]
+(https://andrewpbray.github.io) (and are wonderful, amazing people that happen
+to also be good twitter follows). This list is not intended to be 
+comprehensive. There are plenty of other great follows out there that I left
+off. I tried to focus on people who are active and share lots of good 
+resources. Many (most) of these individuals also maintain blogs, which are 
+worth visiting as well (and they will often tweet out links when they put out
+new blog posts).
+
+#### [RStudio Community](https://community.rstudio.com)
+The RStudio community is similar to [stackoverflow](https://stackoverflow.com/questions/tagged/r) 
+but is generally more friendly, willing to engage in more philosophical and
+deeper discussions than "how do you do X", and more opinionated about
+workflows/software design. This last part is important because these
+discussions will generally be biased toward the RStudio philosophy, and so 
+it's important that you understand that going in. However, this course is also
+biased toward the RStudio philosophy, as I think it's a good one. The RStudio
+community  is also much less likely to yell at you than users in stackoverflow.
+That's not to say stackoverflow doesn't have a place---I think it
+does---but rather that the RStudio community is a better place for beginners 
+(and there's some serious need for some cultural shifts in the stackoverflow
+community, which I think *is* changing, but slowly).
 
 # Weekly Schedule (Topics, Assignments, and Readings)
 | **Week** | **Theme**                                      | **Topics**                                                                                                              | **Lab**                                                                                           | **Assignment Assigned**                                            | **Assignment Due**                                                      | **Reading**                                                                             |
@@ -105,41 +153,114 @@ As outlined in the table above, most class meetings will include a lab. All labs
 ## Homework (225 points; 48%)
  
 ### Labs (140 points)
-There are 14 labs during the course, which must be submitted to the instructor prior to the start of the following class. These labs will be scored on a "best honest effort" basis, which generally implies zero or full credit (i.e., the assignment was or was not fully completed). However, many of the labs require students complete specific portions before moving on to the next sections. If you find yourself stuck and unable to proceed, **please contact the instructor for help rather than submitting incomplete work**. Contacting the instructor is part of the "best honest effort", and can result in full credit for an assignment even if the the work is not fully complete.
+There are 14 labs during the course, which must be submitted to the instructor
+prior to the start of the following class. These labs will be scored on a "best
+honest effort" basis, which generally implies zero or full credit (i.e., the
+assignment was or was not fully completed). However, many of the labs require
+students complete specific portions before moving on to the next sections. If
+you find yourself stuck and unable to proceed, **please contact the instructor
+for help rather than submitting incomplete work**. Contacting the instructor
+is part of the "best honest effort", and can result in full credit for an 
+assignment even if the the work is not fully complete. **If the assignment is
+not complete, and the student has not contacted the instructor for help or
+visited office hours, it is likely to result is a score of zero**.
 
 ### DataCamp Chapters (85 points)
-DataCamp is an excellent resource to  get additional instruction and/or go more in-depth on any of the topics covered in this class. There are also some topics that we will not have the time to cover in much detail, and DataCamp can be helpful for these topics as well. However, in addition to providing supplemental support, select chapters will be assigned and scored as part of homework, at five points per chapter. A total of 17 chapters will be assigned (note that many of these chapters are very brief).
+DataCamp is an excellent resource to  get additional instruction and/or go 
+more in-depth on any of the topics covered in this class. There are also some 
+topics that we will not have the time to cover in much detail, and DataCamp 
+can be helpful for these topics as well. However, in addition to providing 
+supplemental support, select chapters will be assigned and scored as part of 
+homework, at **five points per chapter**. A total of 17 chapters will be
+assigned (note that many of these chapters are very brief).
 
 ## Final Project (200 points; 43%)
-The final project in this class is a group project, requiring students use a “real world” dataset to write, essentially, a miniature manuscript, including an introduction (paragraph or two), methods, results, and discussion (again, maybe 2-3 paragraphs). Ideally, students would work with a dataset that includes variables they are interested in using beyond just this class; however, if students do not have access to data, the instructor will provide one. **Students who do not have access to data should plan to meet with the instructor as soon as possible so a dataset can be provided**. Additionally, the dataset must be able to be shared publicly, as the full project will be required to be housed on GitHub and be fully reproducible. If making your data publicly available is a problem for you, please contact the instructor as soon as possible. We can work together to either find a dataset that will work for you, or simulate a dataset that is similar to the data you'd like to work with in reality (and then all your code should work for the real dataset, but you can share the simulated data with your classmates). Students are required to work in groups of 2-4 people. The final assignment is assigned during the first class, and groups must be finalized by the end of Week 2 (at which point students who have not self-selected into groups will be randomly assigned).
+The final project in this class is a group project, requiring students use a 
+“real world” dataset to write, essentially, a miniature manuscript, including 
+an introduction (paragraph or two), methods, results, and discussion (again, 
+maybe 2-3 paragraphs). Ideally, students would work with a dataset that 
+includes variables they are interested in using beyond just this class; 
+however, if students do not have access to a dataset, the instructor will
+provide one. **Students who do not have access to data should plan to meet with
+the instructor as soon as possible so a dataset can be provided**. 
+Additionally, **the dataset must be able to be shared publicly**, as the full
+project will be required to be housed on GitHub and be fully reproducible. If 
+making your data publicly available is a problem for you, please contact the 
+instructor as soon as possible. We can work together to either find a dataset 
+that will work for you, or simulate a dataset that is similar to the data 
+you'd like to work with in reality (and then all your code should work for the 
+real dataset, but you can share the simulated data with your classmates). 
+Students are required to work in groups of 2-4 people. The final assignment is 
+assigned during the first class, and **groups must be finalized by the end of 
+Week 2** (at which point students who have not self-selected into groups will 
+be randomly assigned).
 
 ### Outline (15 points)
-A basic outline of the final project is due at the end of Week 5. The outline should include a description of the data to be used, a discussion of what preparatory work will need to be done and how the requirements of the final project will be met. The outline is intended to be low-stakes and is primarily designed to be a means for you to obtain feedback on the feasibility of the project and areas to consider. 
+A basic outline of the final project is due at the end of Week 5. The outline 
+should include a description of the data to be used, a discussion of what 
+preparatory work will need to be done and how the requirements of the final 
+project will be met. The outline is intended to be low-stakes and is primarily 
+designed to be a means for you to obtain feedback on the feasibility of the 
+project and areas to consider. 
 
 ### Draft Data Preparation Script (25 points)
-At the end of Week 8, you must have a draft of the data preparation complete, including moving the data from its raw to tidy form and a variety of exploratory data visualizations.
+At the end of Week 8, you must have a draft of the data preparation complete, 
+including moving the data from its raw to tidy form and a variety of 
+exploratory data visualizations.
 
 ### Peer Review of Data Preparation Script (25 points)
-Following the submission of the data preparation scripts, you will be assigned to review your peers code. The purpose of this exercise is to learn from each other. Programming is an immensely open-ended enterprise and there are lots of winding paths that all ultimately end up at the same destination. During your peer review, you must note (a) at least three areas of strength, (b) at least one thing you learned from reviewing their script, and (c) no more than three areas for improvement. 
+Following the submission of the data preparation scripts, you will be assigned 
+to review your peers code. The purpose of this exercise is to learn from each 
+other. Programming is an immensely open-ended enterprise and there are lots of 
+winding paths that all ultimately end up at the same destination. During your 
+peer review, you must note (a) at least three areas of strength, (b) at least 
+one thing you learned from reviewing their script, and (c) at least one and no
+more than three areas for improvement. 
 
-Making your code publicly available can feel daunting. The purpose of this portion of the final project is to help us all learn from each other, not to denigrate. **Under no circumstances will negative comments be tolerated**. Any comments that could be perceived as negative, and outside the scope of the code, will result in an immediate score of zero. Be constructive in your feedback. Be kind. 
+Making your code publicly available can feel daunting. The purpose of this 
+portion of the final project is to help us all learn from each other, not to 
+denigrate. **Under no circumstances will negative comments be tolerated**. Any 
+comments that could be perceived as negative, and outside the scope of the 
+code, will result in an immediate score of zero. Be constructive in your 
+feedback. Be kind. We are all learning.
 
 ### Final Project Presentation (25 points)
-Each group will present on their final project during Week 10, which is expected to still be in progress. These presentations are expected to be informal, and emphasis what learning occurred during the project. Specifically, the presentations are to commiserate with each other about the failures and challenges experienced along the way, while also celebrating the successes. Learning R is a difficult task, and we should all take solace knowing that others are struggling along with us. The final presentation should be equal parts “journey” and substantive findings/conclusions/results. Students are expected to present for approximately 10 minutes each (20-40 minutes per group), although the time may change depending on the enrollment of the class.
+Each group will present on their final project during Week 10, which is 
+expected to still be in progress. These presentations are expected to be 
+informal, and emphasize what learning occurred during the project.
+Specifically, the presentations are to commiserate with each other about the
+failures and challenges experienced along the way, while also celebrating the 
+successes. Learning R is a difficult task, and we should all take solace 
+knowing that others are struggling along with us. The final presentation 
+should be equal parts “journey” and substantive findings/conclusions/results. 
+Students are expected to present for approximately 10 minutes each (20-40 
+minutes per group), although the time may change depending on the enrollment 
+of the class.
  
 
 ### Final Paper (110)
-The purpose of the final project is to allow students an opportunity to demonstrate all the skills they have learned throughout the course. The final project must (a) be a reproducible and dynamic APA manuscript produced with R Markdown, via the [*{papaja}*](https://github.com/crsh/papaja) package and include references to the extant literature; (b) demonstrate moving data from its raw “messy” format to a tidy data format through the R Markdown file, but not in the final document; (c) include at least two exploratory data visualizations, and (d) include at least summary statistics of the data in tables, although fitted models of any sort are an added bonus (not literally, there are not extra points for fitting a model). The points for the final project are broken down as follows:
+The purpose of the final project is to allow students an opportunity to
+demonstrate all the skills they have learned throughout the course. The final
+project must (a) be a reproducible and dynamic APA manuscript produced with R
+Markdown, via the [*{papaja}*](https://github.com/crsh/papaja) package and
+include references to the extant literature; (b) be housed on GitHub, with
+contributions from all authors obvious; (b) demonstrate
+moving data from its raw “messy” format to a tidy data format through the R Markdown file, but not in the final document; (c) include at least two exploratory data visualizations, and (d) include at least summary statistics of the data in tables, although fitted models of any sort are an added bonus (not literally, there are not extra points for fitting a model). The points for the final project are broken down as follows:
 
 * Writing (abstract, intro, methods, results, discussion, references): 30 points (25%)
-* Document is fully reproducible: 25 points (21%)
+* Document is fully reproducible and housed on GitHub: 25 points (21%)
 * Demonstrate use of inline code: 5 points (4%)
 * Demonstrate tidying messy data: 30 points (25%)
 * Two data visualizations: 10 points each, 20 points total (17%)
 * Production of at least one table (of summary statistics or model results): 10 points (8%)
 
-More information on the final project paper will be provided during class.
-
+I will investigate the commits made by different authors when evaluating the
+final project. If it is obvious that one person did not utilize GitHub, and
+instead added all of their contributions through a single or only a few 
+commits, I will dock points from that individual. There should be numerous
+commits by each author, and they should be roughly even in terms of
+contribution activity (which GitHub has metrics to track, both in terms of the
+number of commits as well as the number of lines modified).
 
 # Grading Components
 |  **Lower percent** |**Lower point range**  | **Grade** | **Upper point range**  | **Upper percent**|
