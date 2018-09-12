@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Seeing the big picture</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Seeing the big picture
+## The R ecosystem, and other tools in the data science pipeline
+### Daniel Anderson
+### Week 1, Class 2
+
+---
+
+class: inverse center middle
+background-image: url(assets/img/sky.jpg)
+background-size: cover
+
+# R Packages
+
+---
+# "Out of the box" functionality
+
+.pull-left[
+### Some packages are *pre-loaded* 
+* e.g.
+	+ {base}
+	+ {graphics}
+	+ {stats}
+]
+
+.pull-right[
+### Others are *pre-installed*
+* e.g.
+	+ {boot}
+	+ {MASS}
+	+ {Matrix}
+]
+
+---
+# Pre-loaded vs installed
+
+Pre-loaded packages work on launch. For example, `plot` is part of the {graphics} package, which ships with R.
+
+
+```r
+plot(x = 1:10, y = 1:10)
+```
+
+![](w1p2_files/figure-html/first_plot-1.png)&lt;!-- --&gt;
+
+---
+# {base} package
+
+All functions come from a package! What do you get from the following?
+
+.gray[.small[Those are backticks, which are at the top-left of your keyboard]]
+
+
+```r
+?`+`
+```
+
+--
+* Side note - any idea why we have to surround this with backticks?
+
+--
+* See [here](https://stackoverflow.com/questions/36220823/what-do-backticks-do-in-r) 
+
+&gt; A pair of backticks is a way to refer to names or combinations of symbols that are otherwise reserved or illegal
+
+
+--
+
+* Also relevant, backticks define code in markdown (which we'll learn more about later), so you may seem them in error messages to signify `'this bit is code'`
+
+
+---
+class: inverse center middle
+background-image: url(assets/img/base.png)
+background-size: contain
+
+---
+# Pre-installed packages
+* Outside of the packages that are *pre-loaded*, there are a number that come *pre-installed*. e.g.,
+  + {MASS}
+  + {boot}
+  + {cluster}
+  + {lattice}
+
+--
+
+* Packages that are not pre-loaded require an explicit call to the `library` 
+
+---
+# Example with {MASS}
+* Say we want to simulate data from a multivariate normal distribution
+
+
+```r
+# Set up simulation parameters
+n_obs &lt;- 1000
+means &lt;- c(100, 50) # `c` comes from base - used to create a vector
+error_cv &lt;- matrix(c(100, 44, # `matrix` comes from base
+					     44, 49), byrow = TRUE, ncol = 2) # part of base
+cov2cor(error_cv) # part of stats package
+```
+
+```
+##           [,1]      [,2]
+## [1,] 1.0000000 0.6285714
+## [2,] 0.6285714 1.0000000
+```
+
+---
+# Simulation, continued
+
+
+```r
+library(MASS) # load the pre-installed package
+sim &lt;- mvrnorm(n = n_obs, mu = means, Sigma = error_cv)
+head(sim) # print!
+```
+
+```
+##           [,1]     [,2]
+## [1,] 103.25771 53.64929
+## [2,]  99.52404 51.14417
+## [3,] 105.81395 47.42104
+## [4,] 122.95975 67.75610
+## [5,] 101.43792 50.82781
+## [6,] 118.11928 48.39052
+```
+
+---
+
+```r
+plot(sim)
+```
+
+![](w1p2_files/figure-html/sim_cor_plot-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+cor(sim)
+```
+
+```
+##           [,1]      [,2]
+## [1,] 1.0000000 0.6377337
+## [2,] 0.6377337 1.0000000
+```
+&lt;br&gt;
+
+### Overall takeaway
+There is a *ton* of functionality that comes with R right from your initial download. But, the functionality can be extended further by installing other packages.
+
+---
+# Other packages
+
+### On CRAN 
+.pull-left[
+![](assets/img/pkg_growth.png)
+]
+
+.pull-right[
+* Any of these can be installed with `install.packages("pkg_name")`. You will then have access to all the functionality of the package.
+* Notice this plot only goes to **mid-2014**. As of this writing (09/20/17), there are [12,618](https://cran.r-project.org/web/packages/) packages available on CRAN! 
+]
+
+---
+# Other packages
+### On GitHub
+
+.pull-left[
+&lt;div align = "center"&gt;
+&lt;img src = assets/img/esvis.png height = 400&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+&lt;div align = "center"&gt;
+&lt;img src = assets/img/github_pkgs.png height = 400&gt;
+&lt;/div&gt;
+]
+
+---
+# Installing from GitHub
+
+First, install the *devtools* package from CRAN
+
+
+```r
+install.packages("devtools")
+```
+
+Next, load the *devtools* library to access the `install_github` function. For example, to install my *esvis* package
+
+
+```r
+library(devtools)
+install_github("datalorax/esvis")
+```
+
+---
+You then have access to all the functionality of that package once you load it. Let's look at these data:
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; sid &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cohort &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; sped &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; ethnicity &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; frl &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; ell &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; season &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; reading &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; math &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 332347 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-Sped &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Native Am. &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-FRL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-ELL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Winter &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 208 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 205 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 400047 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-Sped &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Native Am. &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FRL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-ELL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Spring &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 218 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 402107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-Sped &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; White &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-FRL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-ELL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Winter &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 201 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 402547 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-Sped &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; White &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-FRL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-ELL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Fall &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 185 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 177 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 403047 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sped &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Hispanic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FRL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Active &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Winter &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 179 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 192 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 403307 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sped &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Hispanic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-FRL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Non-ELL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Winter &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 189 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 188 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+# PP-Plot
+
+```r
+library(esvis) 
+pp_plot(benchmarks, reading ~ ell)
+```
+
+![](w1p2_files/figure-html/load_esvis-1.png)&lt;!-- --&gt;
+
+---
+# Look at it by FRL eligibility
+
+```r
+pp_plot(benchmarks, reading ~ ell + frl)
+```
+
+![](w1p2_files/figure-html/byfrl-1.png)&lt;!-- --&gt;
+
+---
+# Binned quantile effect sizes
+
+```r
+binned_plot(benchmarks, math ~ ethnicity, qtile_groups = 5)
+```
+
+![](w1p2_files/figure-html/esvis_ptile-1.png)&lt;!-- --&gt;
+
+---
+# Probably overly complicated
+
+```r
+binned_plot(benchmarks, math ~ ethnicity + season + frl, qtile_groups = 5)
+```
+
+![](w1p2_files/figure-html/esvis_ptile2-1.png)&lt;!-- --&gt;
+
+---
+# ES Calculation
+
+
+```r
+hedg_g(benchmarks, 
+       math ~ ethnicity + frl, 
+       ref_group = ~White + `Non-FRL`)
+```
+
+```
+## # A tibble: 11 x 6
+## # Groups:   ethnicity [?]
+##    ethnicity_ref frl_ref ethnicity_foc frl_foc coh_d hedg_g
+##    &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1 White         Non-FRL Am. Indian    FRL     0.995  0.994
+##  2 White         Non-FRL Am. Indian    Non-FRL 0.639  0.637
+##  3 White         Non-FRL Asian         FRL     0.659  0.658
+##  4 White         Non-FRL Asian         Non-FRL 0.209  0.209
+##  5 White         Non-FRL Black         FRL     0.968  0.967
+##  6 White         Non-FRL Black         Non-FRL 0.640  0.639
+##  7 White         Non-FRL Hispanic      FRL     0.928  0.928
+##  8 White         Non-FRL Hispanic      Non-FRL 0.590  0.590
+##  9 White         Non-FRL Native Am.    FRL     1.16   1.16 
+## 10 White         Non-FRL Native Am.    Non-FRL 0.663  0.662
+## 11 White         Non-FRL White         FRL     0.538  0.538
+```
+
+---
+# Is this exciting!?! YES!!!
+Why is this such a big deal? 
+* With just a basic knowledge of R you have access to literally thousands of packages
+	+ Expanding on a daily basis
+	+ Provides access to cutting edge and specialized functionality for analysis, data visualization, and data munging
+	+ Some of the most modern thinking on data analysis topics are often represented in these packages
+
+---
+class: inverse center middle
+background-image: url(assets/img/alberta.jpg)
+background-size: cover
+
+# A few examples of amazing packages
+
+---
+### First: the data
+
+https://cepa.stanford.edu/seda/overview
+
+
+
+.gray[.small[(loaded from code not displayed)]]
+
+
+```r
+seda
+```
+
+```
+## # A tibble: 53,807 x 6
+##    stateabb leaname          grade  time mean_link_ela mean_link_math
+##    &lt;chr&gt;    &lt;chr&gt;            &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+##  1 AL       ALBERTVILLE CITY     3     0          204.           216.
+##  2 AL       ALBERTVILLE CITY     4     1          219.           235.
+##  3 AL       ALBERTVILLE CITY     5     2          221.           233.
+##  4 AL       ALBERTVILLE CITY     6     3          235.           256.
+##  5 AL       ALBERTVILLE CITY     7     4          244.           268.
+##  6 AL       MARSHALL COUNTY      3     0          206.           224.
+##  7 AL       MARSHALL COUNTY      4     1          218.           236.
+##  8 AL       MARSHALL COUNTY      5     2          227.           250.
+##  9 AL       MARSHALL COUNTY      6     3          237.           256.
+## 10 AL       MARSHALL COUNTY      7     4          254.           270.
+## # ... with 53,797 more rows
+```
+
+---
+# lme4
+Let's fit a multilevel linear growth model for ELA
+
+Question: How much does the progression from Grades 3-7 vary by state?
+
+
+```r
+# install.packages("lme4")
+library(lme4)
+
+mlm &lt;- lmer(mean_link_ela ~ 1 + time + 
+				(1 + time|leaname) + 
+				(1 + time|stateabb), 
+			data = seda,
+			REML = FALSE)
+```
+
+---
+
+```r
+summary(mlm)
+```
+
+```
+## Linear mixed model fit by maximum likelihood  ['lmerMod']
+## Formula: mean_link_ela ~ 1 + time + (1 + time | leaname) + (1 + time |  
+##     stateabb)
+##    Data: seda
+## 
+##       AIC       BIC    logLik  deviance  df.resid 
+##  375949.1  376029.1 -187965.6  375931.1     53644 
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -10.4596  -0.4735  -0.0007   0.4691   7.6201 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr 
+##  leaname  (Intercept) 127.9235 11.3103       
+##           time          2.0048  1.4159  -0.22
+##  stateabb (Intercept)  61.3552  7.8330       
+##           time          0.6513  0.8071  -0.41
+##  Residual              31.9756  5.6547       
+## Number of obs: 53653, groups:  leaname, 10996; stateabb, 51
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) 206.3762     1.1251  183.43
+## time         11.5447     0.1198   96.36
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## time -0.403
+```
+
+---
+# Prettier output? Use a different package!
+
+
+```r
+# install.packages("sjPlot")
+library(sjPlot)
+sjt.lmer(mlm, p.kr = FALSE) # Note, second argument generally not necessary
+```
+
+---
+
+&lt;table style="border-collapse:collapse; border:none;border-bottom:double;"&gt;
+&lt;td style="padding:0.2cm; border-top:double;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="border-bottom:1px solid; padding-left:0.5em; padding-right:0.5em; border-top:double;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; border-bottom:1px solid; border-top:double;" colspan="3"&gt;mean_link_ela&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; font-style:italic;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em; font-style:italic;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; font-style:italic; "&gt;B&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; font-style:italic; "&gt;CI&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; font-style:italic; "&gt;p&lt;/td&gt; 
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan="5" style="padding:0.2cm; text-align:left; border-top:1px solid; font-weight:bold; text-align:left;"&gt;Fixed Parts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left;"&gt;(Intercept)&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em; "&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;206.38&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;204.17&amp;nbsp;&amp;ndash;&amp;nbsp;208.58&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;&amp;lt;.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left;"&gt;time&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;11.54&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;11.31&amp;nbsp;&amp;ndash;&amp;nbsp;11.78&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;&amp;lt;.001&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td colspan="5" style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; font-weight:bold; text-align:left; padding-top:0.5em;"&gt;Random Parts&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;sigma;&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;31.976&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;tau;&lt;sub&gt;00, leaname&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;127.924&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;tau;&lt;sub&gt;00, stateabb&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;61.355&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;rho;&lt;sub&gt;01&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;&amp;#45;0.222&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;N&lt;sub&gt;leaname&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;10996&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;N&lt;sub&gt;stateabb&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;ICC&lt;sub&gt;leaname&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;0.578&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;ICC&lt;sub&gt;stateabb&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;0.277&lt;/td&gt;
+ &lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em; border-top:1px solid;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3"&gt;53653&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / &amp;Omega;&lt;sub&gt;0&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;
+
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;.950 / .949&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;/table&gt;
+, &lt;table style="border-collapse:collapse; border:none;border-bottom:double;"&gt;
+&lt;td style="padding:0.2cm; border-top:double;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="border-bottom:1px solid; padding-left:0.5em; padding-right:0.5em; border-top:double;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; border-bottom:1px solid; border-top:double;" colspan="3"&gt;mean_link_ela&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; font-style:italic;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em; font-style:italic;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; font-style:italic; "&gt;B&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; font-style:italic; "&gt;CI&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; font-style:italic; "&gt;p&lt;/td&gt; 
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan="5" style="padding:0.2cm; text-align:left; border-top:1px solid; font-weight:bold; text-align:left;"&gt;Fixed Parts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left;"&gt;(Intercept)&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em; "&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;206.38&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;204.17&amp;nbsp;&amp;ndash;&amp;nbsp;208.58&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;&amp;lt;.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left;"&gt;time&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;11.54&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;11.31&amp;nbsp;&amp;ndash;&amp;nbsp;11.78&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;&amp;lt;.001&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;
+&lt;td colspan="5" style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; font-weight:bold; text-align:left; padding-top:0.5em;"&gt;Random Parts&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;sigma;&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;31.976&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;tau;&lt;sub&gt;00, leaname&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;127.924&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;tau;&lt;sub&gt;00, stateabb&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;61.355&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;&amp;rho;&lt;sub&gt;01&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;&amp;#45;0.408&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;N&lt;sub&gt;leaname&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;10996&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;"&gt;N&lt;sub&gt;stateabb&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;ICC&lt;sub&gt;leaname&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;0.578&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;ICC&lt;sub&gt;stateabb&lt;/sub&gt;&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;0.277&lt;/td&gt;
+ &lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style="padding-left:0.5em; padding-right:0.5em; border-top:1px solid;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3"&gt;53653&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / &amp;Omega;&lt;sub&gt;0&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;
+
+&lt;td style="padding-left:0.5em; padding-right:0.5em;"&gt;&amp;nbsp;&lt;/td&gt;&lt;td style="padding:0.2cm; text-align:center; padding-top:0.1cm; padding-bottom:0.1cm;" colspan="3"&gt;.950 / .949&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;/table&gt;
+
+
+
+---
+# Quickly plot differences between states
+
+
+```r
+library(lattice) # pre-installed package
+re &lt;- ranef(mlm, condVar = TRUE)
+qqmath(re)$stateabb
+```
+
+![](w1p2_files/figure-html/lme4_state_diff-1.png)&lt;!-- --&gt;
+
+---
+# Compare to a curvilinear model
+
+
+```r
+mlm_c &lt;- lmer(mean_link_ela ~ 1 + poly(time, 2, raw = TRUE) +
+				(1 + time|leaname) + 
+				(1 + time|stateabb), 
+			data = seda,
+			REML = FALSE)
+```
+
+---
+For more abbreviated (and essential) output
+
+
+```r
+library(arm)
+display(mlm_c, detail = TRUE)
+```
+
+
+```
+## lmer(formula = mean_link_ela ~ 1 + poly(time, 2, raw = TRUE) + 
+##     (1 + time | leaname) + (1 + time | stateabb), data = seda, 
+##     REML = FALSE)
+##                            coef.est coef.se t value
+## (Intercept)                207.05     1.12  184.05 
+## poly(time, 2, raw = TRUE)1  10.22     0.13   76.38 
+## poly(time, 2, raw = TRUE)2   0.33     0.01   22.61 
+## 
+## Error terms:
+##  Groups   Name        Std.Dev. Corr  
+##  leaname  (Intercept) 11.33          
+##           time         1.44    -0.23 
+##  stateabb (Intercept)  7.83          
+##           time         0.81    -0.40 
+##  Residual              5.61          
+## ---
+## number of obs: 53653, groups: leaname, 10996; stateabb, 51
+## AIC = 375444, DIC = 375424.3
+## deviance = 375424.3
+```
+
+---
+# Compare models
+
+
+```r
+anova(mlm, mlm_c)
+```
+
+```
+## Data: seda
+## Models:
+## mlm: mean_link_ela ~ 1 + time + (1 + time | leaname) + (1 + time | 
+## mlm:     stateabb)
+## mlm_c: mean_link_ela ~ 1 + poly(time, 2, raw = TRUE) + (1 + time | leaname) + 
+## mlm_c:     (1 + time | stateabb)
+##       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)    
+## mlm    9 375949 376029 -187966   375931                             
+## mlm_c 10 375444 375533 -187712   375424 506.87      1  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+class: inverse bottom center
+background-image: url(https://i2.wp.com/miamicomedy.com/wp-content/uploads/2016/11/cb5fe4610ffe82b1c25288e1fb04b026.jpg?fit=640%2C353&amp;ssl=1)
+background-size: cover
+
+.major-emph-green[Feeling overwhelmed?]
+
+---
+# There are tools to help!
+
+http://recommendr.info
+
+![](assets/img/recommendr.png)
+
+---
+# There are people to help!
+
+![](assets/img/me.jpg)
+
+
+---
+class: inverse bottom
+background-image: url(https://myareanetwork-photos.s3.amazonaws.com/event_photos/f/258775_1495223084.png)
+background-size: cover
+
+.major-emph-green[You've got this!]
+
+---
+class: inverse center middle
+background-image: url(https://cdn.iconscout.com/public/images/icon/premium/png-512/code-fork-3e7e53ac6a8c0a88-512x512.png)
+background-size: cover
+
+# Tools outside of R
+
+---
+# git and GitHub
+### Why?
+
+--
+
+1. Open, transparent, and public science
+
+--
+
+1. Reproducibility
+
+--
+
+1. Collaborative tool
+
+--
+1. Version control .gray[.smaller[(usually listed as the first reason)]]
+
+---
+### How?
+
+1. Create an account
+1. Get a GUI and/or learn the command-line tools
+  + I'm okay with either or both, as long as you (sort of) know what you're doing 
+1. Develop a solid understanding of the underlying structure, so you know what you want to do, even if you don't know how
+  + stage, commit, push, pull 
+  
+---
+class: inverse
+background-image: url(assets/img/cats.jpg)
+background-size: cover
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
