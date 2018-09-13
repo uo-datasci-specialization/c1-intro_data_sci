@@ -34,6 +34,8 @@ version of
 [RStudio](https://www.rstudio.com/products/rstudio/download/#download) for 
 your machine. 
 
+Register for an account on [GitHub](https://github.com/).
+
 # Student Learning Objectives
 By the end of this course, students should be able to:
 * Understand the R package ecosystem (how to find, install, load, and learn
