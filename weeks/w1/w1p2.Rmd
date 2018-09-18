@@ -14,7 +14,7 @@ output:
       beforeInit: "https://platform.twitter.com/widgets.js"
 ---
 class: inverse center middle
-background-image: url(assets/img/sky.jpg)
+background-image: url(../img/sky.jpg)
 background-size: cover
 
 # R Packages
@@ -74,7 +74,7 @@ All functions come from a package! What do you get from the following?
 
 ---
 class: inverse center middle
-background-image: url(assets/img/base.png)
+background-image: url(../img/base.png)
 background-size: contain
 
 ---
@@ -130,7 +130,7 @@ There is a *ton* of functionality that comes with R right from your initial down
 
 ### On CRAN 
 .pull-left[
-![](assets/img/pkg_growth.png)
+![](../img/pkg_growth.png)
 ]
 
 .pull-right[
@@ -144,13 +144,13 @@ There is a *ton* of functionality that comes with R right from your initial down
 
 .pull-left[
 <div align = "center">
-<img src = assets/img/esvis.png height = 400>
+<img src = ../img/esvis.png height = 400>
 </div>
 ]
 
 .pull-right[
 <div align = "center">
-<img src = assets/img/github_pkgs.png height = 400>
+<img src = ../img/github_pkgs.png height = 400>
 </div>
 ]
 
@@ -224,7 +224,7 @@ Why is this such a big deal?
 
 ---
 class: inverse center middle
-background-image: url(assets/img/alberta.jpg)
+background-image: url(../img/alberta.jpg)
 background-size: cover
 
 # A few examples of amazing packages
@@ -343,12 +343,12 @@ background-size: cover
 
 http://recommendr.info
 
-![](assets/img/recommendr.png)
+![](../img/recommendr.png)
 
 ---
 # There are people to help!
 
-![](assets/img/me.jpg)
+![](../img/me.jpg)
 
 
 ---
@@ -395,5 +395,5 @@ background-size: cover
   
 ---
 class: inverse
-background-image: url(assets/img/cats.jpg)
+background-image: url(../img/cats.jpg)
 background-size: cover
