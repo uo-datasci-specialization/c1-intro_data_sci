@@ -21,6 +21,16 @@ class: center, middle, inverse, title-slide
 
 ---
 
+background-image: url(http://r4ds.had.co.nz/diagrams/data-science.png)
+background-size:contain
+
+# The data science pipeline
+
+--
+### How do we go about this?
+
+
+---
 class: inverse center middle
 background-image: url(../img/sky.jpg)
 background-size: cover
@@ -111,7 +121,7 @@ background-size: contain
 n_obs &lt;- 1000
 means &lt;- c(100, 50) # `c` comes from base - used to create a vector
 error_cv &lt;- matrix(c(100, 44, # `matrix` comes from base
-					     44, 49), byrow = TRUE, ncol = 2) # part of base
+					     44, 49), byrow = TRUE, ncol = 2) 
 cov2cor(error_cv) # part of stats package
 ```
 
@@ -132,13 +142,13 @@ head(sim) # print!
 ```
 
 ```
-##          [,1]     [,2]
-## [1,] 88.97884 48.78511
-## [2,] 90.83628 50.36001
-## [3,] 88.23718 47.61010
-## [4,] 94.65419 43.95717
-## [5,] 91.06817 50.14598
-## [6,] 91.37765 38.32551
+##           [,1]     [,2]
+## [1,]  89.43490 29.91873
+## [2,]  95.24295 60.83695
+## [3,] 117.28574 61.27665
+## [4,]  90.48697 43.78262
+## [5,]  98.06337 55.80735
+## [6,] 104.54248 52.70311
 ```
 
 ---
@@ -157,8 +167,8 @@ cor(sim)
 
 ```
 ##           [,1]      [,2]
-## [1,] 1.0000000 0.6431684
-## [2,] 0.6431684 1.0000000
+## [1,] 1.0000000 0.6271091
+## [2,] 0.6271091 1.0000000
 ```
 &lt;br&gt;
 
@@ -175,22 +185,28 @@ There is a *ton* of functionality that comes with R right from your initial down
 
 .pull-right[
 * Any of these can be installed with `install.packages("pkg_name")`. You will then have access to all the functionality of the package.
-* Notice this plot only goes to **mid-2014**. As of this writing (09/20/17), there are [12,618](https://cran.r-project.org/web/packages/) packages available on CRAN! 
+* Notice this plot only goes to **mid-2014**. As of this writing (09/19/2018),
+there are [13,077](https://cran.r-project.org/web/packages/) packages available
+on CRAN!
+* Necessarily constantly evolving to keep up with the varied demands of data
+  scientists within the data science pipeline.
 ]
 
 ---
 # Other packages
 ### On GitHub
+Generally these packages are more "in development", or are the beta versions of
+existing packages. 
 
 .pull-left[
 &lt;div align = "center"&gt;
-&lt;img src = ../img/esvis.png height = 400&gt;
+&lt;img src = ../img/esvis.png height = 350&gt;
 &lt;/div&gt;
 ]
 
 .pull-right[
 &lt;div align = "center"&gt;
-&lt;img src = ../img/github_pkgs.png height = 400&gt;
+&lt;img src = ../img/github_pkgs.png height = 350&gt;
 &lt;/div&gt;
 ]
 
@@ -331,7 +347,8 @@ binned_plot(benchmarks, math ~ ethnicity, qtile_groups = 5)
 # Probably overly complicated
 
 ```r
-binned_plot(benchmarks, math ~ ethnicity + season + frl, qtile_groups = 5)
+binned_plot(benchmarks, math ~ ethnicity + season + frl, 
+            qtile_groups = 5)
 ```
 
 ![](w1p2_files/figure-html/esvis_ptile2-1.png)&lt;!-- --&gt;
@@ -473,8 +490,9 @@ summary(mlm)
 ```r
 # install.packages("sjPlot")
 library(sjPlot)
-sjt.lmer(mlm, p.kr = FALSE) # Note, second argument generally not necessary
+sjt.lmer(mlm, p.kr = FALSE) 
 ```
+.gray[Note, the `p.kr` argument generally not necessary]
 
 ---
 
@@ -772,6 +790,9 @@ background-size: cover
 --
 1. Version control .gray[.smaller[(usually listed as the first reason)]]
 
+--
+1. Let's [go explore](https://github.com) for a minute!
+
 ---
 ### How?
 
@@ -785,6 +806,2319 @@ background-size: cover
 class: inverse
 background-image: url(../img/cats.jpg)
 background-size: cover
+
+---
+class: inverse
+background-image: url(https://cdn-images-1.medium.com/max/500/0*L8V0he9CqczlGIhu.jpg)
+background-size: cover
+
+---
+class: inverse
+background-image: url(https://pics.me.me/merge-conflict-git-push-force-origin-masteremegenerator-net-29177974.png)
+background-size: contain
+
+
+---
+class: inverse
+background-image: url(http://m.memegen.com/d5mxnu.jpg)
+background-size: contain
+
+---
+class: inverse
+background-image: url(https://media.makeameme.org/created/you-said-you-ujn0c6.jpg)
+background-size: contain
+
+---
+class: inverse middle center
+# Enough memes?
+
+---
+# Overall message
+git can obviously be frustrating .Large[**But**]:
+* Super transparent - screw ups and all
+* Can be a powerful tool for collaboration
+  + Communication between team members still important
+  + Try to avoid merge conflicts
+      + One person working on one thing at a time
+      + pull first each time
+      + push often/at logical points - don't lax here
+
+
+---
+# Josh and I are on the same page
+
+.center[
+
+&lt;blockquote class="twitter-tweet" data-lang="en"&gt;&lt;p lang="en" dir="ltr"&gt;My 2cents on open science is less pre-reg, more:&lt;br&gt;&lt;br&gt;git commit &amp;#39;oops!&amp;#39;&lt;br&gt;git commit &amp;#39;fixed mistake&amp;#39;&lt;br&gt;git push&lt;/p&gt;&amp;mdash; Joshua Rosenberg (@jrosenberg6432) &lt;a href="https://twitter.com/jrosenberg6432/status/1020148533079486464?ref_src=twsrc%5Etfw"&gt;July 20, 2018&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt; 
+
+]
+
+---
+# But there's also this
+
+.center[
+
+&lt;blockquote class="twitter-tweet" data-lang="en"&gt;&lt;p lang="en" dir="ltr"&gt;That feeling when you&amp;#39;re writing an &lt;a href="https://twitter.com/hashtag/AERA19?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#AERA19&lt;/a&gt; presentation proposal on open science and it takes you four commits and a series of weird/confusing error messages to upload the final file to GitHub 😂&lt;/p&gt;&amp;mdash; Joshua Rosenberg (@jrosenberg6432) &lt;a href="https://twitter.com/jrosenberg6432/status/1021385676472967168?ref_src=twsrc%5Etfw"&gt;July 23, 2018&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt; 
+
+]
+
+---
+# Last note
+Best recipe for **open** and **transparent** research, from the perspective of
+me:
+* Use scripting
+* Use dynamic documents 
+  + R Markdown is the best 
+    + Better than Jupyter notebooks imo; see [here](https://docs.google.com/presentation/d/1n2RlMdmv1p25Xy5thJUhkKGvjtV-dkAIsUXP-AL4ffI/edit#slide=id.g362da58057_0_1) and [here](https://yihui.name/en/2018/09/notebook-war/)
+* Use git/GitHub
+* Use open data whenever possible
+  + Consider ways you can make portions of the data open, if not all of it
+  + Consider methodologies you can use with open data that may recover the
+    properties of protected data
+* Advanced - use *packrat* or similar (e.g., *drake*) that stores software
+  versions
+
+---
+class: inverse
+background-image: url(../img/help.jpg)
+background-size: cover
+
+---
+.center[
+
+![](https://i.imgur.com/bJShYlt.gif)
+
+]
+
+(I may have made these slides late at night)
+
+---
+# Getting started in earnest with R!
+
+* Demo RStudio goodies
+* Talk scripts for a minute
+* Jump to lab
+
+---
+## R Studio
+[demo]
+* Customizing the look/feel 
+  + Theme
+  + Syntax highlighting
+  + Panes
+* Keyboard shortcuts
+* Snippets (briefly)
+
+---
+## R Studio Projects
+* Start a new project and call it Lab 1. 
+* Once the Project has launched, create a new R script to save all your work for today. Run lines of code from the script with Command + Enter (mac) or Control + Enter (Windows). 
+
+[demo]
+
+&lt;br&gt;
+
+* This is really a note on working directories, reproducibility, and staying organized
+* So, let's talk about each a bit, before talking about projects
+
+---
+## What's a working directory?
+
+* Where you're at on your computer.
+* See where you're currently at by looking at the top of the console 
+    + Or run `getwd()` in the console
+* You can change your working directory, with `setwd("path/to/files/")` but I'm going to recomend avoiding that - instead, use projects.
+* Use `list.files()` to see the contents of your working directory (i.e., what your computer "sees")
+
+![wd](../img/wd.png) 
+
+---
+## What's different with projects?
+* Your working directory is immediately wherever your project is.
+* Use relative paths from there to read/save data (or the *here* package, 
+  which we'll talk about more later).
+
+---
+## How do we access variables?
+* Generally, in this course, *tidyverse* tools
+* Sometimes `$`
+* Let's load the tidyverse, and then we'll access some variables from the 
+  datasets within some of those packages.
+* Look at the *gss_cat* data frame.
+
+
+```r
+library(tidyverse)
+gss_cat
+```
+
+```
+## # A tibble: 21,483 x 9
+##     year marital         age race  rincome  partyid  relig  denom  tvhours
+##    &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt;    &lt;fct&gt;  &lt;fct&gt;    &lt;int&gt;
+##  1  2000 Never married    26 White $8000 t… Ind,nea… Prote… South…      12
+##  2  2000 Divorced         48 White $8000 t… Not str… Prote… Bapti…      NA
+##  3  2000 Widowed          67 White Not app… Indepen… Prote… No de…       2
+##  4  2000 Never married    39 White Not app… Ind,nea… Ortho… Not a…       4
+##  5  2000 Divorced         25 White Not app… Not str… None   Not a…       1
+##  6  2000 Married          25 White $20000 … Strong … Prote… South…      NA
+##  7  2000 Never married    36 White $25000 … Not str… Chris… Not a…       3
+##  8  2000 Divorced         44 White $7000 t… Ind,nea… Prote… Luthe…      NA
+##  9  2000 Married          44 White $25000 … Not str… Prote… Other        0
+## 10  2000 Married          47 White $25000 … Strong … Prote… South…       3
+## # ... with 21,473 more rows
+```
+
+---
+# Selecting variables
+Select the *race* variable with `$`.
+
+
+```r
+gss_cat$race
+```
+
+```
+##     [1] White White White White White White White White White White White
+##    [12] White White White White Black White White White Black White White
+##    [23] White White White White White White White White White White Black
+##    [34] White White Other White White White White White White Black White
+##    [45] White White White White White White White White White White Other
+##    [56] Black White White White White White Other Black White White Black
+##    [67] White White Black White Black Black Black Black Black Black Black
+##    [78] Black Black Black Black White Black Black Black White Black Black
+##    [89] White White White White White White White White White White White
+##   [100] White White White White Other White White White White White Other
+##   [111] White Black Other Other Black Black White White White White White
+##   [122] White White White White White White White Black Black White White
+##   [133] White Black Black White Black White Black Black White Black Black
+##   [144] White White Black Black Black Black Black Other Other White White
+##   [155] Black White White White White White Black White White White White
+##   [166] White White White White White White White White White White White
+##   [177] White White White White Other White Black White White White White
+##   [188] Black White White White White White White Black White Black Other
+##   [199] Black Black Black Black Black White White White White White White
+##   [210] White White White White White White White White White Other White
+##   [221] White White White White White White White White White Other White
+##   [232] White White White White White Other White White White White White
+##   [243] White Other White Other White Other Other White White White White
+##   [254] White White White White White White White White White White White
+##   [265] White White White White White Black Black White Other White Black
+##   [276] Black Black Black Black Black Black Black Black Black Black Black
+##   [287] Black Black Black Black Black Black Black Black White White Black
+##   [298] Black Black Black Black Black Black White White White White White
+##   [309] White White White White White White Black White Other White White
+##   [320] White White White Other White White White White Other White White
+##   [331] White White White White White White White White White White White
+##   [342] White White White White White White White Black White White Other
+##   [353] White White Other White White White White White White White White
+##   [364] White White White White Black White White Other White White White
+##   [375] White Black White White Black Other Other White White White White
+##   [386] White Other White White Other White White White White White White
+##   [397] White White White White White White White White Black Black White
+##   [408] Other Other Other White White White White White White White White
+##   [419] White White White White White White White White White White Black
+##   [430] Other White White Other White White White Other White Other White
+##   [441] White White White White Black White White White White White Black
+##   [452] White Other Black White White White White White White White White
+##   [463] Other Black White Other Other Other Other Black Other Black White
+##   [474] White Black Black Other White White Other White White White White
+##   [485] Black Other White Black White Black White White White White White
+##   [496] White White Black Black Black Black Other Black White Black White
+##   [507] White White White Black Black Black Other Black Black Black Black
+##   [518] Other White White White White White White White White White White
+##   [529] Other White White White Other White Other White Other White White
+##   [540] White White White White White White White White Black White Black
+##   [551] Black Other Black White Black Black White Black Black White White
+##   [562] White White White White White White White Other Black Other Other
+##   [573] Other Other White Other White Other Black Black Black Black Other
+##   [584] Other Other White Other Other White White White White White White
+##   [595] White White White White White White White White White Black Other
+##   [606] Black Other White Other White White White White White White White
+##   [617] White White White White Other White White White White Black Other
+##   [628] Other Other White White White Black White White White White White
+##   [639] Black White White White White White White White White Black Black
+##   [650] White Black White Black White White Other White White White White
+##   [661] White White White White White White White White White White White
+##   [672] White White White Black Black Black Other Black White White White
+##   [683] White White White White White White White White White White White
+##   [694] White White White White White White White White White White White
+##   [705] White White White White White White Other White White White White
+##   [716] White White White White Other White White White Other White White
+##   [727] White White White White Other White White White White White White
+##   [738] White White White White White White White White White Black White
+##   [749] White White White White White White White White White White White
+##   [760] White White White White White White White White White White White
+##   [771] White White White White White White White White White White White
+##   [782] White White White White White White White White White White White
+##   [793] White White White White White Black White White White White White
+##   [804] White White White White White White White White White White White
+##   [815] White White White White Black White White White White White Black
+##   [826] White Black White White White White White White White White White
+##   [837] White White White White Other White White White White White White
+##   [848] White White White White White White Black White White White White
+##   [859] White White White White White Black Black White White White White
+##   [870] White White White White White White White White White White White
+##   [881] White White White White White White White White White White White
+##   [892] White White White White White Black White White White Black White
+##   [903] White Black Other Black Black Black White White Black White White
+##   [914] White White White White White Black White White White White White
+##   [925] White White White White White White White White White White White
+##   [936] White White Other White White Black White Black White White White
+##   [947] White Other White White White White White Other White White White
+##   [958] White White White White White White White White White White White
+##   [969] White White White White White White White White White White White
+##   [980] White White White Black White White White White Other White White
+##   [991] White White White White White White White White White White White
+##  [1002] White White White White White White White White White White White
+##  [1013] White White White White White White Black Other White White White
+##  [1024] White White White White White White White White Other Black White
+##  [1035] White White White White White Black White White Other White White
+##  [1046] Black Other Other Other Other White White Other Other White White
+##  [1057] Other Other White White White Other Other White White Other White
+##  [1068] White White White White White White Other White Other White White
+##  [1079] White White White White White White White White White White White
+##  [1090] White White White White White White Black Black White White White
+##  [1101] Other White White White White White White White White White White
+##  [1112] White White White White White White White White White White White
+##  [1123] White White White White White White White White Black White Black
+##  [1134] White White Black Other White White White White White Black Black
+##  [1145] White White White White White White White White White White White
+##  [1156] White White White White White White White White White White White
+##  [1167] White White White White White White White White White White White
+##  [1178] Black Black Other White White White White White White White Black
+##  [1189] Black White Black White White Black White White White White Black
+##  [1200] Black White White White Black White White White White Black White
+##  [1211] White Black Black White Black White Other Black White White Black
+##  [1222] White Other White White White White White White White White White
+##  [1233] White White White White Black Black White White White White White
+##  [1244] White White White White White Black White White Other White White
+##  [1255] White White White White White White Black White White White White
+##  [1266] White White White White White White White White White White White
+##  [1277] Black White White White White White White White White White White
+##  [1288] White White White White White White White White White Other White
+##  [1299] White White Other White Other White White White White White White
+##  [1310] White Other White White Black White Other Other Black Black White
+##  [1321] White White White White White White White White White White White
+##  [1332] White White White White White White White White White White Other
+##  [1343] White White Black White White White White White White White White
+##  [1354] White White White White White White Black White White White Other
+##  [1365] White White White White Black Black Black Black Black Black Black
+##  [1376] Black Black Black Black Black Black Black Black Black Black Black
+##  [1387] White White Black Black Black White White White White Black Black
+##  [1398] White White White White White White White White White White White
+##  [1409] White White Black White White White White White White White White
+##  [1420] White White White Black White Black White White White White White
+##  [1431] White White White White White White White Black White White Black
+##  [1442] White Black Black White White White Black White White White White
+##  [1453] White White White White White White Other White White White Black
+##  [1464] White White White White White White White White White White White
+##  [1475] White White White Black Black White White White Black Black Black
+##  [1486] Black White White White White White White White White White White
+##  [1497] Black White White Black Black White White White Black White White
+##  [1508] White White White Black Black Black Black Black White White White
+##  [1519] White White White White White White White White White White White
+##  [1530] White White White White Black White White Black White White White
+##  [1541] White Other White Black White Other White White Black White White
+##  [1552] Other White Black White White White White White White White White
+##  [1563] White White Other White White White White Black White White White
+##  [1574] White Black White Other White White White Black White White White
+##  [1585] White White White White White White White White Black White White
+##  [1596] Black Black Black White White White White White Black White White
+##  [1607] White White White Black Black Black Black Black White White White
+##  [1618] White White White White White White Other White Black White Black
+##  [1629] White Black White White White White White White White White White
+##  [1640] White White Black White White White White Black Black White White
+##  [1651] White White White White White White White Black White White White
+##  [1662] White White White White White White White White White Black White
+##  [1673] White White White White White White Other White White White White
+##  [1684] White White White White White White White White White White White
+##  [1695] White Black Other White White White White White White White Black
+##  [1706] Black Black White Black White Black White White White White White
+##  [1717] White Black Black Black Black Black Black Black White White White
+##  [1728] White White Other White White White White Other White White White
+##  [1739] White White White White White Other White White White White White
+##  [1750] White White White White White White White White White White White
+##  [1761] White White White White White White White Black Black Black Black
+##  [1772] Black Black Black Black Black Black White Black White White White
+##  [1783] White White White White Other White White White Other White White
+##  [1794] White White White White White White White Other White White White
+##  [1805] White White White White White Other White Black White Black White
+##  [1816] White White Black White White White White White White White White
+##  [1827] White White White White Black White White White White White Black
+##  [1838] Black Other Black Black Black Black Black Black Black Black Black
+##  [1849] Black Black White White Other White White Black Black White White
+##  [1860] White White White White White White White White White Black White
+##  [1871] White White White White White White White White White Black White
+##  [1882] White White White White White White White White White White Other
+##  [1893] Other White White White White White White White Other Black White
+##  [1904] White White White White Other White White White White White White
+##  [1915] White White White White White White White White White White White
+##  [1926] White White White Black Other Black Black Black Black Black Other
+##  [1937] Black Black Black Black Black White White White White White Other
+##  [1948] White White White White White White White White White White White
+##  [1959] White White Other White White White White White Black White Other
+##  [1970] White Other White White White White White White White White Black
+##  [1981] Black Black Black Black Black Black Black Black White White Black
+##  [1992] Black Black Black Black Black Black White Black White White White
+##  [2003] White White White White White White White White White Black White
+##  [2014] White White White White White Black White Black Black White White
+##  [2025] White White White White White White White White White White White
+##  [2036] White White White White White White White White White White White
+##  [2047] White White White Black White White White Other White Black Black
+##  [2058] Black White Black Black Black Black Black White Other Other White
+##  [2069] Black White White Black Black White Other White White White White
+##  [2080] White White Black White White Other Black White Black White Black
+##  [2091] Black Black Black Black Black Black White Black White Black White
+##  [2102] Black White White Black Black Black White White White White White
+##  [2113] White White Other White Other White White White White Other White
+##  [2124] White White White White Other White White Other Other Other Other
+##  [2135] White White White White White White White White White White White
+##  [2146] White White White White White White White White White White White
+##  [2157] White White White White White White White White White White White
+##  [2168] White White White White White White White White White White White
+##  [2179] White White White White White White White White White White White
+##  [2190] White White White White White White White White White White White
+##  [2201] White White Black White White White White White White White White
+##  [2212] White White White White White White White White Other White White
+##  [2223] White White White White White White White White White White White
+##  [2234] White White White White White White White White White White White
+##  [2245] White White White White White White White White White White White
+##  [2256] White White White White White White White White White White White
+##  [2267] White White White White White White White White White Other White
+##  [2278] White Black White White White White White White White White White
+##  [2289] Black White White White White White White White White White White
+##  [2300] White White White White White White White White White White White
+##  [2311] White White White White White White White White White White White
+##  [2322] White White White White White Black Black Black Black Black Black
+##  [2333] Black Black Black Black Black White Black White Black Black Black
+##  [2344] White White White White White White White White White White White
+##  [2355] White White White White White White White White White White Other
+##  [2366] White White White White White White White White White White White
+##  [2377] White White White White White White White White White White White
+##  [2388] White White White White White White White White White White White
+##  [2399] Black Black Black Black Black Black White White White White White
+##  [2410] White White White White White White White White White White White
+##  [2421] White White White White White White White White White White White
+##  [2432] White White White White White White White White White White White
+##  [2443] White White White White White White White White White White White
+##  [2454] White White Other White White White White White White White White
+##  [2465] White White White White White White White White White White White
+##  [2476] White White Other White White White White White White White White
+##  [2487] White Other White White White White White White White White White
+##  [2498] Black White Black Black Black Black Black White White White Black
+##  [2509] Black Black White White White White White White White White White
+##  [2520] Black Black Black Black Black Black White White White White Other
+##  [2531] White White White White White Black White White White White White
+##  [2542] Other White White Black White Other Black Black White White White
+##  [2553] White White White White White White White White White White White
+##  [2564] White Other White White White White White White White White White
+##  [2575] Black Black White White White White White White White White White
+##  [2586] Other White White White Other White White White White White White
+##  [2597] White White Other White White White White White White White White
+##  [2608] White White White White White White White White Other White White
+##  [2619] White White Other Black White White White White White White White
+##  [2630] White White White White White White White Other White White Other
+##  [2641] White Other White White White White White White White White White
+##  [2652] White White White White White White White White White White White
+##  [2663] White White White White White White White White White White White
+##  [2674] White Black Black Black White White White White White White White
+##  [2685] White White White White White White White White White White White
+##  [2696] White White White White White White White White White White White
+##  [2707] White White White White White White White White White White White
+##  [2718] White White White Black White White White White White White White
+##  [2729] White Black White White White White White White White White White
+##  [2740] White White White White White White White White White White White
+##  [2751] White White Other White White White White White White White White
+##  [2762] White White White White White Black White White White White White
+##  [2773] White White White White White White White White White White White
+##  [2784] White White White White White Black White Black White Black White
+##  [2795] White White White White White White White White White White White
+##  [2806] White White White White White White White White White White White
+##  [2817] White White White White White White White White White White Other
+##  [2828] White White Black White Other White White White White White Black
+##  [2839] Black Other Black White White White Other Other White Black White
+##  [2850] White White White White White White White White White Other White
+##  [2861] Black White White White White White White White White White White
+##  [2872] White White White White White Other White White White White White
+##  [2883] White Black Black Black Black Black Black Black Black Black White
+##  [2894] White White White White White White White White White White White
+##  [2905] White White White White White White White White White White White
+##  [2916] White White Other White White Black White White White Black White
+##  [2927] Other White White Black White Black Black Black Black Black White
+##  [2938] White White Black Black Black White White White Black White White
+##  [2949] White White White White White White White White White White White
+##  [2960] Black White White White White White White White White White White
+##  [2971] White White White White White White White Other White White White
+##  [2982] White White White White White Other White White White White White
+##  [2993] Black White White White White White White White Black White Black
+##  [3004] White Black Black Other Black Black Other White White White White
+##  [3015] Black Black White White Other Other White White White White White
+##  [3026] White White Black White White White White White White White White
+##  [3037] White White White Other Black Other Black Other White White Black
+##  [3048] White White White White White White White White White Black White
+##  [3059] White White White White Other White Black Black White White Other
+##  [3070] White White White White White Black Black Black Black Black Black
+##  [3081] White Black Black White Black Black Black Black Black White White
+##  [3092] White White White White White White White White White Other White
+##  [3103] White White White White White White White White White White White
+##  [3114] White White White White White White White White White White White
+##  [3125] White White White White White White White White White White White
+##  [3136] White White White Black Other Black White Black White White Black
+##  [3147] Other White White White White White White White White White White
+##  [3158] White White White White Other White Black White White White White
+##  [3169] Black Other White White White White White White White White White
+##  [3180] White White White White White White White White White White White
+##  [3191] White White Other White White White White White Other White Other
+##  [3202] White White White White Black Other White White White Other White
+##  [3213] White White White White Black White White White Black White White
+##  [3224] Other White Other Other White Black Other Other White White White
+##  [3235] White White Other Black White Black Black Black Black Black White
+##  [3246] Black Other White White White Other White Black White White Black
+##  [3257] Black White Black Black Black Black Other Black Black White White
+##  [3268] White White White White White White White White Black Black Black
+##  [3279] Black Black Black Black Other Other White White White Other White
+##  [3290] White White White White White White White White Black Black Black
+##  [3301] Black Black Black White Black Black Black White White White White
+##  [3312] White Other White White White White White White Other Black Black
+##  [3323] Black Black White Other Black Black Black Black Black Black White
+##  [3334] Black Other White White White White White Black White White Black
+##  [3345] White White White White White White White White White White White
+##  [3356] Black Black White White White White White White White White White
+##  [3367] White White White White White White Black White White White White
+##  [3378] White White White Black White White White White White White White
+##  [3389] White White White White White White White White White White White
+##  [3400] White White White Black White White White White White White White
+##  [3411] White Black Black White Other White White White White Other White
+##  [3422] White White White Other Black White White White White White Other
+##  [3433] White White White White White White White White White White White
+##  [3444] White White White White White Other White Other White White White
+##  [3455] White White Other White Other Other White White Other Other White
+##  [3466] Other White White White White White White White White White White
+##  [3477] White White White White White White White White White White White
+##  [3488] White White White White White White White White White White White
+##  [3499] White White White White White White White White Other White White
+##  [3510] Other White White Black White White White White White White White
+##  [3521] White White Other White Other White White White White White White
+##  [3532] White White White White White White White White Other White White
+##  [3543] White White White White White White White White White White White
+##  [3554] White White Black White Black White Black White White White White
+##  [3565] Black Black Black Black White Black Black White White White White
+##  [3576] White White White White White White White White White White White
+##  [3587] White White White White White White White White White White White
+##  [3598] White White White White White White White White White White White
+##  [3609] White White White White White White White White White White Black
+##  [3620] White White White White Black White White White White White Black
+##  [3631] Other Black Black White White White White White White White White
+##  [3642] White White White White Other White White White White White White
+##  [3653] White White White White White White White White Other Other White
+##  [3664] White White White White White White White White Other White White
+##  [3675] White White White White White White White White White White White
+##  [3686] White White White White White White White White White White White
+##  [3697] White White White White White White White White White White White
+##  [3708] White White White White White White White White White White White
+##  [3719] White White White White White White White White Black White White
+##  [3730] White White White White White White Other White Other White Other
+##  [3741] Black White White White White White Other White Other Other White
+##  [3752] Other Other Other White White White Other White White White Other
+##  [3763] White Other White Other White White White White White White White
+##  [3774] White White White White Other White White White Other White White
+##  [3785] White Other White White White White White White White White White
+##  [3796] White White White White White White White White White White White
+##  [3807] White White White White White White White White White White White
+##  [3818] White White White White White White White White White White White
+##  [3829] White White White Black Black White White Black White White White
+##  [3840] Other White White White White White Black White White Other White
+##  [3851] White White White White White White White White White White White
+##  [3862] White White White White White White White White White White White
+##  [3873] White White White White White White Black Black White Black White
+##  [3884] White White Black White White Black White White White White White
+##  [3895] White White White White Other Black Other White White White White
+##  [3906] Black White White White Other White White White White White White
+##  [3917] White White White White White White White White White White White
+##  [3928] White White White White White White White Black White White White
+##  [3939] White White White White Black White White White White Black White
+##  [3950] White White White White Other White White White White White White
+##  [3961] Black White White White White White White White White White White
+##  [3972] White White White White White White White White White White White
+##  [3983] White White White White White White White White White Other White
+##  [3994] White White Other White White White White White White White White
+##  [4005] White White White White White White White White White Other White
+##  [4016] White White White White White White White White Other White Black
+##  [4027] Other White White Other White Black White White White White White
+##  [4038] White White Black Black Black Black White White White White White
+##  [4049] White Black White White White White White White Other White White
+##  [4060] White White White White White White White White White White Black
+##  [4071] White White Black Black Black Black Black Black Black Black Black
+##  [4082] Black Black White Black White White Black White White White White
+##  [4093] Black White White Black Black White White White White White White
+##  [4104] White White White White White Black White Black White White White
+##  [4115] White White White White White Black White White Other White White
+##  [4126] White White White Black White White White Black White White Black
+##  [4137] White White White White White White White White White White White
+##  [4148] White White White White White White White White White White White
+##  [4159] White White Black Black White White Black Black Black Black White
+##  [4170] White White White White White White White White White White White
+##  [4181] White White Black White White White White White White White White
+##  [4192] White White White Black White White White Black White Black Black
+##  [4203] White White Black White White White White Black White Black White
+##  [4214] White White Black White White White White White White White White
+##  [4225] White White White White White White White White White White White
+##  [4236] White White White White White White White Black White Black Black
+##  [4247] Black Black Black Black White White Black White White White White
+##  [4258] White White White White Black Black Black Black White White White
+##  [4269] White White White Black Black Black Black Black Black White Black
+##  [4280] Black White Black White Black White White Black White Black White
+##  [4291] White Black White White White White White White Black White White
+##  [4302] White White White White White White White White Black Black Black
+##  [4313] White White Black White White Black White Other Black White White
+##  [4324] White White White White Black Black White Other White White White
+##  [4335] White Black White White White White White White White White White
+##  [4346] White White White White White White White Other White White White
+##  [4357] White Other White Black White White White Black White Black Black
+##  [4368] White Black Black Black White White White White White White White
+##  [4379] White White Black Black Black Black Black Black White White White
+##  [4390] White White White White White White White White Other White Other
+##  [4401] White White White White White White White White White White White
+##  [4412] White White White White White White White White White White White
+##  [4423] White White White White White Black White Black Black Black Black
+##  [4434] White White White White White White White White White White White
+##  [4445] Other White White White White Other White White White White White
+##  [4456] White Other White White Other Other Other Other Other White White
+##  [4467] White White White Other White White White White White White Black
+##  [4478] Black Black Black Black Black Black Black White White White White
+##  [4489] White White White White Black Black Black Black Black Black Black
+##  [4500] Black Black Black Other White White White Other Black White White
+##  [4511] White White Black White White White Black White Other Black White
+##  [4522] White White White White White White White White Other White White
+##  [4533] White White White White White White Other Other Other Other White
+##  [4544] White White White Black White Black Black Black White White White
+##  [4555] White White White White Other White White White White Other Other
+##  [4566] White White White Black White White White White Black Black Black
+##  [4577] Black Black Black Black Black White White White White White White
+##  [4588] White White Black Black Other White White White White White White
+##  [4599] Black White White White White White White White White White White
+##  [4610] White White White Other White White White Black White White White
+##  [4621] White White White White White White White White White White White
+##  [4632] White Black White Black White White White White White White White
+##  [4643] White White White White White Other White Other White White White
+##  [4654] White White White Black White Black Black Black Black Black Black
+##  [4665] Black Black Black White Black Other White Other White White White
+##  [4676] White White Other White White White White White White White White
+##  [4687] White White White White White White White White White White White
+##  [4698] White White Black Black Black Black Black White White Other Other
+##  [4709] White Other White White Black Black Black Black Black Black Black
+##  [4720] Black White White Other Other White Black White White White White
+##  [4731] White White White Black White Black Black Black White White White
+##  [4742] White White White Black White White White Black Black Black Black
+##  [4753] Black Other White White White Other White Other White White White
+##  [4764] White White White White White White White White White White White
+##  [4775] White White White White White White White White White White White
+##  [4786] White White White White White White White White White White White
+##  [4797] White White White White White White White White White White White
+##  [4808] White White White Black White White Other White White Black Black
+##  [4819] Other Black Black White White White White White White White White
+##  [4830] White White White White White White Other White White White White
+##  [4841] White White White White White White White White White White White
+##  [4852] White White Other White White White White White White Other White
+##  [4863] White White White White White White White White White White White
+##  [4874] White White White White White White White White White White White
+##  [4885] White White White White White White White White White White White
+##  [4896] White White White Other White White White White White White White
+##  [4907] White White Black White White Other Black White White White White
+##  [4918] White White White White White White White White White White White
+##  [4929] White White White Black Black White White White White Black White
+##  [4940] White White White White Black White White Other Black White White
+##  [4951] White Black White White White White White White White White White
+##  [4962] White White White White White White White White White White White
+##  [4973] White White White White White White White White White White White
+##  [4984] White White White White White White White White White White White
+##  [4995] White White White White White White White White Black White White
+##  [5006] Black White White Black White Other White White White White White
+##  [5017] White White White White White White White White White White White
+##  [5028] White White White White White White White White White White White
+##  [5039] White White White White White White White White White White White
+##  [5050] White White White White White White White White White White White
+##  [5061] White White White Black Black Black Black Black Black Black Black
+##  [5072] Black Black Black Black Black Black Black Black Black White White
+##  [5083] White White White White White White White White White White White
+##  [5094] White White White White Black White Black Black Black Black White
+##  [5105] White White White White Other White White White White White White
+##  [5116] Black White Other White White White White White Other White White
+##  [5127] White White White White White White White White White White White
+##  [5138] White White White White Other White White White White White White
+##  [5149] White White White White White White White White White White White
+##  [5160] Other White White White White White Black Other White White Black
+##  [5171] White White White White White White White White White White White
+##  [5182] White White White White White White White White White White White
+##  [5193] White White White White White White White White White White White
+##  [5204] White White White White White White Black Black Black White White
+##  [5215] White White White Other Black White White White White White White
+##  [5226] White White White White White White Other White White White Black
+##  [5237] White White White White White White White White White White White
+##  [5248] White White White White White White White White White White White
+##  [5259] White Black White White White White White White White White White
+##  [5270] White White White White Other White White White Black White White
+##  [5281] White White White White White White White White White White White
+##  [5292] White Black White White White Black White White White White White
+##  [5303] White White White Black White Black White White White White White
+##  [5314] Other White White White White Black White White Black Black White
+##  [5325] White White White White White White White White White White White
+##  [5336] White White White White White White White White White White White
+##  [5347] Other White White Black White White Black White White White White
+##  [5358] White Black White White White White White White Black White White
+##  [5369] Black Black White White White White Black White Black White White
+##  [5380] White White White White White White White White White White White
+##  [5391] White White White White White White White White White White White
+##  [5402] White White White White White Black White White White White White
+##  [5413] White White Other White White White White White White White White
+##  [5424] White White White White White White White White White White White
+##  [5435] White White White White White White White White White White White
+##  [5446] White White White White White White White White White White White
+##  [5457] White White White White White White White White White White Other
+##  [5468] Black White White White Black White Other White White White White
+##  [5479] White White White Black White White White White Black White White
+##  [5490] White White White Other Black White White White White White White
+##  [5501] White White Other White White Black White White Black White White
+##  [5512] White White White White Black Black White White Black White White
+##  [5523] White Other White White White Other White White White White White
+##  [5534] White White Black Black White Black Black Black White White White
+##  [5545] White White Other White White White White White White White Black
+##  [5556] White White White White White Black White White White White White
+##  [5567] White White White White Black White White Black White White White
+##  [5578] White White White Black White Other Other Black White Other Black
+##  [5589] Other Other Black Black Black Black Black Black Black Black Black
+##  [5600] White Black Other Black White White Other White Other White White
+##  [5611] White White White Black Black White White White White White White
+##  [5622] White Black Other Black White White Other White White White White
+##  [5633] White Other Black White White White White White White White White
+##  [5644] White Other Other Other White White White White White Black Black
+##  [5655] White Black Black Other White Other Other White Black Other White
+##  [5666] White White White Other Black Other White Other Other Other White
+##  [5677] White White White White White Other White Black White Other Other
+##  [5688] White White White White Other Black White White White White White
+##  [5699] White Other White White White White White White White White White
+##  [5710] White White White White White White White White White White White
+##  [5721] White White Other White White White White White White White White
+##  [5732] White Black White Other White White White Other White White White
+##  [5743] White White White White White White White White White Black White
+##  [5754] White Other Other White White White White White White Black White
+##  [5765] Other Other White White White White White White White White White
+##  [5776] White White White Other White White Other White White White Other
+##  [5787] White White Other Other Black White Other Other Other Other Other
+##  [5798] White White White White White Other Other Other White Black Other
+##  [5809] White White White Other White Other White Other White White Other
+##  [5820] Other White White White White Black White White White Other White
+##  [5831] White White White White White White White White White White White
+##  [5842] White White Other Other Other Black Black Black White White White
+##  [5853] White White Other Other White White White White White White White
+##  [5864] White White White White White White White White White White White
+##  [5875] White White White White White White White White White Other Black
+##  [5886] White White Other White White White Other White White White White
+##  [5897] Other White White White Other White White White White Black Black
+##  [5908] Black Black White Black Black Black White Black Other Other White
+##  [5919] White Other White White White Other White White White White White
+##  [5930] White White White White White White White Other White White White
+##  [5941] Other White Other Other White Other White White White White Other
+##  [5952] White White White White White White White White White White White
+##  [5963] White White White Other White Other White Other White Black White
+##  [5974] White Black White White White White White White White White White
+##  [5985] White White White White White White White White White White White
+##  [5996] White Black Black Other Black White Black White Black Black Black
+##  [6007] Black Black White White White White White White White White White
+##  [6018] White White White White White White White White White White White
+##  [6029] White White White White White White Black White Black White Black
+##  [6040] White White White White White White White White Black Black Black
+##  [6051] Black White White White White Other White White Black White White
+##  [6062] White White White White White White White White Black Black Black
+##  [6073] Black Black Black Black Black Black Black Black Black Black Black
+##  [6084] Black White White White White White White Other Other White Black
+##  [6095] Black Black Black Black Black Black Black Black Black Black Black
+##  [6106] Black White White White White White White White White Other White
+##  [6117] Other Other White White White White White White White White White
+##  [6128] White White Black White White White White Black White White White
+##  [6139] Black White Black Black Black White White White White Black Black
+##  [6150] White White White White White White White White White White White
+##  [6161] White White White White White White Black White Black White White
+##  [6172] White Black White Other White White White Other White Black Black
+##  [6183] Black Black Black Black White White White White White Other White
+##  [6194] White White Other White Black Black White Other Black White White
+##  [6205] Black Other Black Black White White White White White White White
+##  [6216] White White Black White White Black White White White Other Other
+##  [6227] White Other White Other Black White White White Black White White
+##  [6238] White White Black Black Black Black Black Black Black Black White
+##  [6249] White White White Other Black Other Black White White White White
+##  [6260] White White Black White White White White White White Other White
+##  [6271] White Other White White White Black Black White Black Other Black
+##  [6282] Black Black Black Black Black Black Black Black Black Black White
+##  [6293] Black White White White White Black White Black White White White
+##  [6304] Black White White White White White White White White White White
+##  [6315] White White Black Black White White White White White White White
+##  [6326] White White White White White White White White Other White Other
+##  [6337] White White White White White White White Black White Black Black
+##  [6348] White Black White Black Black White Black White White White White
+##  [6359] White White White White White White White White White White White
+##  [6370] White White White White White White White Other White White White
+##  [6381] White White White White White White White White White White White
+##  [6392] White White White White White White White White White White Black
+##  [6403] White White Black White White White White White White Black White
+##  [6414] Black Black Black White White Other Black White White White White
+##  [6425] White White White White White White White White White White White
+##  [6436] White White White White White White White White White Black White
+##  [6447] White White White Black White White White White White White White
+##  [6458] White White White White White White White Black White White White
+##  [6469] White Black Black White Black Black Black Black Black Black Black
+##  [6480] Other Other Other Other White White Other Other White Other Other
+##  [6491] Other White White White Other Black White White White White White
+##  [6502] White White White White White White White White White White White
+##  [6513] Other White White Other White White Other White White White White
+##  [6524] White White White White White White White White White White White
+##  [6535] White White White White White White White White White White Black
+##  [6546] White White White White White White White White White White White
+##  [6557] White White White White White White White White White White White
+##  [6568] White White White White White White White White Black Black Black
+##  [6579] Black Black Black White White Black Other White Black White White
+##  [6590] Black White White White White White White White White White White
+##  [6601] White White White White White White White White White White White
+##  [6612] White White White White White White White White White Black White
+##  [6623] White White White White White White White Other White Black White
+##  [6634] White White White White White White White White White White White
+##  [6645] White White White White White White White White White White White
+##  [6656] White White White White White Other White White White Other White
+##  [6667] White White White White White White White White White White White
+##  [6678] White White White White White White White White White White White
+##  [6689] Black Black White White White White White White White White Black
+##  [6700] White White White White White White Black White White White White
+##  [6711] White White White White White White White White White White White
+##  [6722] White White White White White White White White White White White
+##  [6733] White White White White White White White White White White White
+##  [6744] White White White White White White White White White White White
+##  [6755] White White White Black Black White White White White White White
+##  [6766] White White White White White White White White White White White
+##  [6777] White White White White White White White White White White White
+##  [6788] White White White White White White White White White White White
+##  [6799] White White White White White White Other White White White White
+##  [6810] White White White White White White White White White White White
+##  [6821] Other White Black White White White White White White White Other
+##  [6832] White White White White White White White White White Black White
+##  [6843] White White White White White White White White White White White
+##  [6854] White White Black White White White White White White White White
+##  [6865] White White White White White White White Black White White White
+##  [6876] White White Black White Black Black White Black White White White
+##  [6887] White White White White White White White White White White White
+##  [6898] White White White White White White White White White White White
+##  [6909] White White White White White White White White White White White
+##  [6920] White White White White White White White Other Black Black White
+##  [6931] White White Black White White White White White White White White
+##  [6942] White White White White White White White White White White White
+##  [6953] White White White Other White White White White White White White
+##  [6964] Black Other Other White White White Black White Black White White
+##  [6975] White White White White White White Black White White White White
+##  [6986] White White White White White White Black White White White White
+##  [6997] White White Black White White White White White White White White
+##  [7008] White White White White White White White White White White White
+##  [7019] White White White White White White White White White White White
+##  [7030] White White White White White White White White White White White
+##  [7041] White White White White Other White Black White White Black Black
+##  [7052] White White White Black White White Black White White Black Black
+##  [7063] Black Black Black Black Black Black Black Other White White White
+##  [7074] White White White White White White White White White White White
+##  [7085] White White White White White White White White White White White
+##  [7096] White White White White White White White White White White White
+##  [7107] White White White White White White White White White White White
+##  [7118] White White White Black White Other White White White Black Black
+##  [7129] Black Black Black Black Black Black Black Black Black Black Black
+##  [7140] Black Black Black Black White White Black Black Black Black White
+##  [7151] White White White White Black White White Black White Black Black
+##  [7162] White White White White White Other White White White White White
+##  [7173] White White White White Black Black Black Black Black Black Black
+##  [7184] Black Other Other Black Black Other White White White White White
+##  [7195] White White Other Other White Black White White White Black White
+##  [7206] White White White White Black White White White White Black Other
+##  [7217] White White White White White Black White White White White Other
+##  [7228] Black Black White White White Black Black White White White White
+##  [7239] Other Black White Black White White White White White White White
+##  [7250] White White White White White White Black Other White Black White
+##  [7261] White White White White White Other White White White White Black
+##  [7272] Other White White White White White Other Other White White White
+##  [7283] Black Black White White White White White White White Black Black
+##  [7294] White White Other White White White White White White White White
+##  [7305] White Other White White White White White White White White White
+##  [7316] Other Other White White White White White White White White White
+##  [7327] White White Black Black White White White White Other White Black
+##  [7338] White White White White White White White White White White White
+##  [7349] White White White White White White Black White White White Black
+##  [7360] White White Black White White White White White White Black White
+##  [7371] White White Black White White White White White Black Black Black
+##  [7382] Black Black Black Black Black Black White White White White White
+##  [7393] White White White White White White White White White White White
+##  [7404] White White White White White White White White White White White
+##  [7415] White White White White White White White White White White White
+##  [7426] White White White White White White Other White White White White
+##  [7437] White White White White White Other White White White White White
+##  [7448] White White White White White White White White White White White
+##  [7459] White Other White White White White Other White White White White
+##  [7470] White White White White White White White White White White White
+##  [7481] White White White White White White White White White White White
+##  [7492] White White White White White White White White White White White
+##  [7503] White White White White White White White White White White White
+##  [7514] White White Black Black White White Other White White Other White
+##  [7525] White White White White Black White White Other White White White
+##  [7536] White White White White White White White White White Other White
+##  [7547] White Other Other Other Other Other White Other White Other Other
+##  [7558] Other Other White Other Other Other White White White White White
+##  [7569] White White White White White Other White White White White White
+##  [7580] White White White White White White White White White White White
+##  [7591] White White White White White White White White White White White
+##  [7602] White White White White White White White White White White White
+##  [7613] White White White White White White White White White White White
+##  [7624] White White White White Black White Other White White White White
+##  [7635] White White White Black White White White White White White White
+##  [7646] White White White White White White White White White White White
+##  [7657] White White White White Other White Other White Other White White
+##  [7668] White White White White White White White White White White White
+##  [7679] White White White White White White White White White White White
+##  [7690] White White White White White White White White White White White
+##  [7701] White White White White White White White White White White White
+##  [7712] White White White White White Black White White White White White
+##  [7723] White White White White White White White White White White White
+##  [7734] White White White White White White White White White White White
+##  [7745] White White White White Other White White White White White White
+##  [7756] White White Other White White Other White White White White White
+##  [7767] White White White White White White White White White White White
+##  [7778] White White White White White White White White White White White
+##  [7789] White White White White White White White White White White White
+##  [7800] White White White White White White White White White White White
+##  [7811] White White White White White White White White White White White
+##  [7822] White White White White White White White White White White White
+##  [7833] White White White White White White White White White White White
+##  [7844] White White White White White White White White White White White
+##  [7855] White White White White White White White White White White White
+##  [7866] White White White White White White Black White White Black White
+##  [7877] White White White White White White White White White White White
+##  [7888] White White White White White White White White White Other White
+##  [7899] White White White Black Black White White White White White White
+##  [7910] White White White White White White White White White White White
+##  [7921] White White White White White White White White White White White
+##  [7932] White White White White Other White White White White White White
+##  [7943] Other White White White White White White White White White White
+##  [7954] White White White White White White Black White White White White
+##  [7965] Black White White White White White White White White White White
+##  [7976] White White White White White Black Black Black Black Black Black
+##  [7987] Black Black White White White White White White White White White
+##  [7998] White Black Black Black Black Black White White White White White
+##  [8009] White White White White Black White Black Black Black Black Black
+##  [8020] Black Black White Black Black Black White Black Black White White
+##  [8031] Black White White Black White White White White Black Black Black
+##  [8042] Black Black White White White White White White White White White
+##  [8053] White White White White Other White Black Black Black White Black
+##  [8064] White Black White White White White White White White White White
+##  [8075] White Black Black Black White Black Black Black Black Black White
+##  [8086] White White White Other White White White White White White White
+##  [8097] White White White White White White Other White White White Other
+##  [8108] White White White White White White White White White White White
+##  [8119] White White White White Black White Black White White White White
+##  [8130] White White White White White White White White White White White
+##  [8141] White White White White Black White White White Black White White
+##  [8152] White Black Black Black White White White Black White White White
+##  [8163] White White White White White White White White White White White
+##  [8174] White White White White White White White White White White White
+##  [8185] White White White Other White White White White White White White
+##  [8196] White White White White White White White White White White White
+##  [8207] White White White White White White White White Other Black Other
+##  [8218] White Black White Other White White White White White White White
+##  [8229] White Other Other White White White White White White White White
+##  [8240] White White White White White White White White White White White
+##  [8251] White White White White White White White White White White White
+##  [8262] White White White White White White Other Other Other White White
+##  [8273] Black White White White White White White White White White White
+##  [8284] White Other White White Other White White Other White White Other
+##  [8295] White White White White White White White White White White White
+##  [8306] White White White White White White White White White White White
+##  [8317] White White White Black Black White White White White White Black
+##  [8328] White White White White White White White White White White White
+##  [8339] Black White White White Other White White White Black Black White
+##  [8350] White White White White White White White White Black White White
+##  [8361] White White White White White White Black White White White Black
+##  [8372] Black White Black Black White White White White White White White
+##  [8383] White White White White White Other White White White White White
+##  [8394] White Black Other White Black Black Other Black Black Black Other
+##  [8405] Black Black Black Black White Black Black Black Black Black Black
+##  [8416] Black Black Black Black Black Other Black Black Black Other White
+##  [8427] Black White White White White White Black White Other White White
+##  [8438] White White White White White Other White Black Black White White
+##  [8449] White White Other White Other White White White Other White Other
+##  [8460] Other Other Other Other Other Other White Other Other Other White
+##  [8471] White White White Other Other Other Black White White Other White
+##  [8482] White White White White White White White White White White White
+##  [8493] White Black White Black White Black Black White White White White
+##  [8504] White White Other Black White Other White White White White White
+##  [8515] White White White White Black White White White Other White Black
+##  [8526] White White White White White White Other White Other White White
+##  [8537] Other White White White White White White White Other White White
+##  [8548] White White White White Other White Other White Black Black White
+##  [8559] Black Black White White White White White White White White White
+##  [8570] White White White White White White White White White White White
+##  [8581] White White White White White White White White White White White
+##  [8592] White Other White Other White White White White Other White Other
+##  [8603] Other Black White White White White White Other White Other White
+##  [8614] White Other White Other Other White White Other White Other White
+##  [8625] White White White White Other White White White Other Other Other
+##  [8636] Other White White White White White White White Other White Black
+##  [8647] White White White Other White White White White White White White
+##  [8658] Other White White White White White White White White White Other
+##  [8669] Other Other Black Other Other Other White Other Other Other White
+##  [8680] Other Other Other Other Black Black White Other Other White White
+##  [8691] Other Other Other Other Other Other Other Other White Other Other
+##  [8702] Black Other Black White White White White Other White White White
+##  [8713] Other White White White Other White White White White White White
+##  [8724] White White Other White Black White White White Other White Other
+##  [8735] Other White White White White Other Black White White White Black
+##  [8746] Other White White White Black White Other White White White Other
+##  [8757] Other Other Other Other Other Other Other Other Black Black Black
+##  [8768] Black Black Black Black Other Other Black Other White Other Other
+##  [8779] Other Other Other Other Other Other Other Other White Other White
+##  [8790] Other Other White Black Other Black Black Black White White White
+##  [8801] White Black White Black White Black Other White White White White
+##  [8812] White White White White White White White White White White White
+##  [8823] White White White White White White White White White White White
+##  [8834] White White White White White White White Other White White White
+##  [8845] White White Other White White White White White White White White
+##  [8856] White White White White White White White White White White White
+##  [8867] Other Other White White White White White Black Other Black Black
+##  [8878] Black Other White White White Black White White White White White
+##  [8889] Black Other Other Other Other Other Other White White White Other
+##  [8900] Black White White White Other White Other Other White Other Other
+##  [8911] White Other White White White White Other White White Other White
+##  [8922] White White White White Other White White Other White White White
+##  [8933] White Other White Other Other Other Black Other White White Other
+##  [8944] White White White White White White White White White White White
+##  [8955] Other White Other White White White White Other White White White
+##  [8966] White Other White Other White White White Black Other Black White
+##  [8977] White Black Black White White Other Other Black White White Other
+##  [8988] Other White Black White White White Other White White Other White
+##  [8999] White White White White White White White White White White White
+##  [9010] White White White White White Other White White White White Black
+##  [9021] Black Black Black Black Black Black Black Black Black Black Black
+##  [9032] White Black White White Black Other Black Black White Black Black
+##  [9043] White Black Black Black White Black Other Other Black White Black
+##  [9054] Black Black White Black White White White White White White White
+##  [9065] Black White White White White White White White White White White
+##  [9076] White White White White White White White White Black White White
+##  [9087] White Other White White White White Other White White White White
+##  [9098] White White Other White Black Other Black Black White White Black
+##  [9109] Other White Other White White White White White White White White
+##  [9120] Other Black White Black White White White White Other Black Black
+##  [9131] White White White Black Other Black White Black Black Black Black
+##  [9142] Other White White Black White Other Other White White Other Other
+##  [9153] Other Other Other Other Other White Other White Other White White
+##  [9164] White Other Other White White Black White White Black White Black
+##  [9175] White Black Black Black Black Black Black Black Black Black Black
+##  [9186] Black Black White Black Black Black Other Black Black Black Black
+##  [9197] Black White White White White White White White White White White
+##  [9208] White Other White White White White White White White Other Black
+##  [9219] Black Black Black White Black White White White Black White White
+##  [9230] White Black White White White White White White White White White
+##  [9241] White White White White White White White White Other White White
+##  [9252] White Other Black Black White Black White White Other Other White
+##  [9263] Other White White Other White Black Black Black Black Black White
+##  [9274] White Other White Other Black Black White White Black Black White
+##  [9285] Other Other Other Other Black White Black Other White Black Black
+##  [9296] White White Other Black Black Black Black Black Black Black Black
+##  [9307] Black Black Black Black Black White Other White White White White
+##  [9318] White White Black White White Black Black Black Other White Black
+##  [9329] White White Black Black Black Black Black Black Black Black Black
+##  [9340] Black Black Black Black White White Other White White White Black
+##  [9351] White Other Other White White White White Black Black White White
+##  [9362] Other Other Other White White White Other White White White White
+##  [9373] Other White White Other Other Black White White White Black Black
+##  [9384] White Black Black Black White White White Black Black Black Black
+##  [9395] Black Black Other White White White White White Other White White
+##  [9406] White White Other White Other White Other Black White Other White
+##  [9417] White White White White White Other Other Black Other Other White
+##  [9428] Other Other White Black Other Other Other White Other Other White
+##  [9439] White White Black Black Black Black Black Black Black Other Black
+##  [9450] White White White White White White White White White Black White
+##  [9461] White Black White Other Black Black White Black Other White White
+##  [9472] Other White Other Other White White Other Other White White White
+##  [9483] White White White White White White White White White White White
+##  [9494] White White White White White White White White White White White
+##  [9505] White White White White White White White White White White White
+##  [9516] White White White White White White White White Black Black Black
+##  [9527] White Black White Black Black White Other Other White White White
+##  [9538] White White White White Black White White White Black White White
+##  [9549] White Black White Other Other Other Black White Black Other White
+##  [9560] White Other Black White Black White Other White White White White
+##  [9571] White White White Black Black Black White White White White White
+##  [9582] White White Black White Other Black White White Other White White
+##  [9593] White White White Other White White White White Other White White
+##  [9604] White White White White White White White White White Other White
+##  [9615] White White White White White White White White Other White White
+##  [9626] White White White White White Other White Black White White White
+##  [9637] White White White White Black White White White White White White
+##  [9648] Other White Other Other White White Other White White White White
+##  [9659] White White White White White White White White Black White White
+##  [9670] White White White White White White Other White Black White White
+##  [9681] White White White White White White White White Black White White
+##  [9692] White White White White White White White White White White White
+##  [9703] White Black White Black Black White Other White Black Other White
+##  [9714] White White Black White White White Black White White White White
+##  [9725] White White White Black White White White Black Black White White
+##  [9736] White White White Other White White Black Black Black Black Black
+##  [9747] Other Black Other Other White White White White White White White
+##  [9758] White White White White White White White White White White White
+##  [9769] White White White White White White White White White White White
+##  [9780] White White White White White White White White White White Other
+##  [9791] Other White Other White White White White White White White White
+##  [9802] White White White White White White White White White White White
+##  [9813] White White Black Black Black Black Black Black Black Black White
+##  [9824] White White White White White White White White White White White
+##  [9835] White White White White White Other Other White White White Other
+##  [9846] Other Other Other Other Other Other Other Other White White White
+##  [9857] Other Other White Other Other Other White White White White White
+##  [9868] White White White White White White White White White White White
+##  [9879] White White White White White White Black White White Black White
+##  [9890] White White Black Black Black White White White White Black Black
+##  [9901] Black Black Black Black Black Black Black Other Other White Other
+##  [9912] Other Other White Other Other Other Black Other Other White White
+##  [9923] White White White Black Other Other White White White White White
+##  [9934] White White White White White White Black White White White White
+##  [9945] White White Black White White White White White Other White White
+##  [9956] Black Other White White White White White White White White White
+##  [9967] White White White Other Other Black Other White Other White Black
+##  [9978] Other White White White White White Other White White Other White
+##  [9989] White White White White White White White White White White White
+## [10000] White White White White White White White Black White White Black
+## [10011] Black White White White White White White White White White White
+## [10022] White White White White White White White White White White White
+## [10033] White White White Other Other White Other White Other White White
+## [10044] White White White White White Other White White White White White
+## [10055] Black White White White White White White Other White White Other
+## [10066] White White White White White White White White White Black Black
+## [10077] Black Black Black Other Black White White White Black White White
+## [10088] White White Black White White White White White White White White
+## [10099] White White White White White White White White Other Black Other
+## [10110] White Other Other Other Other Other White White White White White
+## [10121] White Other White White White White White White White White White
+## [10132] White White White White White White White White White White White
+## [10143] White White White White White White White White White White White
+## [10154] White White White White White White White White Black White White
+## [10165] Other White White White White White White White White White White
+## [10176] Black White White White White White White White White White White
+## [10187] White White White White White White White White White White White
+## [10198] White White White White White White White White White White White
+## [10209] White White White Black White White White White White White White
+## [10220] White Black Other Black White White White White White White White
+## [10231] White White White White White White White White Black White White
+## [10242] White White White White White Black Black White White White White
+## [10253] Black White White White White White White White White White White
+## [10264] White White White Black White White White White White White White
+## [10275] White White White White White White White White White White White
+## [10286] White White White White White White White White Other White White
+## [10297] White White White White White White White White White White White
+## [10308] White White Other White White White White Other Black White White
+## [10319] White Black White White Other White White Black White White White
+## [10330] White Other White White Black White White Other Other White White
+## [10341] White White Other Black White White White White White White White
+## [10352] White White Black White White White White White White White White
+## [10363] White White White White White White White White White Other White
+## [10374] White White White White White White White White White White White
+## [10385] White White White White White White White White White White White
+## [10396] White White White White White White White White White White White
+## [10407] White White White White White White White White White White White
+## [10418] White Other White White White White White Other White White White
+## [10429] Other Other White White White White White White White Other Black
+## [10440] White Other White White White White White White White White White
+## [10451] White White White White White White White White White White White
+## [10462] White White White White White White White White White White White
+## [10473] Black White White White White White White White White White White
+## [10484] White Other White Black White White White Other White White White
+## [10495] White White White White White White White White White White Other
+## [10506] White Black White Black Black Black Black White White White White
+## [10517] White White White White White White White White White White White
+## [10528] White White Other White White White White White White Other Other
+## [10539] White White White White White White White White White White White
+## [10550] White White White White White White White White White White White
+## [10561] Black White White White White White White White White White White
+## [10572] Black Black Black Other Black Other White White White White Black
+## [10583] Other White White White Black Black White White White White Other
+## [10594] White White White White Black White White White White White White
+## [10605] White White White White White White White White White White White
+## [10616] White White White White White White White White White White White
+## [10627] White White White Black White White White White White Other White
+## [10638] White White Other White White White White Other White White Other
+## [10649] Black White Other White White White White White White White White
+## [10660] White White White White White White White White White White White
+## [10671] White White White White White Other White White Black White White
+## [10682] White White White White White White White White White White White
+## [10693] White White White White White White White White White White White
+## [10704] White White White White White White White White White White White
+## [10715] White White White White White White White White White White White
+## [10726] White White White White White White White White White White Black
+## [10737] White White White White White White White White White White White
+## [10748] White White Other White White White White White White Black White
+## [10759] Black Black White White Black Black White Black White White Other
+## [10770] Black Black White Black White Black Black Black Black White Black
+## [10781] Black Black Black Black Black Black Black Black Other Black White
+## [10792] White White White White White Black Black Black Black White White
+## [10803] White White White White White White White White White White White
+## [10814] White White White White White White White White White White White
+## [10825] White White White White White White White White White White White
+## [10836] White White White White Black White White White White White White
+## [10847] White White White White White White White White White White White
+## [10858] White White White White White White White White White White White
+## [10869] White Black Other Other Black White Black Other White Other White
+## [10880] White White White White Black Black Black Black Black Black Black
+## [10891] Black Black Black Black Black Black Black White White Black Black
+## [10902] White White White White White White Black White Black White Black
+## [10913] White White White White White White White Black Black White Black
+## [10924] Black Other White White White Black White White Other White White
+## [10935] White Black White White White White White White White Black Black
+## [10946] White White White Other White Other Black White White White White
+## [10957] White White White White White White White White Black White White
+## [10968] White Other Black Black Black White White Black White Black Black
+## [10979] Black Black Black Black White White Other White White Other White
+## [10990] White White White White White White White White White White White
+## [11001] Black White Black White White White Black White Black White Black
+## [11012] Black White White White Black Black White White White White White
+## [11023] White White White Black White White White White Black Other White
+## [11034] White White Other Black White White White White White White White
+## [11045] White White White Black White Black White White Black Black White
+## [11056] White Black Black Black Black White White White White Black White
+## [11067] Other White White White White White White White Black White White
+## [11078] White White White White White White White White White White White
+## [11089] White White White White White Other Other Other Other Other Other
+## [11100] Other Other Other Other Other Other Other Other Other White Other
+## [11111] Other Other Other Other Other Other Other Other White White Other
+## [11122] Other Other Other Other Other Other Other Other Other Other Other
+## [11133] Other Other Other Other Other Other Other Other Other Other Other
+## [11144] Other Other Other Other Other White White White Black Other White
+## [11155] Black White White White White White White Black White Black White
+## [11166] Black White Black White White Black White White White White White
+## [11177] Other White White White White White White White White White White
+## [11188] White White White White White White White White White White White
+## [11199] White White White White Black Black White Black White White White
+## [11210] White White White White Other White White White White White White
+## [11221] White White White Other White White White White White White White
+## [11232] Black White White White White White White White Black Other White
+## [11243] Black White White White White Black White White White White White
+## [11254] White White White Black Black White White White Black Black Black
+## [11265] Black Black Black Black Black Black Black White White White White
+## [11276] White White White White White White White White White White White
+## [11287] White White White White White White White White White White White
+## [11298] White White White White White White White White White White White
+## [11309] White White White White White White White White White White White
+## [11320] White White White White White White White White White White White
+## [11331] White White White White White White White White White White White
+## [11342] White White White White White White Other Other Other White White
+## [11353] White White White Black Other White Other White Black White Other
+## [11364] White White White Other Other White Other White Other White Other
+## [11375] White White White White Other Other White White White White White
+## [11386] White Other White White White White White White White White White
+## [11397] Other White White White White White White White White White White
+## [11408] White White White White White Other White Other White Other White
+## [11419] White White White Other White White White White White White White
+## [11430] White White White White White White White White White Other White
+## [11441] White White White White White White White Other White White White
+## [11452] Other Other Other White Other White White White White White Other
+## [11463] White White White White Other Other White White White White White
+## [11474] White White White White White Black White White White White White
+## [11485] Other White White White White White White White White White White
+## [11496] White White White White White White White White White Other White
+## [11507] White White White White White White White White White White White
+## [11518] White White White White White White White White White White White
+## [11529] White White White White White White White White White White White
+## [11540] Other White White White Other White White White White White White
+## [11551] Black White White Other Other White Other Other Other Other Other
+## [11562] Other White White White Other White Other White White White Other
+## [11573] Other Other White White White White White White Other White Other
+## [11584] White White White Other White White White White White White White
+## [11595] White White White White White White White White Other White Other
+## [11606] White White Other Other Other White White Other Other White Other
+## [11617] White Other White Other White Other Other White White Other White
+## [11628] Other Other Other Other Other Other Other Other Other Other Other
+## [11639] White White Other White White White White White White White White
+## [11650] White White White White White White White White White White White
+## [11661] White White White White White White White White White White White
+## [11672] White White Black White White White White White White White White
+## [11683] White White White White White White White White White White Other
+## [11694] White White White White White White White White White White White
+## [11705] White White White White White White White White White White White
+## [11716] White White White White White White White White White White White
+## [11727] White White White White White White White White White White White
+## [11738] White White White White White White White White White White White
+## [11749] White White White White White White Black Other Other White White
+## [11760] White White White Other White White White White White White White
+## [11771] White White Other White White White White White White White White
+## [11782] Other White White White White White Other Other Other White White
+## [11793] White White White White White White White White White White White
+## [11804] White White White White White White Other White White White White
+## [11815] White White White White White White White Black White White Black
+## [11826] White White White White White White White White White White White
+## [11837] White White White White White White White White White White White
+## [11848] White White White White White White White White White White White
+## [11859] White White White White White White White White White White White
+## [11870] White White White White White White Other White White Other White
+## [11881] White Other White White White White White White White White White
+## [11892] White White White White White White White White White White White
+## [11903] White White White White White White White White White White White
+## [11914] White White White White White White White White White White White
+## [11925] White White White White White White White White White White White
+## [11936] White White White Other White White White White White White White
+## [11947] White White White White White White White White White White White
+## [11958] White White White White White White White White White White White
+## [11969] White White White White White White White White White White White
+## [11980] White White White White White White White White White White White
+## [11991] White White White White White White White White White White White
+## [12002] White White White White White White White White White White White
+## [12013] White White White White White White White White White White White
+## [12024] White White White White White White White White White White White
+## [12035] White White White White White White White White White White White
+## [12046] White White White White White White White White Black Black Black
+## [12057] White White White White Black White White White Black Black Black
+## [12068] White White White White White White White Other White Black Black
+## [12079] White White White White Black White White White White White White
+## [12090] White White White Black White Black Black Black White Black Black
+## [12101] Black Black Other Black White Black Other Black White White White
+## [12112] White White White White White White White White White White White
+## [12123] White White White White White White White White White White White
+## [12134] White White White White White White White White White White White
+## [12145] White White White White White White White White White White White
+## [12156] Black White White White White White Other White White White White
+## [12167] White White White White White White White White White White White
+## [12178] White White White White White White White White White White White
+## [12189] White White White White White White White White White White White
+## [12200] White White White White White White White White White White White
+## [12211] White White White White White White White White White White White
+## [12222] Black Black White White White White White White White White White
+## [12233] White White White White White White Black White White White White
+## [12244] White White White Black White White White Black White White Black
+## [12255] Black Black Black White Black White White White Black Black White
+## [12266] Other Black White White White White Black White White Black Black
+## [12277] White White White Black Black White Black Black Black Black Black
+## [12288] Black Black Black Black Black Black Black Black Black Black White
+## [12299] Black Black Black Black White White Other Other White White White
+## [12310] White White White White White White White White White White White
+## [12321] White White White White White White White White Black Black Black
+## [12332] Black Black Black Black Black White Black Black White White White
+## [12343] Other White White White White White White White White White White
+## [12354] White Black Black White Black Black Black Black Black White Black
+## [12365] Black Black Black White White White White Black White Black Black
+## [12376] White Black Black Black Black White White Black Black Black Black
+## [12387] Black Black Black Black Black Black Black Black Black Black White
+## [12398] Black Black White Other Black White Black Black White Black White
+## [12409] Black White White White White Other White Other Other White Black
+## [12420] White Other White Other White Other Black Black Other White White
+## [12431] White White White White White White White White White White White
+## [12442] White White White White Black White White White Black Black White
+## [12453] White White White Other White Black White White Black Black White
+## [12464] Black Black Black White Black Black Black Black Black Black Black
+## [12475] Black Black White White Other White White White White White White
+## [12486] White White White White White White White White Other Other White
+## [12497] White White White White White White White White White White Other
+## [12508] White Other White White White White White White White White Black
+## [12519] White White White White White White White White White Black White
+## [12530] White White White White White White White White White White White
+## [12541] Other White White White White White White White White White White
+## [12552] White White White White White White White White White White White
+## [12563] White White White White White White White White Black White White
+## [12574] White White White White White White Other Other Other Other White
+## [12585] Black White Other Other Other Other Other Black White White White
+## [12596] Other Black White Black Black Black Other Other White White White
+## [12607] White White White White White White White Other White White White
+## [12618] White Other White White White White White White White White White
+## [12629] White White Black White White White White Other White White White
+## [12640] White White White White White White White White White Black White
+## [12651] White White White White White White White White White White White
+## [12662] White Other Other Other White Other Other White White White Other
+## [12673] Other White Other Other White White White Other Other Other Other
+## [12684] Other Black White White White Other Other Other White White Black
+## [12695] White Other Other White White White Other White Other White Other
+## [12706] White White White White White White White White White White White
+## [12717] White White Other White White White White White White White White
+## [12728] White White White White White White White White White White White
+## [12739] White White White White White White White White White White White
+## [12750] White White White Black Other White White White White White White
+## [12761] Other White White White White White White White White White White
+## [12772] White White White White White White White White White White Other
+## [12783] White White Black Black White White White White White White White
+## [12794] White Black Other Other Other Other White White White Other White
+## [12805] White White White White Black Black White Black White White Other
+## [12816] Black White Black White Black White Other White White White White
+## [12827] Other White Other White White White White White White White White
+## [12838] White White White White Other White White White White White White
+## [12849] White Other White White White White White White White White White
+## [12860] White White White Black White White Black White White White White
+## [12871] White White White White White Black Black Black White White Other
+## [12882] White White White Black White Black Black White White White White
+## [12893] White White White Other White White White White White White Other
+## [12904] White Other Other Black Black Black Black Black Black Black Black
+## [12915] Black Black White Black Black Other White White White Other White
+## [12926] White White White White White Black Other Black White White Other
+## [12937] Other White White White Other White White Other Other White White
+## [12948] White Black Other White White White White White White White White
+## [12959] White Black Black Black Black Black White White Black Other White
+## [12970] White Other White White White White White White White White White
+## [12981] White White White White White White Black Black Other White White
+## [12992] White White White White White White White White White White Other
+## [13003] White White White White White White White White Other White White
+## [13014] White White White White White White White White White White White
+## [13025] White White Other White Other Other White Other White White Other
+## [13036] White White White White White White White White Other Other Black
+## [13047] White White White Other White White Other Other White White White
+## [13058] White Black Other Other Other White White Other White White White
+## [13069] Black Other White Other White White White Black Other White White
+## [13080] White White Black White White White White White White White White
+## [13091] White White White White Other White White Other Black Black Other
+## [13102] Black Black Black Black Other Other White Black Other Other White
+## [13113] Black Black White White White White White White White White Black
+## [13124] White White White White White Black Other White White White Other
+## [13135] White White White Black White White Black Black Black Black White
+## [13146] White White White White White White White White Black White White
+## [13157] Other White Other White Other White Other White Other White White
+## [13168] White White White Other White White Other Other White Other White
+## [13179] Other Other White White White White Other White White Other White
+## [13190] Other White Other Black White White White White Other White White
+## [13201] White White White White White White Black Black Black Black Black
+## [13212] Black Black Black Black Black White White Other Black White Black
+## [13223] Other White White Black White White Other White White White Black
+## [13234] White Other White Black Other Other White Other White White White
+## [13245] White White Black Black Black Black Black Black White White White
+## [13256] Black Black Black Black Other Black Other White White Black Other
+## [13267] Black White Black Other White White White White Other White Other
+## [13278] Black White Black Black White Black Black Black White Other Black
+## [13289] White White White White White White White White Black Black Black
+## [13300] White White White Black White White White White White White White
+## [13311] White White White White Other White White Black White White White
+## [13322] White White White Black White White Black White White Other White
+## [13333] Black Black Other Black Black Black Black White White White Black
+## [13344] White White Other White White White White Black White Other Other
+## [13355] White White White White White Other White Other White White White
+## [13366] White White White White White White White White White White White
+## [13377] White Other White White Other Other White White White Other Black
+## [13388] Black Black Black White Black White White White White White White
+## [13399] White White White Other White White White Other White White White
+## [13410] White White White White White Other White White White White White
+## [13421] White White White White Other Other White White Black Black Black
+## [13432] White Black Black White White White White Other White White White
+## [13443] White White White Black White White Other White White Black White
+## [13454] White Other White White White White White White White White Other
+## [13465] White White Other White White White White White Black Black White
+## [13476] White Other White White White White White Black Black White White
+## [13487] White Black White White White White White White White White White
+## [13498] White White White White White White White White White White White
+## [13509] Black Other White White White White White White White White White
+## [13520] White White White White White White Black White White White White
+## [13531] White White White White White Other White White White White White
+## [13542] White White White White White White White White White White White
+## [13553] Black Black Black White White White White White White White Black
+## [13564] White White Black White White White White White White White Black
+## [13575] White White White White White Other Black White White Black Black
+## [13586] Black Black White White White Other Other Other Black Other White
+## [13597] Other White Other White White White White White White White White
+## [13608] White White White Black White White White White White White White
+## [13619] Black White White White White White White White White White White
+## [13630] White White White White White White White White White White White
+## [13641] White White White White White Black Black White White White White
+## [13652] White White White Black Black Black Black White White White White
+## [13663] White White White Black Black White White White White White Black
+## [13674] White White White White White White White White White White White
+## [13685] White White White White Black White White Other White White White
+## [13696] Black White White White White White White White White White White
+## [13707] White White White White White White White White White White Black
+## [13718] Black White White Other White Other Black White White White Black
+## [13729] White White White White Black White White Black White White White
+## [13740] White White White White White White White White White White White
+## [13751] White White White White White White White White Other Other White
+## [13762] White White White White White White White White White White White
+## [13773] Other White White White White White Black White White White White
+## [13784] White Black White White White White White White White White White
+## [13795] White White White White White White White White White White White
+## [13806] White White White White White White White White White White White
+## [13817] White White White White White White White White Black White White
+## [13828] Other White White White White White White White White Other White
+## [13839] White Other Other White White White White White White White White
+## [13850] White White White White White White Other White White White White
+## [13861] White White White White Black Black White Black White White White
+## [13872] White White White White White White White White White White White
+## [13883] Other White White White White White White Black Black White Black
+## [13894] Black White White White White White White White White White White
+## [13905] White White White White White White White White White White White
+## [13916] White White White White White White White White White Other White
+## [13927] White White White Other White White White White White White White
+## [13938] White White White White White Black White White White White White
+## [13949] White White White White Other White White White White White White
+## [13960] White White White Black White White White Black Black Black White
+## [13971] Black White White Black Black Black Black Black White White White
+## [13982] White White White White White Black White White Black White White
+## [13993] White White White White White White White White Other White White
+## [14004] White White White White White White White White White White White
+## [14015] White White White White White Black White Black Black Black Black
+## [14026] Black Black Black Black Black Black Black Black Black Black White
+## [14037] Black Black Black White White Black White White White White Black
+## [14048] Black Other White Black Black Black Black Black Black White Other
+## [14059] White White White Other White Black White White White White White
+## [14070] Black White White Black Other Black White White Black White White
+## [14081] White White White Black White Black White Black Black Black White
+## [14092] White White White White Black White Other White White Black Black
+## [14103] White White White White White White White White White White Black
+## [14114] Black Black White White White White Black White White White White
+## [14125] White White White White White White White White Other Other Other
+## [14136] White White Other Other Other White White White White White Other
+## [14147] Other Other White White White Other Other Other White White Black
+## [14158] White Black Black White White White White White White White Black
+## [14169] White White White Other White White White White Black White White
+## [14180] White White White Black White White Black Black Black White White
+## [14191] White White White White White White White Other White White White
+## [14202] White White White White White White White White White White White
+## [14213] White White White White White White White White White White White
+## [14224] White White Other White White Other Black Other White Black White
+## [14235] White Other White White White White White White White White White
+## [14246] White White White White White Black White White White White Other
+## [14257] White White White White White White White White White White White
+## [14268] White White White White White White White White White White White
+## [14279] White White White White White Black White White Other White White
+## [14290] White White White Other White White White White White White White
+## [14301] White White White Other White White White White White Other White
+## [14312] White White White White White White Other Other White White Other
+## [14323] White Black White Other White White White Other Other White White
+## [14334] White White White White White White White White White White White
+## [14345] White Other Other White White Other Other Other Other Other White
+## [14356] White White White Other Other Other Other Other White White White
+## [14367] White White White White White White White White White White White
+## [14378] White White White White White Black White White White White White
+## [14389] White White White White White White White White White White White
+## [14400] White White White White White White White White White White White
+## [14411] White White White White White White White White White Black White
+## [14422] White White White White White White White White White White White
+## [14433] White White White White White White White White White White White
+## [14444] White White White White White White Other White White White White
+## [14455] White White White White White White White White White White White
+## [14466] White White White White White White White White White White White
+## [14477] White White White White White White White White White White White
+## [14488] White White White White White White White White White White White
+## [14499] White White White White White White White White White White White
+## [14510] White White White White White White White White White White White
+## [14521] White White White White White White White White White White White
+## [14532] White White White White White White White White White White White
+## [14543] White White White White White White White White White White White
+## [14554] White White White White White White White White White White White
+## [14565] White White White White White White White Black White White White
+## [14576] White White Black White White White White White White White Black
+## [14587] Black White White White White White White White White White White
+## [14598] White Black White White White White White White White White White
+## [14609] White White White White White White White White White White White
+## [14620] White White White White White White White White White White White
+## [14631] White White White White White White White White White White White
+## [14642] White White White White White White White White White Black White
+## [14653] White White White White Black White White White White Black White
+## [14664] White Black Black Black Black Black White Other White White White
+## [14675] White White White White White White White Black Black Black White
+## [14686] White Black Black White White Black White Black Black Black White
+## [14697] Black Black White White Black White White White White White White
+## [14708] White White White White White White Black White White Other White
+## [14719] White White Other Other Other Black Black White Black Black Black
+## [14730] Black White White White Other White White White Black White White
+## [14741] Black Black White White Black White White White White Other Other
+## [14752] White White White White White White White White White Other White
+## [14763] White White White White White White Black White White White White
+## [14774] White White White White White White White White White White White
+## [14785] White White White White White White White White White White White
+## [14796] White White White Black White White White White White White White
+## [14807] White White White White White White Other White White White White
+## [14818] White Black White White White White White White White White White
+## [14829] White White White White White White White Other White White White
+## [14840] White White White White White White White White White White White
+## [14851] White White White White White White White White White White White
+## [14862] White White White White White White White White White Black White
+## [14873] Other White White Other White White Black White Black Black White
+## [14884] White White White White Black Other Black White White Black White
+## [14895] White White White White White White White White White White White
+## [14906] White Other White Black Black White Black White White White White
+## [14917] White White White Black White White Black Other White White White
+## [14928] Other White Black White Black Black Black Black Black Black Black
+## [14939] Other Black Other White White White White Other White White White
+## [14950] Black Black White White Other Other White White White White White
+## [14961] White White White White White White White White Other White Other
+## [14972] White Other White Black White Other Black White White White White
+## [14983] White Black Black Black White White Black White Other White White
+## [14994] White White White White White White Other White White White White
+## [15005] White White White White White White White Black White White White
+## [15016] White White White Black Black White Black Other Other White White
+## [15027] White Other Other White White White White White White White White
+## [15038] Black White White White White White White White Other Other Other
+## [15049] White Other Other White White White White White Other White White
+## [15060] Other White White White White White White Other White White White
+## [15071] White Other White Other White White White Other Other Other Other
+## [15082] White White White Black Other Black Other Black White White White
+## [15093] White White White White White White White White White White White
+## [15104] White White White Other White White White Black Other White White
+## [15115] White White Other White White White Other Other White White White
+## [15126] Other Black Black Black Black Black Black Black Black White White
+## [15137] White Other White Other White Black Black Other White White Other
+## [15148] White Black White White White White White White White Other White
+## [15159] White White White White White White White White White White White
+## [15170] White Black Other White White White White White White White White
+## [15181] White White White White Black White White White White Other White
+## [15192] White White White White White White White White White White Other
+## [15203] White White Other White Black Black Black Black White Black White
+## [15214] Other Other White White White White White White Other White Other
+## [15225] Black White Black Other White White White Other White White Black
+## [15236] White White White Other White Other White White White Other White
+## [15247] White White Black Black Black Black Black White Black White White
+## [15258] White Black Other Black White White Black Black Other White White
+## [15269] Black Black Black Other Black White Other Other White White White
+## [15280] White White White White White White Black Black White White White
+## [15291] White White White Black White White Black Other Black Other Black
+## [15302] White Black White White White White Other White White White White
+## [15313] White White White White White Black Black Black Black White White
+## [15324] White White Black White Black Black Other Black Black White White
+## [15335] White White White Black Black Black White White White White White
+## [15346] White Other White White White Black White White White White White
+## [15357] Black White White Black White White White Black White Black White
+## [15368] Other Black Black Black White Other White White White Black Black
+## [15379] White Black White Black White White Other White White White Black
+## [15390] White Other Other White White White White White White White Other
+## [15401] Black Other White Other Other Other White Black White Other White
+## [15412] White White White White Other White Black Black Black Black Other
+## [15423] White White White White White Other White Black White Other White
+## [15434] Other Other White White White White White White White White White
+## [15445] White White Other White White White White White White White White
+## [15456] White White Black Black Black Black Black White White White White
+## [15467] Black Black White White White Black Black White White White Other
+## [15478] White White Black Other White White White White Black White Other
+## [15489] White White Other White Black Other White White White White White
+## [15500] White White White White White White White White White White White
+## [15511] White White White White White White White Other White Other White
+## [15522] White White White White White White White White White White White
+## [15533] White White White White Black Black White White White White White
+## [15544] White White White Black White Black White Black White White White
+## [15555] Black White White Other White White White White White Black White
+## [15566] White White White White White White White White White White White
+## [15577] White White White White White White White White Black White White
+## [15588] White White White White White White White White White White White
+## [15599] White White White Black White White White White White White White
+## [15610] White Black White White White White White White White White Black
+## [15621] White White White White White White White White Black White Other
+## [15632] White White Black Black Black Black Black Other Other White Other
+## [15643] Other White Black White White White White White White White White
+## [15654] White White White Black Black Other White White White White White
+## [15665] White White White Other White White White White White White White
+## [15676] Other White White White White White White White White White White
+## [15687] White White White White White White White White White Black Other
+## [15698] Black Black White Black White Other White White White White White
+## [15709] Black Black White Black White White White White White White Other
+## [15720] Other Black White White White White White White White White White
+## [15731] Black Other White Other White White White White White White White
+## [15742] White White White White White Black White White Other Other White
+## [15753] White White White Other White White Black White White White White
+## [15764] White White White White White White White White White White White
+## [15775] White White White White White White White White Black White Black
+## [15786] White White White White White White White White White White White
+## [15797] White White White White White White White Other White White White
+## [15808] White White White White White White White White White White White
+## [15819] White White White White White White White White White Other White
+## [15830] Black White White White White White White White White White White
+## [15841] White White White White White White White White White White White
+## [15852] White White White White White White White White White White White
+## [15863] White White White White White White White White White White White
+## [15874] White Black White White White White White White White Other White
+## [15885] White White White White White White White White Black White White
+## [15896] White White White White Other White White White White White Black
+## [15907] White White White White White White White White White White Black
+## [15918] White White White White White White White White Black White Black
+## [15929] White White White White White White White White White White White
+## [15940] White White White White White White White Black White White White
+## [15951] White White White White White White White White White Black Black
+## [15962] Black White White Black White Black White White White White White
+## [15973] White White White White White Black White White White White Black
+## [15984] White White White White White White White White White White White
+## [15995] White White White White White White White White White Black White
+## [16006] White White White White White White White White White White White
+## [16017] White White Other White White White White White White Black White
+## [16028] White White White White White White White White White White White
+## [16039] Other White White White White White White White White White White
+## [16050] Black White Other White White Black Black Black White White White
+## [16061] White White Black Black Black Black Black Black Black White White
+## [16072] White White White White White White White White White White White
+## [16083] Black White White Black White White White White White White White
+## [16094] White White White White White White White White White White White
+## [16105] White White White White White White White White Other White White
+## [16116] White White White Black Other Black Black Black Black Black Black
+## [16127] Black Black Black Black Black Black Black Black White White White
+## [16138] Black White White White White White Black Other Black Black Black
+## [16149] White Black Other Black Black Black White White White White White
+## [16160] White White White White White White White White White White White
+## [16171] Black Black White White Black Black White Black White White White
+## [16182] Black Black White White White White White White White Other Black
+## [16193] White Black Black Black White White White White White White White
+## [16204] White White White White Other White White White White Black White
+## [16215] White White White Other Black Black White White White White Black
+## [16226] White White White Black White Other White White Other Black Black
+## [16237] White White Black Black Black Black Black White White White White
+## [16248] White White White White White White White White White White Other
+## [16259] White White White White Other White White White White White Other
+## [16270] White White Other White Other White Black White White Other White
+## [16281] White Other Other White White White White White White White Other
+## [16292] Other White White White White Black White White White White White
+## [16303] White White White White White White White White White Black White
+## [16314] White White White White White White White White Black White White
+## [16325] White White White White White Black White Black Black Black White
+## [16336] White White Other White White White White White White White White
+## [16347] White White White Other White White White White White White White
+## [16358] White White White White White White White White White Other Other
+## [16369] Other Black Other Other Other White White Other White Other Black
+## [16380] White White White White White White White White White White Black
+## [16391] White White White Black White White White White White Black White
+## [16402] White White Black White White White White White White White White
+## [16413] White White White White White White White White White White White
+## [16424] White White White White White White White White White White White
+## [16435] White White White White White Other White White White White White
+## [16446] White White White White Other Black White Other White Other White
+## [16457] Black White Other White Other White White White White White White
+## [16468] White White White White White White Other White White Other White
+## [16479] Other Black White White Other Other White Other White White Other
+## [16490] White Other White White Other Other Other Other Other Other Other
+## [16501] Other Other Other White White White White White White White White
+## [16512] White White White White White White White White White White White
+## [16523] White White White White White White White White White White White
+## [16534] White White White White White White White White White White White
+## [16545] White White White White White White White White White White White
+## [16556] White White White White White White Black White White White White
+## [16567] White White White White White White White White White White White
+## [16578] White White White White White Other White White White Other White
+## [16589] White White White White White White White White White White White
+## [16600] White White White White White White White White White White White
+## [16611] White White White White White White White White White White White
+## [16622] White White White White White White White White White White White
+## [16633] White White White White White White White White White White White
+## [16644] White White White White White White White White White White White
+## [16655] White White White White White White White Other White White White
+## [16666] White White White White White White White White White White White
+## [16677] White White White Black White White White White Black Black Black
+## [16688] Black White Black Other White White White White White White White
+## [16699] White White Black White White White White White White White White
+## [16710] Black White White White White White White White White White Black
+## [16721] White White White White White White White White White White White
+## [16732] White White White White White White White White White White White
+## [16743] White White White White Black Black Black Black Black Black Black
+## [16754] White White Black White White White White White White White White
+## [16765] White White White White Black White White Black Black White Black
+## [16776] Black Black Black Black Black Black Black Black Black Black White
+## [16787] White White White White White White White White White White White
+## [16798] White White Black Black Black White Black Black Black Black Black
+## [16809] White Black White Black White Black White Black Black Black White
+## [16820] Black Black Black White White White White Black Black White White
+## [16831] White Black White Black Black Black Black White Black Other White
+## [16842] White White White Black White White White Black Black White Black
+## [16853] White Black Black Black Black White Black Other White Other White
+## [16864] White White White White White White White White White White White
+## [16875] White White White White White White White White White Black White
+## [16886] White White White White White White White White White White White
+## [16897] White White White White Black Black White White White White White
+## [16908] White White White White White Black White White White Black White
+## [16919] White Other White White White White White White White White White
+## [16930] White White White White White White White Other Other White White
+## [16941] White Black White White Other Other White White Other White White
+## [16952] White White White White White White White White White White White
+## [16963] White White Other White White White White White White White White
+## [16974] Other White Black White White Other Black White White Black White
+## [16985] Black Other Black White Black Other Other Other Other White Other
+## [16996] White White White White Black White White White White Other White
+## [17007] White White Black Other Black Other White White White White White
+## [17018] White White White White White Other White Other White Other Black
+## [17029] Black Other White Black Black Other Black Black Black Black Black
+## [17040] White White Other White White White White White White White Other
+## [17051] Other White White White Other White White Other Black White Other
+## [17062] Other Black Other White Black Other White Other Other White White
+## [17073] White White Other White Other White White Black White Black Black
+## [17084] Other White White White White White White White White White White
+## [17095] Black White White White White White White White White White Other
+## [17106] Black Black Black White Other Other Black Black White Other White
+## [17117] Black White White White White White White Other Other Other White
+## [17128] Other White White White Other Other Black White White Other White
+## [17139] Other Other White Other White Other White White Other White White
+## [17150] White Other White White White White Black White White White Other
+## [17161] White White White White White White Black White Other Other White
+## [17172] Other White White White White Black Other White White White White
+## [17183] Other Black Other White White White White White Other White White
+## [17194] Other White White White Black White White White White Black Black
+## [17205] Black Black White Black White Other Other White White White White
+## [17216] White White White White White White White White Black Other Other
+## [17227] Black Black White White White White White White White White White
+## [17238] White White White White White White White White White White White
+## [17249] White White White White White White White White White White Black
+## [17260] Black Other Black Black White Black White Black White White White
+## [17271] White White White White White White Black White Black Black Black
+## [17282] White Black White White White White Black White Black Black White
+## [17293] Black White Other White White Black White White White White White
+## [17304] White White White White White White White White White White White
+## [17315] White White White White White White Other White White White White
+## [17326] White White White White White White White White White Other White
+## [17337] White White White White White White White White White White White
+## [17348] White White Other White Other Other Other White White White White
+## [17359] White White Black White Black White White Black White Other Black
+## [17370] White White White Other White White Other Other White White Black
+## [17381] White White White White White White White White White Black Black
+## [17392] White White White White Black White White White White White White
+## [17403] White Black White White White White White White White White White
+## [17414] Black Black White White Black White White Black White Black White
+## [17425] White White White White White Other White White White White White
+## [17436] Other White White Other White Other White Black Black Black Black
+## [17447] Black White White White White White White White Black White Black
+## [17458] White Black Black White Other Black White White White White Other
+## [17469] Other Other Other White White White White White Other White White
+## [17480] White Black Black Black White White White White White White Other
+## [17491] White Black Black Black Black White Black Black Other Black Black
+## [17502] Other Black White White White White White White White White Black
+## [17513] Black Black Black Black Black Black Black White White White Black
+## [17524] White Black Black Black Black Black White White White White White
+## [17535] Black White Other Black White White White White White White White
+## [17546] Black Black White Black White White Other White Other White Other
+## [17557] Black White Black Black Black Black Black White White White Black
+## [17568] White White White White White White White Other White White White
+## [17579] White White White White White White White Other White Other Other
+## [17590] White Black Black White White White Black White White Other White
+## [17601] White White White White White White White White White White Other
+## [17612] White White Other White White White Other White White White Other
+## [17623] Other Other Other White White Black Other White White White White
+## [17634] Black Black Black Black Other Black White White Black White White
+## [17645] White White White White White White White White Black White White
+## [17656] Other Other White White White White White White White White White
+## [17667] White White White White White White Black White White White White
+## [17678] White White White White White White White White White White White
+## [17689] White White Black White Black White White White White White White
+## [17700] White White Black Black Black White White White White White White
+## [17711] White White Other White White White White White White White White
+## [17722] Black White White White White White White Black Black Other Black
+## [17733] White White White White White White White Black White White White
+## [17744] White White White White Other Black White White White White White
+## [17755] White White White White White White White White White White Other
+## [17766] White White Other White White White White White White White Other
+## [17777] White White Other Black Black Black Black White White White White
+## [17788] White White White White White White Black White White White White
+## [17799] White Black Black White Black White White Black White White White
+## [17810] White White Black White White White White White White White White
+## [17821] White White White White White White White White White White White
+## [17832] White White Black Black Black Black White White White White White
+## [17843] White White White White White Other Other Black Other White Black
+## [17854] White White White White White White White White White Black White
+## [17865] White White Black White White Black White White White White White
+## [17876] White White White White White White Black Black Other Black White
+## [17887] White White White White White White White White White White Black
+## [17898] White White White White White White Other White Other Black White
+## [17909] White White White White White Black White White White Black White
+## [17920] White White White White White Other White White White White White
+## [17931] White White White White White White White White White White White
+## [17942] Other White White White White White White White White White White
+## [17953] White White White White White White White White White Other Black
+## [17964] White White White White White White White White White Black Other
+## [17975] White Other White White White White White White White White White
+## [17986] White White White White White White White White White White Other
+## [17997] White White White White White Black White White White White White
+## [18008] White White White White White White White White White White White
+## [18019] Other Other Black White White White White White White White White
+## [18030] White White White White White White White White Other Black Black
+## [18041] Other Black White White Black White White White White White White
+## [18052] White White White White White White White White Black White Black
+## [18063] White White Other Black White White White White White White White
+## [18074] White White White White White White White White White White White
+## [18085] White White Other White White White White White White Other White
+## [18096] White White White White White White White Black White Other Black
+## [18107] Black White White White Black Black White White White Black White
+## [18118] Black White White Other Black White White White Black White White
+## [18129] Black Black Black Black White Black Black Black Black Other White
+## [18140] White White White Black White White Black White White White White
+## [18151] White White White Black Black White Black Black White White White
+## [18162] White Black White Black Black White White Black White White White
+## [18173] White White Black White White Black White White White White White
+## [18184] White White Black White White White White White White White White
+## [18195] White White White Other White Black White Black Black White Black
+## [18206] White White White White White White White White White Black White
+## [18217] White White White White White White White White Black Black White
+## [18228] Black Black Black White White White White White White White White
+## [18239] Black White White White Black White White Black Black White Black
+## [18250] Black Black White Other Black Black Black Black Black Black Black
+## [18261] Black White White White White Black Black White White White White
+## [18272] White White Black White Black Black Black White Black White White
+## [18283] White White White White White White White White Other White White
+## [18294] White White White White White White White White White White White
+## [18305] White White White White White White White White White White White
+## [18316] White White White White White White White White White White White
+## [18327] White White White White White White White Black White White White
+## [18338] White White White White White White Black Black White White White
+## [18349] Black White White White White Other White White Black White Other
+## [18360] White White White White Black White White White White White White
+## [18371] White White White White White White White White White White White
+## [18382] White White White White White White White Black White White White
+## [18393] White White White White White White White White White White White
+## [18404] White White White White White White White White White White White
+## [18415] Other White White White White White White White White White White
+## [18426] White White White White White White White White White White White
+## [18437] White White White White White White Other Other White White White
+## [18448] White White White White White White White White White White White
+## [18459] White White White White White Black Other White White Black White
+## [18470] White White White White Other White Black Black Black Black Other
+## [18481] White White White White White Black Black Black White Black White
+## [18492] White White White White White White White White White Other White
+## [18503] White Other White Black White White Other White Other White White
+## [18514] Black Other White White White White White White White White White
+## [18525] White White Black Black White Other White White Other White White
+## [18536] Other Other Other White White White White Other White White White
+## [18547] Other White White White White White White White White Other White
+## [18558] White White White White White White White White White White Other
+## [18569] White White Other Other White Other White White White White Other
+## [18580] White Other Other White White White Other White White Other White
+## [18591] White White White White Other White White White Other White White
+## [18602] White White White White White White White White White White White
+## [18613] White White White White White White White White White White White
+## [18624] White White White White Black Other White Other White White White
+## [18635] White White White Black White White White White White White White
+## [18646] White White White White White White White White White White White
+## [18657] White White White White White White White White White White Other
+## [18668] White White Black Other White White White White White White White
+## [18679] White White White Other White White White White White White Other
+## [18690] White White Black White White White White White White White White
+## [18701] Black White White Black Other White White White Other White White
+## [18712] White White White White White White White White White Black White
+## [18723] White White White Black Black White Other White White White White
+## [18734] White White White White White White White White White White White
+## [18745] White White White White White White White White White White White
+## [18756] White White Other White White Other White White White Black White
+## [18767] White White White White White Other White White White White White
+## [18778] Other White Other White Other Other White Other White White White
+## [18789] White White White White White White White White White White White
+## [18800] White White White White White White White White White White White
+## [18811] White White White White White White White White White White White
+## [18822] White White White White White White White White White White White
+## [18833] White Black White White White White White White White White White
+## [18844] White White White White White White White White White Other Black
+## [18855] White Black Black Black Black White Black White White Black Black
+## [18866] White White White Black White Other White White Other Other White
+## [18877] Black White Black Black Black Black White Black White Black Black
+## [18888] Black White White White Black White White Black White Black White
+## [18899] White White White White White White White White White White White
+## [18910] White White White White Black White Black White Black White White
+## [18921] White White White White White White White White White White White
+## [18932] White White Other White White White White White Other Other Other
+## [18943] White Other Other White White White White White White White White
+## [18954] White Other Other White White White White White Other White White
+## [18965] Other Black White White Other White Black White White White White
+## [18976] White White White White Other Black Other White White White White
+## [18987] White White White White Black White White White Other White White
+## [18998] Other White Other Black White White White Other White Other Other
+## [19009] Other Other White White White White White White White White White
+## [19020] White Other White White Other Other Other Other Black Other Black
+## [19031] Other Black Black White Black White Black Black White Other Black
+## [19042] Other Black Black Black Black White Black White White White White
+## [19053] White White White Black Other Other Other White White Other Other
+## [19064] Other White White White White White White White White Other Black
+## [19075] Black Black Black Black Black White White White White White Other
+## [19086] White White White White White White White White Black Other White
+## [19097] White White Black Other White White White Other Black Other White
+## [19108] White White White White White White White White Black White White
+## [19119] White White White White Black White White Other White White White
+## [19130] White Other White Black Black Black Black Black White White White
+## [19141] White Black White Other White White Black White Black Other White
+## [19152] Other White White White White White Other White White Black Other
+## [19163] Other White White White Other White White Other White White Black
+## [19174] White White White White White White White White Other White White
+## [19185] White White Other White White Other White Other White Other Other
+## [19196] Other White White Black White White White White White White White
+## [19207] Black Other White White White White White White White White White
+## [19218] Black Black Other Black White White Black Black White White White
+## [19229] White White White White White Other White White White White White
+## [19240] White White White Other White White White Other White Black White
+## [19251] White Black White White White White White Black Black Black Black
+## [19262] Other Other Other Other White White White White Other Other White
+## [19273] Other Other Other Other White White White Black White White Other
+## [19284] Black White Other White White White White White White White White
+## [19295] White White White White White White Other White White White White
+## [19306] White White White White White White White White White White White
+## [19317] Other White White White White White White White White Black White
+## [19328] White Other Other Other Black Black White Black Black Black Black
+## [19339] Black Black Black Black Black White White White White White White
+## [19350] White White White White Black White White White White White Black
+## [19361] White Black White Black Black White Other White Other White Black
+## [19372] Black Black White Black Black Black White Black White White White
+## [19383] White White Other White White White White White White White White
+## [19394] White Other White White Black White White Black White White White
+## [19405] White White White White White Black White Other White White White
+## [19416] White White Black White White White White White White White White
+## [19427] White White White White White White White White White Other White
+## [19438] Other White White White White White Other Other White White White
+## [19449] White White White Other Other Other Other Black Black Other Black
+## [19460] White White Black Black White Other Other Black White White Black
+## [19471] White Other Other White Other White White Other White Other White
+## [19482] Other White White White White White White White White White White
+## [19493] White White White White White Other Other Other White White White
+## [19504] Other White White White Black White White White White White Black
+## [19515] Black Black Other Black Other Black Black Black White White Other
+## [19526] White White White White White Black White White Black White Black
+## [19537] White White White Black White White White Black White Black Black
+## [19548] White White Black White Black White White White White White White
+## [19559] White Other White White White White White White White Other Other
+## [19570] White White Other White White White White White White Black Black
+## [19581] White Black Black Black Black Black White White White White White
+## [19592] White Black Black White Black Other White Other White Black Black
+## [19603] Black Black Black Black Black White White Black Black White Black
+## [19614] White White White White Black White Black White White White Other
+## [19625] White Other White Other White White White White White White White
+## [19636] White White White White White White White White White White Black
+## [19647] Black Black Black White White White White White White White White
+## [19658] White Black Other Other White Black Black Black Black Black Other
+## [19669] White White White White White Black White White Black Black White
+## [19680] White White White White White White Black Black Black Black White
+## [19691] Black Black White White White White White Black Black Black Black
+## [19702] Black Black Black White White White White Other White White Black
+## [19713] White Black White White White White White White White Black Other
+## [19724] White Black White White Other White Other White White White White
+## [19735] Black Black Black Black Black Black Black Black Black Black White
+## [19746] White White White White White White White White White Other White
+## [19757] Black White White Black White Black White Black White White White
+## [19768] White White White White White White White White White White Black
+## [19779] Other White Black White White White White White White White White
+## [19790] Other Other White White White White White White White White White
+## [19801] White White Black Other White White White White White White White
+## [19812] White White Other Other White White White White White Other White
+## [19823] White Black White White White White White White White Black White
+## [19834] White White White White White Black White White White White Black
+## [19845] White Black White White White Black White White Other Other Other
+## [19856] Other Other Other Other Other Black Black Black Black White White
+## [19867] White White White White Other White White White White White White
+## [19878] White White White White White White White White White Other White
+## [19889] Other White White White White White White White White White White
+## [19900] Other White White White White White White White White Other White
+## [19911] White White White White White White White White White White White
+## [19922] White White White White White White White White White White White
+## [19933] White White White White White White White White White White Black
+## [19944] White White White Black White Black Black Black White White White
+## [19955] White White White White Other White White Black Black Black Black
+## [19966] Black White White White White White White White White White Other
+## [19977] White Black White Other White White White White White White White
+## [19988] White White White Other Black White White White White White White
+## [19999] Other White White White White White White White Black Black Black
+## [20010] Black Other Black Black Black Black White White Black White Other
+## [20021] White Black White White White White White White White White White
+## [20032] Black Other White White White Black White Black White White White
+## [20043] White Other White White White White White White White White White
+## [20054] Other Other Other White White White White White White Other Other
+## [20065] Other Other Other White White Other White White White White White
+## [20076] White Black White White White White White Black Black White White
+## [20087] Black Black White White White White Other White White White White
+## [20098] White White Black White White Black White White White White Black
+## [20109] White Other White Black Black White Black Black White Black White
+## [20120] Black White White White White White White White White White White
+## [20131] White White White White White White White White White White White
+## [20142] White White White Black Black Black Black Black White White Black
+## [20153] White White White White White White Other White White White Other
+## [20164] White White Other White White White White White White White White
+## [20175] White White Black White White Black White Black Black White White
+## [20186] Black Black White White White White White Other White White White
+## [20197] White White White White White White White White White White Black
+## [20208] Black White Black Black White Black Black White White White White
+## [20219] White White White White Black Other White White White White Other
+## [20230] Black White White Other White White White White Other White Other
+## [20241] White White White White White White White White White White White
+## [20252] Other White White White White White Other White White White White
+## [20263] White White White White White White Black White White White White
+## [20274] White Other White White White White White Other White White White
+## [20285] White White White White White White White White White White White
+## [20296] White White White White White White White White White White White
+## [20307] White White Black White Other White White White White White White
+## [20318] White White White White White White White White White White White
+## [20329] White White White White White White White White White White White
+## [20340] Black White White White White White White White White White White
+## [20351] White White White White White White White White White White Other
+## [20362] White White White Other Black White White White White White White
+## [20373] Other White Other White White Other White White White White Other
+## [20384] Other White White Black White White White White White Black White
+## [20395] White White White White White White White White White White White
+## [20406] White White White Other Black Other White White White Other White
+## [20417] White White White White White White White White White White White
+## [20428] White White White White White White Black White White White White
+## [20439] White Black White White White White White White White White White
+## [20450] White White White White White White White White White White White
+## [20461] White Black White White Black White White White White White White
+## [20472] White White White White White White White White Black Other White
+## [20483] White White White White Black White White White White White White
+## [20494] White Black White White Other White White Black Black White White
+## [20505] White Black White White White White White White White Black White
+## [20516] Black White White Black Black Black Black White Black White White
+## [20527] Black Black Black Black Black Black White White White White White
+## [20538] White White White White White White White White White Black White
+## [20549] Black Black Black White Black White Black Black White White White
+## [20560] White White White White White Black White Other Black Black White
+## [20571] White White White White Black White White White White White White
+## [20582] Black White White White Black Black Other White White Black Black
+## [20593] White Black White White White Black White White White White Black
+## [20604] White White White White White White White Black White White White
+## [20615] Other White White White White Black White White White White White
+## [20626] White White White Black White Black Black Black White White White
+## [20637] White White White White White White White White White White White
+## [20648] White Black Black White Black Black Black Black Black Black Black
+## [20659] Black Black Black Black White White White White Black White Black
+## [20670] Black White Black Black White White White White White White White
+## [20681] Other White White Black White Black Other White White White White
+## [20692] Other White Other White White White White White White White White
+## [20703] White White White White White White White White White White White
+## [20714] White White White White White White White White White White White
+## [20725] White White White Black White White White Other White White White
+## [20736] White White White White White White White White White White White
+## [20747] White White White White White White White White White White White
+## [20758] White White Black White White White White White White White Black
+## [20769] White White White White White White White White White White White
+## [20780] White White White White White White White White White White White
+## [20791] White White White White White White White White White White Black
+## [20802] White Other White White White White White White White White White
+## [20813] White Other White White White White White White White White White
+## [20824] White White White White White White White White White White White
+## [20835] Other White White White White White White White White White White
+## [20846] White White Black White White White White Other White White White
+## [20857] White White White White White White White White White White Black
+## [20868] White White White White White White Other White Other White White
+## [20879] White White White White White White White Black White White White
+## [20890] White White White White White White White White White White White
+## [20901] White White Black Black Black White White Black Black Other Black
+## [20912] White White Black White Black Black Black Black Black White Other
+## [20923] Black White White Black White White White White White White White
+## [20934] White Other White White White White White White White White White
+## [20945] White White Other White White White Other White White White White
+## [20956] White White Other White White White Other Other Other Other Other
+## [20967] Other White White White White White Black Black White White Other
+## [20978] White White White White White White White White White White White
+## [20989] Other White Other White White White White White White White Other
+## [21000] White White White White White White White White White White Other
+## [21011] White Other White White White Other White Black White White White
+## [21022] White White Black White White Black White White White Black White
+## [21033] White White White White White White White White Other White White
+## [21044] White White Other Other Other White White White White White White
+## [21055] White White Black Other White Other Other Other White White Other
+## [21066] Black White Other White White Other White White White White White
+## [21077] White White White White White White White White White White Other
+## [21088] White White White White White White White White White White White
+## [21099] White White White White Other White White White White White White
+## [21110] White White White White White White White White Other White Other
+## [21121] White White White White White White White White White Other Other
+## [21132] White White White White White White White White Other White White
+## [21143] White White White White White White Other White White Other White
+## [21154] White White White White White White White White Other Black White
+## [21165] White White White White White White Other White White White Black
+## [21176] Other White White White White Black White White White White White
+## [21187] White White White White White White White White White White White
+## [21198] White White White White White White White White White White White
+## [21209] White White White White White White White White White White White
+## [21220] Black White White White White White Black White Other White White
+## [21231] White White White White White White White White White White White
+## [21242] White White White White White White White White White White White
+## [21253] White White White White White Black White White White Black White
+## [21264] White White Black White White Black White White White White White
+## [21275] White White Black White White White White Black White White White
+## [21286] Other Black Black White White White Other White White White White
+## [21297] Other White White Other Other Other Other White White White White
+## [21308] White White White White White White White White White Other White
+## [21319] White White White Other White White White White White White Other
+## [21330] White White White White White White White White White White White
+## [21341] White White White White White White White White White White White
+## [21352] White White White White White White White White White White White
+## [21363] White White White White White White White White White White White
+## [21374] White White White White White White White White Other Black Black
+## [21385] Black Black Black Other Black White Other Black Other White Black
+## [21396] Black Black White Black White Black White White Black White Black
+## [21407] White White Black White White Black White Other Other Other Black
+## [21418] White White White Black Other Black Black White White White White
+## [21429] White White Black Black Black White Black White White White White
+## [21440] White White White White White White White White White White White
+## [21451] White White White White White White White White White White White
+## [21462] White White White White White White White White White White White
+## [21473] White White White White White White White White White White White
+## Levels: Other Black White Not applicable
+```
+
+---
+## Look at the structure of an object
+
+
+```r
+str(gss_cat)
+```
+
+```
+## Classes 'tbl_df', 'tbl' and 'data.frame':	21483 obs. of  9 variables:
+##  $ year   : int  2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 ...
+##  $ marital: Factor w/ 6 levels "No answer","Never married",..: 2 4 5 2 4 6 2 4 6 6 ...
+##  $ age    : int  26 48 67 39 25 25 36 44 44 47 ...
+##  $ race   : Factor w/ 4 levels "Other","Black",..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ rincome: Factor w/ 16 levels "No answer","Don't know",..: 8 8 16 16 16 5 4 9 4 4 ...
+##  $ partyid: Factor w/ 10 levels "No answer","Don't know",..: 6 5 7 6 9 10 5 8 9 4 ...
+##  $ relig  : Factor w/ 16 levels "No answer","Don't know",..: 15 15 15 6 12 15 5 15 15 15 ...
+##  $ denom  : Factor w/ 30 levels "No answer","Don't know",..: 25 23 3 30 30 25 30 15 4 25 ...
+##  $ tvhours: int  12 NA 2 4 1 NA 3 NA 0 3 ...
+```
+
+
+---
+## When `$`?
+Quick and dirty
+
+.pull-left[
+
+```r
+table(gss_cat$race)
+```
+
+```
+## 
+##          Other          Black          White Not applicable 
+##           1959           3129          16395              0
+```
+
+]
+
+.pull-right[
+
+```r
+hist(gss_cat$age)
+```
+
+![](w1p2_files/figure-html/hist-1.png)&lt;!-- --&gt;
+]
+
+---
+## Your turn
+* Run `table` on *religion*
+* Produce a histogram of *tvhours*
+
+---
+# The pipe operator
+We'll talk about this a lot more, but
+* The `%&gt;%` operator (super + shift + m) inserts the input from the left as the 
+  first argument in the next function
+  
+
+```r
+gss_cat %&gt;% 
+  count(denom)
+```
+
+```
+## # A tibble: 30 x 2
+##    denom                    n
+##    &lt;fct&gt;                &lt;int&gt;
+##  1 No answer              117
+##  2 Don't know              52
+##  3 No denomination       1683
+##  4 Other                 2534
+##  5 Episcopal              397
+##  6 Presbyterian-dk wh     244
+##  7 Presbyterian, merged    67
+##  8 Other presbyterian      47
+##  9 United pres ch in us   110
+## 10 Presbyterian c in us   104
+## # ... with 20 more rows
+```
+
+The above is equivalent to
+
+
+```r
+count(gss_cat, denom)
+```
+
+```
+## # A tibble: 30 x 2
+##    denom                    n
+##    &lt;fct&gt;                &lt;int&gt;
+##  1 No answer              117
+##  2 Don't know              52
+##  3 No denomination       1683
+##  4 Other                 2534
+##  5 Episcopal              397
+##  6 Presbyterian-dk wh     244
+##  7 Presbyterian, merged    67
+##  8 Other presbyterian      47
+##  9 United pres ch in us   110
+## 10 Presbyterian c in us   104
+## # ... with 20 more rows
+```
+
+---
+# Why use `%&gt;%`
+* Chaining arguments
+
+
+```r
+gss_cat %&gt;% 
+  group_by(rincome) %&gt;% 
+  count(partyid) %&gt;% 
+  head(15)
+```
+
+```
+## # A tibble: 15 x 3
+## # Groups:   rincome [2]
+##    rincome    partyid                n
+##    &lt;fct&gt;      &lt;fct&gt;              &lt;int&gt;
+##  1 No answer  No answer             14
+##  2 No answer  Other party            3
+##  3 No answer  Strong republican     22
+##  4 No answer  Not str republican    22
+##  5 No answer  Ind,near rep          12
+##  6 No answer  Independent           37
+##  7 No answer  Ind,near dem          22
+##  8 No answer  Not str democrat      26
+##  9 No answer  Strong democrat       25
+## 10 Don't know No answer              5
+## 11 Don't know Other party            4
+## 12 Don't know Strong republican     30
+## 13 Don't know Not str republican    22
+## 14 Don't know Ind,near rep          18
+## 15 Don't know Independent          107
+```
+
+---
+
+```r
+gss_cat %&gt;% 
+  group_by(rincome) %&gt;% 
+  count(partyid) %&gt;% 
+  head(15)
+```
+
+The above is equivalent to the below, but the above is considerably more clear.
+
+
+```r
+head(count(group_by(gss_cat, rincome), partyid), 15)
+```
+
+```
+## # A tibble: 15 x 3
+## # Groups:   rincome [2]
+##    rincome    partyid                n
+##    &lt;fct&gt;      &lt;fct&gt;              &lt;int&gt;
+##  1 No answer  No answer             14
+##  2 No answer  Other party            3
+##  3 No answer  Strong republican     22
+##  4 No answer  Not str republican    22
+##  5 No answer  Ind,near rep          12
+##  6 No answer  Independent           37
+##  7 No answer  Ind,near dem          22
+##  8 No answer  Not str democrat      26
+##  9 No answer  Strong democrat       25
+## 10 Don't know No answer              5
+## 11 Don't know Other party            4
+## 12 Don't know Strong republican     30
+## 13 Don't know Not str republican    22
+## 14 Don't know Ind,near rep          18
+## 15 Don't know Independent          107
+```
+
+And this is a relatively simple example...
+
+---
+class: inverse center middle
+# Independent Lab
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="https://platform.twitter.com/widgets.js"></script>

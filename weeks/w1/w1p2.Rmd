@@ -5,13 +5,23 @@ author: "Daniel Anderson "
 date: "Week 1, Class 2 "
 output:
   xaringan::moon_reader:
-    css: ["default", "uo", "uo-fonts", "hygge", "custom.css"]
+    css: ["default", "uo", "uo-fonts", "hygge", "custom2.css"]
     lib_dir: libs
     nature:
       highlightStyle: atelier-dune-light
       highlightLines: true
       countIncrementalSlides: false
       beforeInit: "https://platform.twitter.com/widgets.js"
+---
+background-image: url(http://r4ds.had.co.nz/diagrams/data-science.png)
+background-size:contain
+
+# The data science pipeline
+
+--
+### How do we go about this?
+
+
 ---
 class: inverse center middle
 background-image: url(../img/sky.jpg)
@@ -98,7 +108,7 @@ background-size: contain
 n_obs <- 1000
 means <- c(100, 50) # `c` comes from base - used to create a vector
 error_cv <- matrix(c(100, 44, # `matrix` comes from base
-					     44, 49), byrow = TRUE, ncol = 2) # part of base
+					     44, 49), byrow = TRUE, ncol = 2) 
 cov2cor(error_cv) # part of stats package
 ```
 
@@ -135,22 +145,28 @@ There is a *ton* of functionality that comes with R right from your initial down
 
 .pull-right[
 * Any of these can be installed with `install.packages("pkg_name")`. You will then have access to all the functionality of the package.
-* Notice this plot only goes to **mid-2014**. As of this writing (09/20/17), there are [12,618](https://cran.r-project.org/web/packages/) packages available on CRAN! 
+* Notice this plot only goes to **mid-2014**. As of this writing (09/19/2018),
+there are [13,077](https://cran.r-project.org/web/packages/) packages available
+on CRAN!
+* Necessarily constantly evolving to keep up with the varied demands of data
+  scientists within the data science pipeline.
 ]
 
 ---
 # Other packages
 ### On GitHub
+Generally these packages are more "in development", or are the beta versions of
+existing packages. 
 
 .pull-left[
 <div align = "center">
-<img src = ../img/esvis.png height = 400>
+<img src = ../img/esvis.png height = 350>
 </div>
 ]
 
 .pull-right[
 <div align = "center">
-<img src = ../img/github_pkgs.png height = 400>
+<img src = ../img/github_pkgs.png height = 350>
 </div>
 ]
 
@@ -201,8 +217,9 @@ binned_plot(benchmarks, math ~ ethnicity, qtile_groups = 5)
 
 ---
 # Probably overly complicated
-```{r esvis_ptile2, fig.width = 13, fig.height = 7, warning = FALSE}
-binned_plot(benchmarks, math ~ ethnicity + season + frl, qtile_groups = 5)
+```{r esvis_ptile2, fig.width = 13, fig.height = 6, warning = FALSE}
+binned_plot(benchmarks, math ~ ethnicity + season + frl, 
+            qtile_groups = 5)
 ```
 
 ---
@@ -284,8 +301,9 @@ summary(mlm)
 ```{r pretty_lme4_output, eval = FALSE, warning = FALSE}
 # install.packages("sjPlot")
 library(sjPlot)
-sjt.lmer(mlm, p.kr = FALSE) # Note, second argument generally not necessary
+sjt.lmer(mlm, p.kr = FALSE) 
 ```
+.gray[Note, the `p.kr` argument generally not necessary]
 
 ---
 
@@ -295,7 +313,7 @@ sjt.lmer(mlm, p.kr = FALSE) # Note, second argument generally not necessary
 ---
 # Quickly plot differences between states
 
-```{r lme4_state_diff, results = "hide", fig.height = 6, fig.width = 12}
+```{r lme4_state_diff, results = "hide", fig.height = 5, fig.width = 12}
 library(lattice) # pre-installed package
 re <- ranef(mlm, condVar = TRUE)
 qqmath(re)$stateabb
@@ -384,6 +402,9 @@ background-size: cover
 --
 1. Version control .gray[.smaller[(usually listed as the first reason)]]
 
+--
+1. Let's [go explore](https://github.com) for a minute!
+
 ---
 ### How?
 
@@ -397,3 +418,233 @@ background-size: cover
 class: inverse
 background-image: url(../img/cats.jpg)
 background-size: cover
+
+---
+class: inverse
+background-image: url(https://cdn-images-1.medium.com/max/500/0*L8V0he9CqczlGIhu.jpg)
+background-size: cover
+
+---
+class: inverse
+background-image: url(https://pics.me.me/merge-conflict-git-push-force-origin-masteremegenerator-net-29177974.png)
+background-size: contain
+
+
+---
+class: inverse
+background-image: url(http://m.memegen.com/d5mxnu.jpg)
+background-size: contain
+
+---
+class: inverse
+background-image: url(https://media.makeameme.org/created/you-said-you-ujn0c6.jpg)
+background-size: contain
+
+---
+class: inverse middle center
+# Enough memes?
+
+---
+# Overall message
+git can obviously be frustrating .Large[**But**]:
+* Super transparent - screw ups and all
+* Can be a powerful tool for collaboration
+  + Communication between team members still important
+  + Try to avoid merge conflicts
+      + One person working on one thing at a time
+      + pull first each time
+      + push often/at logical points - don't lax here
+
+
+---
+# Josh and I are on the same page
+
+.center[
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">My 2cents on open science is less pre-reg, more:<br><br>git commit &#39;oops!&#39;<br>git commit &#39;fixed mistake&#39;<br>git push</p>&mdash; Joshua Rosenberg (@jrosenberg6432) <a href="https://twitter.com/jrosenberg6432/status/1020148533079486464?ref_src=twsrc%5Etfw">July 20, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+]
+
+---
+# But there's also this
+
+.center[
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">That feeling when you&#39;re writing an <a href="https://twitter.com/hashtag/AERA19?src=hash&amp;ref_src=twsrc%5Etfw">#AERA19</a> presentation proposal on open science and it takes you four commits and a series of weird/confusing error messages to upload the final file to GitHub 😂</p>&mdash; Joshua Rosenberg (@jrosenberg6432) <a href="https://twitter.com/jrosenberg6432/status/1021385676472967168?ref_src=twsrc%5Etfw">July 23, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+]
+
+---
+# Last note
+Best recipe for **open** and **transparent** research, from the perspective of
+me:
+* Use scripting
+* Use dynamic documents 
+  + R Markdown is the best 
+    + Better than Jupyter notebooks imo; see [here](https://docs.google.com/presentation/d/1n2RlMdmv1p25Xy5thJUhkKGvjtV-dkAIsUXP-AL4ffI/edit#slide=id.g362da58057_0_1) and [here](https://yihui.name/en/2018/09/notebook-war/)
+* Use git/GitHub
+* Use open data whenever possible
+  + Consider ways you can make portions of the data open, if not all of it
+  + Consider methodologies you can use with open data that may recover the
+    properties of protected data
+* Advanced - use *packrat* or similar (e.g., *drake*) that stores software
+  versions
+
+---
+class: inverse
+background-image: url(../img/help.jpg)
+background-size: cover
+
+---
+.center[
+
+![](https://i.imgur.com/bJShYlt.gif)
+
+]
+
+(I may have made these slides late at night)
+
+---
+# Getting started in earnest with R!
+
+* Demo RStudio goodies
+* Talk scripts for a minute
+* Jump to lab
+
+---
+## R Studio
+[demo]
+* Customizing the look/feel 
+  + Theme
+  + Syntax highlighting
+  + Panes
+* Keyboard shortcuts
+* Snippets (briefly)
+
+---
+## R Studio Projects
+* Start a new project and call it Lab 1. 
+* Once the Project has launched, create a new R script to save all your work for today. Run lines of code from the script with Command + Enter (mac) or Control + Enter (Windows). 
+
+[demo]
+
+<br>
+
+* This is really a note on working directories, reproducibility, and staying organized
+* So, let's talk about each a bit, before talking about projects
+
+---
+## What's a working directory?
+
+* Where you're at on your computer.
+* See where you're currently at by looking at the top of the console 
+    + Or run `getwd()` in the console
+* You can change your working directory, with `setwd("path/to/files/")` but I'm going to recomend avoiding that - instead, use projects.
+* Use `list.files()` to see the contents of your working directory (i.e., what your computer "sees")
+
+![wd](../img/wd.png) 
+
+---
+## What's different with projects?
+* Your working directory is immediately wherever your project is.
+* Use relative paths from there to read/save data (or the *here* package, 
+  which we'll talk about more later).
+
+---
+## How do we access variables?
+* Generally, in this course, *tidyverse* tools
+* Sometimes `$`
+* Let's load the tidyverse, and then we'll access some variables from the 
+  datasets within some of those packages.
+* Look at the *gss_cat* data frame.
+
+```{r gss_cat, message = FALSE, warning = FALSE}
+library(tidyverse)
+gss_cat
+```
+
+---
+# Selecting variables
+Select the *race* variable with `$`.
+
+```{r select_$}
+gss_cat$race
+```
+
+---
+## Look at the structure of an object
+
+```{r str}
+str(gss_cat)
+```
+
+
+---
+## When `$`?
+Quick and dirty
+
+.pull-left[
+```{r table}
+table(gss_cat$race)
+```
+
+]
+
+.pull-right[
+```{r hist}
+hist(gss_cat$age)
+```
+]
+
+---
+## Your turn
+* Run `table` on *religion*
+* Produce a histogram of *tvhours*
+
+---
+# The pipe operator
+We'll talk about this a lot more, but
+* The `%>%` operator (super + shift + m) inserts the input from the left as the 
+  first argument in the next function
+  
+```{r pipe-example1}
+gss_cat %>% 
+  count(denom)
+```
+
+The above is equivalent to
+
+```{r no-pipe-example}
+count(gss_cat, denom)
+```
+
+---
+# Why use `%>%`
+* Chaining arguments
+
+```{r chained-args}
+gss_cat %>% 
+  group_by(rincome) %>% 
+  count(partyid) %>% 
+  head(15)
+```
+
+---
+```{r chained-args2, eval = FALSE}
+gss_cat %>% 
+  group_by(rincome) %>% 
+  count(partyid) %>% 
+  head(15)
+```
+
+The above is equivalent to the below, but the above is considerably more clear.
+
+```{r chained-args3}
+head(count(group_by(gss_cat, rincome), partyid), 15)
+```
+
+And this is a relatively simple example...
+
+---
+class: inverse center middle
+# Independent Lab

@@ -1,0 +1,87 @@
+---
+title: "Lab 1"
+author: "Your Name Here"
+date: "September 26, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
+
+# Loading a library
+Run the code chunk below to load the tidyverse. If you get errors, you probably 
+don't have it installed yet, so run `install.packages("tidyverse")` first.
+
+```{r load-tidyverse, message = FALSE, warning = FALSE}
+library(tidyverse)
+```
+Note that you should get some messages printed out below that state all the 
+packages that have been loaded. This is important to pay attention to. It says
+that both *ggplot2* and *dplyr* have been loaded, so you don't need explicit 
+calls to those packages 
+
+Many packages also include data. We'll focus here on the *mpg* dataset, which
+comes from *ggplot2*. Run the following code to produce a scatterplot 
+
+```{r first-plot, options}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+Look at the help documentation for `geom_point`. Note you'll have to run the 
+code to access the help documentation within a code chunk, rather than in the
+text areas. Try changing the color of the points to "gray70". 
+
+In the code chunk below create a second scatterplot, this time with the number
+of cylinders displayed on the x-axis and the city miles per gallon on the 
+x-axis.
+
+```{r second-plot}
+
+
+```
+
+The *diamonds* dataset is also included with *ggplot2*. The code below will
+show the first six rows of the dataset.
+
+```{r head-diamonds}
+head(diamonds)
+```
+
+Look at the help documentation and then use the code below to change the 
+number of rows shown to 15.
+
+```{r head-diamonds15}
+head(diamonds, )
+```
+
+Call a similar function that shows the last six rows of the dataset.
+
+```{r last-rows}
+
+```
+
+Use any function you want to determine the dimensions of the dataset - i.e., 
+the number of rows and columns.
+
+```{r diamonds-dimensions}
+
+```
+
+Use the pipe operator, `%>%`, along with `count`, to count the different
+diamond colors. 
+
+```{r diamond-colors1}
+
+```
+
+Write the code again, this time without the pipe operator
+
+```{r diamond-colors2}
+
+```
+
+Click the Knit button near the top (with the cute little ball of yarn next to
+it), and turn in the output to canvas. Make sure to change your name first 
+though.
