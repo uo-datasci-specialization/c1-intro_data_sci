@@ -1,0 +1,361 @@
+---
+title: "Introduction to data visualization"
+subtitle: "Distributions & categorical data"
+author: "Daniel Anderson "
+date: "Week 2, Class 2"
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "hygge", "custom2.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+```{r, setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 13, 
+                      message = FALSE, 
+                      warning = FALSE)
+```
+
+# Agenda 
+* Questions
+* New geoms!
+* Lab
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+---
+# geoms for today
+* `geom_histogram`
+* `geom_density`
+* `ggridges::geom_density_ridges`
+* `geom_boxplot`
+* `geom_violin`
+* `ggbeeswarm::*`
+* `geom_tile`
+* `geom_bar`
+* `geom_col`
+
+---
+# Data for today
+* *fivethirtyeight* package
+  + college_grad_students
+
+```{r data, eval = FALSE}
+install.packages("fivethirtyeight")
+library(fivethirtyeight)
+View(college_grad_students)
+d <- college_grad_students # simpler reference
+```
+
+---
+# Histogram of `grad_total`
+
+```{r include = FALSE}
+library(fivethirtyeight)
+d <- college_grad_students 
+```
+
+```{r hist1, fig.height = 5.5}
+library(tidyverse)
+theme_set(theme_minimal(base_size = 20))
+
+ggplot(d, aes(x = grad_total)) +
+  geom_histogram() 
+```
+
+---
+# Slightly nicer 
+Add some transparency
+
+```{r hist2, fig.height = 5.5}
+ggplot(d, aes(x = grad_total)) +
+  geom_histogram(alpha = 0.7) 
+```
+
+---
+# Pop quiz time
+* How would we change the color of this plot?
+* What if we wanted different colors by `major_category`
+
+--
+### Try it!
+
+---
+# Alternative representation
+### Density plot
+
+```{r dens1, fig.height = 5.5}
+ggplot(d, aes(x = grad_total)) +
+  geom_density() 
+```
+
+---
+# Separate Densities
+### How?
+
+--
+```{r dens2, fig.height = 4.5}
+ggplot(d, aes(x = grad_total, fill = major_category)) +
+  geom_density(alpha = 0.2) 
+```
+
+Way too complex, in this case
+
+---
+class:inverse middle center
+# Alternatives?
+
+---
+```{r dens3}
+ggplot(d, aes(x = grad_total)) +
+  geom_density(alpha = 0.2) +
+  facet_wrap(~major_category)
+```
+
+---
+## Even better
+```{r ridgeline-density, fig.height = 6}
+library(ggridges)
+ggplot(d, aes(x = grad_total, y = major_category)) +
+  geom_density_ridges()
+```
+
+---
+class: inverse bottom
+background-image:url(../img/yarn.jpg)
+background-size:cover
+
+# Categorical data
+
+---
+# Candy data & cleanup
+```{r candy-cleanup}
+candy <- candy_rankings %>% 
+  gather(type, dummy, chocolate:pluribus) %>% 
+  filter(dummy) %>% 
+  select(-dummy)
+
+candy
+```
+
+---
+# Boxplot
+
+```{r box1, fig.height = 6}
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_boxplot()
+```
+
+---
+# Violin plots
+### Can you guess how?
+
+--
+```{r violin1, fig.height = 6}
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_violin()
+```
+
+---
+# Another example
+
+```{r violin2, fig.height = 6}
+ggplot(mpg, aes(drv, cty)) +
+  geom_violin()
+```
+
+---
+# But...
+
+```{r ridg-dens1, fig.height = 6}
+ggplot(candy, aes(sugarpercent, type)) +
+  geom_density_ridges()
+```
+
+---
+```{r ridg-dens2}
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges()
+```
+
+---
+# Can also fill by
+
+```{r ridg-dens3, fig.height = 6}
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges(aes(fill = factor(cyl)))
+```
+
+---
+# Add transparency for clarity
+
+```{r ridg-dens4, fig.height = 5.5}
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges(aes(fill = factor(cyl)),
+                      alpha = 0.7)
+```
+
+---
+# Change fill color
+
+```{r ridg-dens5, fig.height = 5.5}
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges(aes(fill = factor(cyl)),
+                      alpha = 0.7) +
+  scale_fill_viridis_d()
+```
+
+---
+# Beeswarm
+
+```{r quasirandom1, fig.height = 6}
+library(ggbeeswarm)
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_quasirandom()
+```
+
+---
+# Compare to `jitter`
+
+```{r jitter, fig.height = 6}
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_jitter()
+```
+
+---
+# Beeswarm
+
+```{r beeswarm, fig.height = 6}
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_beeswarm()
+```
+
+---
+# By a variable
+
+```{r quasi-rand-by, fig.height = 6}
+ggplot(mpg, aes(drv, cty)) +
+  geom_quasirandom(aes(color = factor(cyl)),
+                   dodge = 0.2)
+```
+
+---
+# Heatmaps
+* Be wary of them - they don't always work well
+
+> A heatmap is a literal way of visualizing a table of numbers, where you
+substitute the numbers with colored cells.
+
+.gray[Nathan Yau]
+
+---
+# Example w/Correlations
+
+```{r corr}
+corr <- cor(mtcars)
+pc <- corr %>% 
+  as.data.frame() %>% 
+  mutate(row = rownames(.)) %>% 
+  gather(col, cor, -row)
+
+head(pc)
+```
+
+---
+
+```{r corr-heatmap1}
+ggplot(pc, aes(row, col, fill = cor)) +
+  geom_tile()
+```
+
+---
+
+```{r corr-heatmap2}
+ggplot(pc, aes(row, col, fill = cor)) +
+  geom_tile() +
+  scale_fill_viridis_c()
+```
+
+---
+```{r corr-heatmap3}
+pc %>% 
+  mutate(cor = ifelse(cor == 1, NA, cor)) %>% 
+  ggplot(aes(row, col, fill = cor))  +
+  geom_tile() +
+  scale_fill_viridis_c(option = "magma")
+```
+
+---
+# Quickly: Bar charts
+
+```{r barchart1, fig.height = 6}
+ggplot(mpg, aes(class)) + 
+  geom_bar()
+```
+
+---
+```{r summarize-mpg}
+summarized_mpg <- mpg %>% 
+  group_by(class) %>% 
+  count()
+summarized_mpg
+```
+
+---
+
+```{r barchart2, fig.height = 3}
+ggplot(summarized_mpg, aes(class, n)) + 
+  geom_bar(stat = "identity")
+```
+
+--
+
+```{r barchart3, fig.height = 3}
+ggplot(summarized_mpg, aes(class, n)) + 
+  geom_col()
+```
+
+
+---
+# Change the stat 
+
+```{r barchart4, fig.height = 6}
+ggplot(mpg, aes(class, hwy)) + 
+  geom_bar(stat = "summary", fun.y = "mean")
+```
+
+---
+# How do we change the x-axis order?
+* We'll talk about automated methods more later.
+* Basically - define x-axis var as a factor w/levels in the order you want
+
+```{r}
+mpg <- mpg %>% 
+  mutate(class = factor(class,
+                        levels = c("pickup",
+                                   "suv",
+                                   "minivan",
+                                   "2seater",
+                                   "midsize",
+                                   "subcompact",
+                                   "compact")))
+```
+
+---
+```{r barchart5}
+ggplot(mpg, aes(class, hwy)) + 
+  geom_bar(stat = "summary", fun.y = "mean")
+```
+
+---
+class: inverse middle center
+# Lab

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to data visualization</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to data visualization
+## Distributions &amp; categorical data
+### Daniel Anderson
+### Week 2, Class 2
+
+---
+
+
+
+
+# Agenda 
+* Questions
+* New geoms!
+* Lab
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+---
+# geoms for today
+* `geom_histogram`
+* `geom_density`
+* `ggridges::geom_density_ridges`
+* `geom_boxplot`
+* `geom_violin`
+* `ggbeeswarm::*`
+* `geom_tile`
+* `geom_bar`
+* `geom_col`
+
+---
+# Data for today
+* *fivethirtyeight* package
+  + college_grad_students
+
+
+```r
+install.packages("fivethirtyeight")
+library(fivethirtyeight)
+View(college_grad_students)
+d &lt;- college_grad_students # simpler reference
+```
+
+---
+# Histogram of `grad_total`
+
+
+
+
+```r
+library(tidyverse)
+theme_set(theme_minimal(base_size = 20))
+
+ggplot(d, aes(x = grad_total)) +
+  geom_histogram() 
+```
+
+![](w2p2_files/figure-html/hist1-1.png)&lt;!-- --&gt;
+
+---
+# Slightly nicer 
+Add some transparency
+
+
+```r
+ggplot(d, aes(x = grad_total)) +
+  geom_histogram(alpha = 0.7) 
+```
+
+![](w2p2_files/figure-html/hist2-1.png)&lt;!-- --&gt;
+
+---
+# Pop quiz time
+* How would we change the color of this plot?
+* What if we wanted different colors by `major_category`
+
+--
+### Try it!
+
+---
+# Alternative representation
+### Density plot
+
+
+```r
+ggplot(d, aes(x = grad_total)) +
+  geom_density() 
+```
+
+![](w2p2_files/figure-html/dens1-1.png)&lt;!-- --&gt;
+
+---
+# Separate Densities
+### How?
+
+--
+
+```r
+ggplot(d, aes(x = grad_total, fill = major_category)) +
+  geom_density(alpha = 0.2) 
+```
+
+![](w2p2_files/figure-html/dens2-1.png)&lt;!-- --&gt;
+
+Way too complex, in this case
+
+---
+class:inverse middle center
+# Alternatives?
+
+---
+
+```r
+ggplot(d, aes(x = grad_total)) +
+  geom_density(alpha = 0.2) +
+  facet_wrap(~major_category)
+```
+
+![](w2p2_files/figure-html/dens3-1.png)&lt;!-- --&gt;
+
+---
+## Even better
+
+```r
+library(ggridges)
+ggplot(d, aes(x = grad_total, y = major_category)) +
+  geom_density_ridges()
+```
+
+![](w2p2_files/figure-html/ridgeline-density-1.png)&lt;!-- --&gt;
+
+---
+class: inverse bottom
+background-image:url(../img/yarn.jpg)
+background-size:cover
+
+# Categorical data
+
+---
+# Candy data &amp; cleanup
+
+```r
+candy &lt;- candy_rankings %&gt;% 
+  gather(type, dummy, chocolate:pluribus) %&gt;% 
+  filter(dummy) %&gt;% 
+  select(-dummy)
+
+candy
+```
+
+```
+## # A tibble: 197 x 5
+##    competitorname           sugarpercent pricepercent winpercent type     
+##    &lt;chr&gt;                           &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;    
+##  1 100 Grand                       0.732       0.860        67.0 chocolate
+##  2 3 Musketeers                    0.604       0.511        67.6 chocolate
+##  3 Almond Joy                      0.465       0.767        50.3 chocolate
+##  4 Baby Ruth                       0.604       0.767        56.9 chocolate
+##  5 Charleston Chew                 0.604       0.511        39.0 chocolate
+##  6 Hershey's Kisses                0.127       0.0930       55.4 chocolate
+##  7 Hershey's Krackel               0.430       0.918        62.3 chocolate
+##  8 Hershey's Milk Chocolate        0.430       0.918        56.5 chocolate
+##  9 Hershey's Special Dark          0.430       0.918        59.2 chocolate
+## 10 Junior Mints                    0.197       0.511        57.2 chocolate
+## # ... with 187 more rows
+```
+
+---
+# Boxplot
+
+
+```r
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_boxplot()
+```
+
+![](w2p2_files/figure-html/box1-1.png)&lt;!-- --&gt;
+
+---
+# Violin plots
+### Can you guess how?
+
+--
+
+```r
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_violin()
+```
+
+![](w2p2_files/figure-html/violin1-1.png)&lt;!-- --&gt;
+
+---
+# Another example
+
+
+```r
+ggplot(mpg, aes(drv, cty)) +
+  geom_violin()
+```
+
+![](w2p2_files/figure-html/violin2-1.png)&lt;!-- --&gt;
+
+---
+# But...
+
+
+```r
+ggplot(candy, aes(sugarpercent, type)) +
+  geom_density_ridges()
+```
+
+![](w2p2_files/figure-html/ridg-dens1-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges()
+```
+
+![](w2p2_files/figure-html/ridg-dens2-1.png)&lt;!-- --&gt;
+
+---
+# Can also fill by
+
+
+```r
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges(aes(fill = factor(cyl)))
+```
+
+![](w2p2_files/figure-html/ridg-dens3-1.png)&lt;!-- --&gt;
+
+---
+# Add transparency for clarity
+
+
+```r
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges(aes(fill = factor(cyl)),
+                      alpha = 0.7)
+```
+
+![](w2p2_files/figure-html/ridg-dens4-1.png)&lt;!-- --&gt;
+
+---
+# Change fill color
+
+
+```r
+ggplot(mpg, aes(cty, drv)) +
+  geom_density_ridges(aes(fill = factor(cyl)),
+                      alpha = 0.7) +
+  scale_fill_viridis_d()
+```
+
+![](w2p2_files/figure-html/ridg-dens5-1.png)&lt;!-- --&gt;
+
+---
+# Beeswarm
+
+
+```r
+library(ggbeeswarm)
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_quasirandom()
+```
+
+![](w2p2_files/figure-html/quasirandom1-1.png)&lt;!-- --&gt;
+
+---
+# Compare to `jitter`
+
+
+```r
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_jitter()
+```
+
+![](w2p2_files/figure-html/jitter-1.png)&lt;!-- --&gt;
+
+---
+# Beeswarm
+
+
+```r
+ggplot(candy, aes(type, sugarpercent)) +
+  geom_beeswarm()
+```
+
+![](w2p2_files/figure-html/beeswarm-1.png)&lt;!-- --&gt;
+
+---
+# By a variable
+
+
+```r
+ggplot(mpg, aes(drv, cty)) +
+  geom_quasirandom(aes(color = factor(cyl)),
+                   dodge = 0.2)
+```
+
+![](w2p2_files/figure-html/quasi-rand-by-1.png)&lt;!-- --&gt;
+
+---
+# Heatmaps
+* Be wary of them - they don't always work well
+
+&gt; A heatmap is a literal way of visualizing a table of numbers, where you
+substitute the numbers with colored cells.
+
+.gray[Nathan Yau]
+
+---
+# Example w/Correlations
+
+
+```r
+corr &lt;- cor(mtcars)
+pc &lt;- corr %&gt;% 
+  as.data.frame() %&gt;% 
+  mutate(row = rownames(.)) %&gt;% 
+  gather(col, cor, -row)
+
+head(pc)
+```
+
+```
+##    row col        cor
+## 1  mpg mpg  1.0000000
+## 2  cyl mpg -0.8521620
+## 3 disp mpg -0.8475514
+## 4   hp mpg -0.7761684
+## 5 drat mpg  0.6811719
+## 6   wt mpg -0.8676594
+```
+
+---
+
+
+```r
+ggplot(pc, aes(row, col, fill = cor)) +
+  geom_tile()
+```
+
+![](w2p2_files/figure-html/corr-heatmap1-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(pc, aes(row, col, fill = cor)) +
+  geom_tile() +
+  scale_fill_viridis_c()
+```
+
+![](w2p2_files/figure-html/corr-heatmap2-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+pc %&gt;% 
+  mutate(cor = ifelse(cor == 1, NA, cor)) %&gt;% 
+  ggplot(aes(row, col, fill = cor))  +
+  geom_tile() +
+  scale_fill_viridis_c(option = "magma")
+```
+
+![](w2p2_files/figure-html/corr-heatmap3-1.png)&lt;!-- --&gt;
+
+---
+# Quickly: Bar charts
+
+
+```r
+ggplot(mpg, aes(class)) + 
+  geom_bar()
+```
+
+![](w2p2_files/figure-html/barchart1-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+summarized_mpg &lt;- mpg %&gt;% 
+  group_by(class) %&gt;% 
+  count()
+summarized_mpg
+```
+
+```
+## # A tibble: 7 x 2
+## # Groups:   class [7]
+##   class          n
+##   &lt;chr&gt;      &lt;int&gt;
+## 1 2seater        5
+## 2 compact       47
+## 3 midsize       41
+## 4 minivan       11
+## 5 pickup        33
+## 6 subcompact    35
+## 7 suv           62
+```
+
+---
+
+
+```r
+ggplot(summarized_mpg, aes(class, n)) + 
+  geom_bar(stat = "identity")
+```
+
+![](w2p2_files/figure-html/barchart2-1.png)&lt;!-- --&gt;
+
+--
+
+
+```r
+ggplot(summarized_mpg, aes(class, n)) + 
+  geom_col()
+```
+
+![](w2p2_files/figure-html/barchart3-1.png)&lt;!-- --&gt;
+
+
+---
+# Change the stat 
+
+
+```r
+ggplot(mpg, aes(class, hwy)) + 
+  geom_bar(stat = "summary", fun.y = "mean")
+```
+
+![](w2p2_files/figure-html/barchart4-1.png)&lt;!-- --&gt;
+
+---
+# How do we change the x-axis order?
+* We'll talk about automated methods more later.
+* Basically - define x-axis var as a factor w/levels in the order you want
+
+
+```r
+mpg &lt;- mpg %&gt;% 
+  mutate(class = factor(class,
+                        levels = c("pickup",
+                                   "suv",
+                                   "minivan",
+                                   "2seater",
+                                   "midsize",
+                                   "subcompact",
+                                   "compact")))
+```
+
+---
+
+```r
+ggplot(mpg, aes(class, hwy)) + 
+  geom_bar(stat = "summary", fun.y = "mean")
+```
+
+![](w2p2_files/figure-html/barchart5-1.png)&lt;!-- --&gt;
+
+---
+class: inverse middle center
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
