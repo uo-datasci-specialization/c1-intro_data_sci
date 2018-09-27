@@ -256,7 +256,7 @@ library(tidyverse)
 library(here)
 library(fs)
 
-seda <- read_csv(dir_ls(here("weeks", "w1", "data"), regexp = "seda"))
+seda <- read_csv(dir_ls(here("data"), regexp = "seda"))
 seda <- seda %>% 
   mutate(grade = parse_number(grade),
          time  = grade - 3)
