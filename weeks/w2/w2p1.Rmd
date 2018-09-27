@@ -43,7 +43,7 @@ Today, we'll primarily be covering the basics of the *ggplot2* package.
 (It's no longer there, but if you want access to it let me know)
 
 ---
-##Other resources
+# Other resources
 The *ggplot2* package is one of the most popular R packages. There are a plethora of resources to learn the syntax. 
 
 * Perhaps the most definitive, and indexes all the capabilities of ggplot2, along with multiple examples 
