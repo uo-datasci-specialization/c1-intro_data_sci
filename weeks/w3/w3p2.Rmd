@@ -1,0 +1,358 @@
+---
+title: "Introduction to data wrangling 2"
+subtitle: "dplyr and friends"
+author: "Daniel Anderson "
+date: "Week 3, Class 2"
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "hygge", "custom1.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+```{r, setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 13, 
+                      message = FALSE, 
+                      warning = FALSE)
+```
+
+# Agenda 
+* Questions
+* Workflows (quickly)
+* Importing data
+* A little more dplyr
+* Lab
+
+
+---
+# Reading in data
+
+* We'll use the [{here}](https://github.com/r-lib/here) package
+  + Allows you to not worry about paths so much
+  + Helps reproducibility
+
+--
+* In your R Studio project directory
+  + Create a new folder called "data"
+  + Place the data for today there
+
+---
+# Look at what data files are there
+
+```{r here}
+library(here)
+list.files(here("data"))
+```
+
+---
+# {rio}
+* Super nice package - most of the time, it just works, regardless of the source file type.
+* (If this isn't astounding to you, you obviously haven't struggled for hours to read in data properly)
+
+Example: these all work! Try it out and verify for yourself!
+```{r import_various, message = FALSE}
+library(rio)
+exam1 <- import(here("data", "exam1.csv"))
+eclsk <- import(here("data", "ecls-k_samp.sav"))
+fatality <- import(here("data", "Fatality.txt"))
+```
+
+---
+# Read directly from the web!
+
+```{r web_import}
+pubschls <- import("https://github.com/datalorax/ncme_18/raw/master/data/pubschls.csv")
+head(pubschls)
+```
+
+---
+# Export just as easily!
+
+```{r export, eval = FALSE}
+export(exam1, here("data", "exam1.sav"))
+export(exam1, here("data", "exam1.txt"))
+export(exam1, here("data", "exam1.dta"))
+```
+
+---
+# `convert()`  
+
+* Another really useful feature is `convert()`, which just takes a file of one type and converts it to another.
+
+--
+
+* Say your advisor uses SPSS, but her/his colleague uses Stata. They might use some proprietary (and expensive) software like SAS/CONNECT. Instead, just run this one line of code and voila!
+
+```{r convert, eval = FALSE}
+convert(here("data", "ecls-k_samp.sav"), 
+        here("data", "ecls-k_samp.dta"))
+```
+
+---
+# How is this all working?
+
+<div align = "center">
+<img src = ../img/rio_support.png height = 500>
+</div>
+
+
+---
+# Looking at the import documentation
+
+```{r import_documentation, eval = FALSE}
+?import
+```
+<div align = "center">
+<img src = ../img/rio_doc.png height = 400>
+</div>
+
+---
+# Maintaining labels
+* In SPSS, numeric data are often encoded with labels
+* rio (and {haven}) allow you to transform the data into the character/factor
+verion
+
+```{r eclsk-numeric, message = FALSE, warning = FALSE}
+library(tidyverse)
+eclsk %>%
+	select(child_id:ethnic) %>%
+	head()
+```
+
+---
+```{r eclsk-character}
+eclsk %>%
+	characterize() %>%
+	select(child_id:ethnic) %>%
+	head()
+```
+
+---
+* Run the following line of code - what do you get?
+* Note the `setclass` argument
+
+```{r read-data}
+library(rio)
+reads <- import(here("data", "Project_Reads_Scores.csv"),
+            setclass = "tbl_df") #<<
+```
+
+
+---
+# Project Reads data
+
+```{r proj_reads_data}
+head(reads)
+```
+
+---
+# Clean the names
+
+```{r clean-reads}
+library(magrittr)
+reads  %<>% #<<
+	janitor::clean_names()
+
+head(reads)
+```
+
+---
+# Dataset summary
+
+```{r install-skimr, eval = FALSE}
+install.packages("skimr")
+```
+
+```{r load-skimr, message = FALSE}
+library(skimr)
+```
+
+[demo]
+
+---
+# Check out the structure
+
+```{r reads-struc}
+dim(reads)
+str(reads)
+```
+
+---
+class: inverse
+background-image:url(../img/dplyr_hex.png)
+background-size:contain
+
+---
+# Oddity
+
+```{r count-sid}
+reads %>%
+ count(student_id) 
+```
+
+---
+# filter
+
+Let's remove the summary rows at the end
+
+```{r filter}
+reads %<>% 
+	filter(student_id != "All Students (Average)")
+
+reads %>%
+ count(student_id) 
+```
+
+---
+# `select()` helper funs
+* `starts_with()`
+* `ends_with()`
+* `contains()`
+
+
+---
+# `starts_with`
+
+Let's use the Project Reads data
+
+```{r starts_with}
+reads %>% 
+	select(starts_with("test"))
+```
+
+---
+# `ends_with`
+
+```{r ends_with}
+reads %>% 
+	select(ends_with("score"))
+```
+
+---
+# `contains`
+
+```{r contains}
+reads %>% 
+	select(contains("test"))
+```
+
+---
+# Mix types
+
+You can mix types and helper funs. You can also use select to rearrange your columns.
+
+```{r mixed_types_select}
+reads %>% 
+	select(student_id, 1, starts_with("total"))
+```
+
+---
+# Summarizing and plotting
+
+* Calculate means by test site
+
+```{r means-by-site}
+reads %>%
+	group_by(test_site) %>%
+	summarize(mean = mean(post_test_score))
+```
+
+---
+# Plot it
+```{r means-plotted, fig.height = 5}
+theme_set(theme_minimal(base_size = 25))
+
+reads %>%
+	group_by(test_site) %>%
+	summarize(mean = mean(post_test_score)) %>%
+	ggplot(aes(test_site, mean)) +
+		geom_col(alpha = 0.8)
+```
+
+---
+# Multi-group
+
+Let's look at *ecslsk*
+
+```{r ecls-cleanup}
+eclsk %<>%
+	characterize() %>%
+	janitor::clean_names() %>%
+	tbl_df()
+
+head(eclsk)
+```
+
+---
+# Summarize
+
+```{r ecls-summarized}
+ecls_smry <- eclsk %>%
+	group_by(sex, ethnic) %>%
+	summarize(t1r_mean = mean(t1rscale))
+ecls_smry	
+```
+
+---
+# Look for gender effects
+
+```{r gender-effect1}
+ggplot(ecls_smry, aes(ethnic, t1r_mean)) +
+	geom_col(aes(fill = sex))
+```
+
+---
+# Look for gender effects
+
+```{r gender-effect2}
+ggplot(ecls_smry, aes(ethnic, t1r_mean)) +
+	geom_col(aes(fill = sex),
+	         position = "dodge") #<<
+```
+
+---
+# Rotating labels
+Doesn't show up well on the slide but the relevant bit of code is
+
+```{r, eval = FALSE}
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+I have to look this up just about every time (SO answer [here](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2))
+
+
+---
+# An alternative
+
+```{r gender-effect3}
+ggplot(ecls_smry, aes(sex, t1r_mean)) +
+	geom_col(alpha = 0.8) +
+	facet_wrap(~ethnic)
+```
+
+---
+Occasionally doubling up works well, I think
+
+
+```{r gender-effect4}
+ggplot(ecls_smry, aes(sex, t1r_mean, fill = sex)) +
+	geom_col(alpha = 0.8) +
+	facet_wrap(~ethnic)
+```
+
+---
+# Final notes on {dplyr}
+* We'll be using it all term long
+* Verbs can help you gain fluency
+* There are also conditional and all-inclusive versions of `mutate`, `select`, and `summarize`.
+  + For example `mutate_if(is.character, as.numeric)`, `select_if(is.numeric)`, etc. 
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# Lab

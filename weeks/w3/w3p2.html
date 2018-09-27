@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to data wrangling 2</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom1.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to data wrangling 2
+## dplyr and friends
+### Daniel Anderson
+### Week 3, Class 2
+
+---
+
+
+
+
+# Agenda 
+* Questions
+* Workflows (quickly)
+* Importing data
+* A little more dplyr
+* Lab
+
+
+---
+# Reading in data
+
+* We'll use the [{here}](https://github.com/r-lib/here) package
+  + Allows you to not worry about paths so much
+  + Helps reproducibility
+
+--
+* In your R Studio project directory
+  + Create a new folder called "data"
+  + Place the data for today there
+
+---
+# Look at what data files are there
+
+
+```r
+library(here)
+list.files(here("data"))
+```
+
+```
+## [1] "ais.xlsx"                 "dirty_data.xlsx"         
+## [3] "ecls-k_samp.sav"          "exam1.csv"               
+## [5] "Fatality.txt"             "Project_Reads_Scores.csv"
+## [7] "seda.csv"                 "sesame13.sav"            
+## [9] "star.csv"
+```
+
+---
+# {rio}
+* Super nice package - most of the time, it just works, regardless of the source file type.
+* (If this isn't astounding to you, you obviously haven't struggled for hours to read in data properly)
+
+Example: these all work! Try it out and verify for yourself!
+
+```r
+library(rio)
+exam1 &lt;- import(here("data", "exam1.csv"))
+eclsk &lt;- import(here("data", "ecls-k_samp.sav"))
+fatality &lt;- import(here("data", "Fatality.txt"))
+```
+
+---
+# Read directly from the web!
+
+
+```r
+pubschls &lt;- import("https://github.com/datalorax/ncme_18/raw/master/data/pubschls.csv")
+head(pubschls)
+```
+
+```
+##         CDSCode NCESDist NCESSchool StatusType  County
+## 1 1100170000000   691051         NA     Active Alameda
+## 2 1100170109835   691051      10546     Closed Alameda
+## 3 1100170112607   691051      10947     Active Alameda
+## 4 1100170118489   691051      12283     Closed Alameda
+## 5 1100170123968   691051      12844     Active Alameda
+## 6 1100170124172   691051      12901     Active Alameda
+##                             District
+## 1 Alameda County Office of Education
+## 2 Alameda County Office of Education
+## 3 Alameda County Office of Education
+## 4 Alameda County Office of Education
+## 5 Alameda County Office of Education
+## 6 Alameda County Office of Education
+##                                          School
+## 1                                              
+## 2                           FAME Public Charter
+## 3        Envision Academy for Arts &amp; Technology
+## 4 Aspire California College Preparatory Academy
+## 5       Community School for Creative Education
+## 6                               Yu Ming Charter
+##                             Street                     StreetAbr     City
+## 1           313 West Winton Avenue          313 West Winton Ave.  Hayward
+## 2 39899 Balentine Drive, Suite 335 39899 Balentine Dr., Ste. 335   Newark
+## 3              1515 Webster Street              1515 Webster St.  Oakland
+## 4            2125 Jefferson Avenue           2125 Jefferson Ave. Berkeley
+## 5     2111 International Boulevard      2111 International Blvd.  Oakland
+## 6             1086 Alcatraz Avenue            1086 Alcatraz Ave.  Oakland
+##          Zip State                       MailStreet
+## 1 94544-1136    CA           313 West Winton Avenue
+## 2 94560-5359    CA 39899 Balentine Drive, Suite 335
+## 3 94612-3355    CA              1515 Webster Street
+## 4 94703-1414    CA      1001 22nd Avenue, Suite 100
+## 5 94606-4903    CA     2111 International Boulevard
+## 6 94608-1265    CA             1086 Alcatraz Avenue
+##                      MailStrAbr MailCity    MailZip MailState
+## 1          313 West Winton Ave.  Hayward 94544-1136        CA
+## 2 39899 Balentine Dr., Ste. 335   Newark 94560-5359        CA
+## 3              1515 Webster St.  Oakland      94612        CA
+## 4      1001 22nd Ave., Ste. 100  Oakland      94606        CA
+## 5      2111 International Blvd.  Oakland 94606-4903        CA
+## 6            1086 Alcatraz Ave.  Oakland 94608-1265        CA
+##            Phone Ext                                     WebSite  OpenDate
+## 1 (510) 887-0152  NA                                www.acoe.org          
+## 2                 NA                                             8/29/2005
+## 3 (510) 596-8901  NA                    www.envisionacademy.org/ 8/28/2006
+## 4                 NA                 www.aspirepublicschools.org 8/21/2008
+## 5 (510) 686-4131  NA www.communityschoolforcreativeeducation.org 8/22/2011
+## 6 (510) 452-2063  NA                        www.yumingschool.org  8/9/2011
+##   ClosedDate Charter CharterNum     FundingType DOC
+## 1                                                 0
+## 2  7/31/2015       Y       0728 Directly funded   0
+## 3                  Y       0811 Directly funded   0
+## 4  6/30/2015       Y       1049 Directly funded   0
+## 5                  Y       1284 Directly funded   0
+## 6                  Y       1296 Directly funded   0
+##                            DOCType SOC                     SOCType
+## 1 County Office of Education (COE)  NA                            
+## 2 County Office of Education (COE)  65       K-12 Schools (Public)
+## 3 County Office of Education (COE)  66       High Schools (Public)
+## 4 County Office of Education (COE)  66       High Schools (Public)
+## 5 County Office of Education (COE)  60 Elementary Schools (Public)
+## 6 County Office of Education (COE)  60 Elementary Schools (Public)
+##   EdOpsCode   EdOpsName  EILCode                     EILName GSoffered
+## 1                                                                     
+## 2      TRAD Traditional ELEMHIGH Elementary-High Combination      K-12
+## 3      TRAD Traditional       HS                 High School      9-12
+## 4      TRAD Traditional       HS                 High School      9-12
+## 5      TRAD Traditional     ELEM                  Elementary       K-8
+## 6      TRAD Traditional     ELEM                  Elementary       K-8
+##   GSserved Virtual Magnet Latitude Longitude AdmFName1 AdmLName1
+## 1                         37.65821 -122.0971   L Karen    Monroe
+## 2     K-12       P      N 37.52144 -121.9939                    
+## 3     9-12       N      N 37.80452 -122.2682       Eve    Gordon
+## 4     9-12       N      N 37.86899 -122.2784                    
+## 5      K-8       N      N 37.78465 -122.2386   Monique   Brinson
+## 6      K-6       N      N 37.84737 -122.2836       Sue      Park
+##                                          AdmEmail1 AdmFName2 AdmLName2
+## 1                                lkmonroe@acoe.org                    
+## 2                                                                     
+## 3                          eve@envisionacademy.org                    
+## 4                                                                     
+## 5 moniqueb@communityschoolforcreativeeducation.org                    
+## 6                           spark@yumingschool.org                    
+##   AdmEmail2 AdmFName3 AdmLName3 AdmEmail3 LastUpDate
+## 1                                           2/2/2017
+## 2                                           9/1/2015
+## 3                                          7/26/2017
+## 4                                           7/1/2015
+## 5                                          8/16/2017
+## 6                                          5/10/2016
+```
+
+---
+# Export just as easily!
+
+
+```r
+export(exam1, here("data", "exam1.sav"))
+export(exam1, here("data", "exam1.txt"))
+export(exam1, here("data", "exam1.dta"))
+```
+
+---
+# `convert()`  
+
+* Another really useful feature is `convert()`, which just takes a file of one type and converts it to another.
+
+--
+
+* Say your advisor uses SPSS, but her/his colleague uses Stata. They might use some proprietary (and expensive) software like SAS/CONNECT. Instead, just run this one line of code and voila!
+
+
+```r
+convert(here("data", "ecls-k_samp.sav"), 
+        here("data", "ecls-k_samp.dta"))
+```
+
+---
+# How is this all working?
+
+&lt;div align = "center"&gt;
+&lt;img src = ../img/rio_support.png height = 500&gt;
+&lt;/div&gt;
+
+
+---
+# Looking at the import documentation
+
+
+```r
+?import
+```
+&lt;div align = "center"&gt;
+&lt;img src = ../img/rio_doc.png height = 400&gt;
+&lt;/div&gt;
+
+---
+# Maintaining labels
+* In SPSS, numeric data are often encoded with labels
+* rio (and {haven}) allow you to transform the data into the character/factor
+verion
+
+
+```r
+library(tidyverse)
+eclsk %&gt;%
+	select(child_id:ethnic) %&gt;%
+	head()
+```
+
+```
+##   child_id teacher_id school_id k_type school_type sex ethnic
+## 1 0842021C    0842T02      0842      1           0   0      2
+## 2 0905002C    0905T01      0905      1           1   0      5
+## 3 0150012C    0150T01      0150      1           1   1      2
+## 4 0556009C    0556T01      0556      1           1   1      4
+## 5 0089013C    0089T04      0089      1           0   0      1
+## 6 1217001C    1217T13      1217      0           0   1      6
+```
+
+---
+
+```r
+eclsk %&gt;%
+	characterize() %&gt;%
+	select(child_id:ethnic) %&gt;%
+	head()
+```
+
+```
+##   child_id teacher_id school_id   k_type school_type    sex
+## 1 0842021C    0842T02      0842 full-day      public   male
+## 2 0905002C    0905T01      0905 full-day     private   male
+## 3 0150012C    0150T01      0150 full-day     private female
+## 4 0556009C    0556T01      0556 full-day     private female
+## 5 0089013C    0089T04      0089 full-day      public   male
+## 6 1217001C    1217T13      1217 half-day      public female
+##                                    ethnic
+## 1 BLACK OR AFRICAN AMERICAN, NON-HISPANIC
+## 2                                   ASIAN
+## 3 BLACK OR AFRICAN AMERICAN, NON-HISPANIC
+## 4            HISPANIC, RACE NOT SPECIFIED
+## 5                     WHITE, NON-HISPANIC
+## 6 NATIVE HAWAIIAN, OTHER PACIFIC ISLANDER
+```
+
+---
+* Run the following line of code - what do you get?
+* Note the `setclass` argument
+
+
+```r
+library(rio)
+reads &lt;- import(here("data", "Project_Reads_Scores.csv"),
+*           setclass = "tbl_df")
+```
+
+
+---
+# Project Reads data
+
+
+```r
+head(reads)
+```
+
+```
+## # A tibble: 6 x 25
+##   `Test Year`        `Test Type` `Test Site` `Student ID` `Pre-Test Score`
+##   &lt;chr&gt;              &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;                   &lt;int&gt;
+## 1 06/01/2016 12:00:… YEAR END    VIRDEN      Virden 1                   43
+## 2 06/01/2016 12:00:… YEAR END    VIRDEN      Virden 2                   46
+## 3 06/01/2016 12:00:… YEAR END    VIRDEN      Virden 3                   39
+## 4 06/01/2016 12:00:… YEAR END    VIRDEN      Virden 4                   35
+## 5 06/01/2016 12:00:… YEAR END    VIRDEN      Virden 5                   46
+## 6 06/01/2016 12:00:… YEAR END    VIRDEN      Virden 6                   35
+## # ... with 20 more variables: `Pre-Test (%)` &lt;chr&gt;, `Post-Test
+## #   Score` &lt;int&gt;, `Post-Test (%)` &lt;chr&gt;, `Percentage Change` &lt;chr&gt;, `Unit
+## #   1 Score` &lt;int&gt;, `Unit 1 (%)` &lt;chr&gt;, `Unit 2 Score` &lt;int&gt;, `Unit 2
+## #   (%)` &lt;chr&gt;, `Unit 3 Score` &lt;int&gt;, `Unit 3 (%)` &lt;chr&gt;, `Unit 4
+## #   Score` &lt;int&gt;, `Unit 4 (%)` &lt;chr&gt;, `Unit 5/6 Score` &lt;int&gt;, `Unit 5/6
+## #   (%)` &lt;chr&gt;, `Unit 7 Score` &lt;int&gt;, `Unit 7 (%)` &lt;chr&gt;, `Unit 8
+## #   Score` &lt;int&gt;, `Unit 8 (%)` &lt;chr&gt;, `Total Score` &lt;int&gt;, `Total (%)
+## #   Correct` &lt;chr&gt;
+```
+
+---
+# Clean the names
+
+
+```r
+library(magrittr)
+*reads  %&lt;&gt;%
+	janitor::clean_names()
+
+head(reads)
+```
+
+```
+## # A tibble: 6 x 25
+##   test_year test_type test_site student_id pre_test_score pre_test_percent
+##   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;           
+## 1 06/01/20… YEAR END  VIRDEN    Virden 1               43 29%             
+## 2 06/01/20… YEAR END  VIRDEN    Virden 2               46 31%             
+## 3 06/01/20… YEAR END  VIRDEN    Virden 3               39 26%             
+## 4 06/01/20… YEAR END  VIRDEN    Virden 4               35 23%             
+## 5 06/01/20… YEAR END  VIRDEN    Virden 5               46 31%             
+## 6 06/01/20… YEAR END  VIRDEN    Virden 6               35 23%             
+## # ... with 19 more variables: post_test_score &lt;int&gt;,
+## #   post_test_percent &lt;chr&gt;, percentage_change &lt;chr&gt;, unit_1_score &lt;int&gt;,
+## #   unit_1_percent &lt;chr&gt;, unit_2_score &lt;int&gt;, unit_2_percent &lt;chr&gt;,
+## #   unit_3_score &lt;int&gt;, unit_3_percent &lt;chr&gt;, unit_4_score &lt;int&gt;,
+## #   unit_4_percent &lt;chr&gt;, unit_5_6_score &lt;int&gt;, unit_5_6_percent &lt;chr&gt;,
+## #   unit_7_score &lt;int&gt;, unit_7_percent &lt;chr&gt;, unit_8_score &lt;int&gt;,
+## #   unit_8_percent &lt;chr&gt;, total_score &lt;int&gt;, total_percent_correct &lt;chr&gt;
+```
+
+---
+# Dataset summary
+
+
+```r
+install.packages("skimr")
+```
+
+
+```r
+library(skimr)
+```
+
+[demo]
+
+---
+# Check out the structure
+
+
+```r
+dim(reads)
+```
+
+```
+## [1] 48 25
+```
+
+```r
+str(reads)
+```
+
+```
+## Classes 'tbl_df', 'tbl' and 'data.frame':	48 obs. of  25 variables:
+##  $ test_year            : chr  "06/01/2016 12:00:00 AM" "06/01/2016 12:00:00 AM" "06/01/2016 12:00:00 AM" "06/01/2016 12:00:00 AM" ...
+##  $ test_type            : chr  "YEAR END" "YEAR END" "YEAR END" "YEAR END" ...
+##  $ test_site            : chr  "VIRDEN" "VIRDEN" "VIRDEN" "VIRDEN" ...
+##  $ student_id           : chr  "Virden 1" "Virden 2" "Virden 3" "Virden 4" ...
+##  $ pre_test_score       : int  43 46 39 35 46 35 40 39 40 45 ...
+##  $ pre_test_percent     : chr  "29%" "31%" "26%" "23%" ...
+##  $ post_test_score      : int  92 104 75 115 85 91 96 74 90 86 ...
+##  $ post_test_percent    : chr  "61%" "69%" "50%" "77%" ...
+##  $ percentage_change    : chr  "32%" "38%" "24%" "54%" ...
+##  $ unit_1_score         : int  3 5 4 4 2 5 5 4 6 4 ...
+##  $ unit_1_percent       : chr  "12%" "20%" "16%" "16%" ...
+##  $ unit_2_score         : int  4 5 4 4 5 5 5 5 4 5 ...
+##  $ unit_2_percent       : chr  "16%" "20%" "16%" "16%" ...
+##  $ unit_3_score         : int  6 6 6 6 6 7 6 5 5 5 ...
+##  $ unit_3_percent       : chr  "24%" "24%" "24%" "24%" ...
+##  $ unit_4_score         : int  8 8 9 10 7 7 7 8 8 7 ...
+##  $ unit_4_percent       : chr  "27%" "27%" "30%" "33%" ...
+##  $ unit_5_6_score       : int  11 11 16 13 12 18 11 12 15 14 ...
+##  $ unit_5_6_percent     : chr  "37%" "37%" "53%" "43%" ...
+##  $ unit_7_score         : int  22 20 19 18 19 23 21 16 18 21 ...
+##  $ unit_7_percent       : chr  "63%" "57%" "54%" "51%" ...
+##  $ unit_8_score         : int  18 19 21 18 16 19 20 17 20 19 ...
+##  $ unit_8_percent       : chr  "60%" "63%" "70%" "60%" ...
+##  $ total_score          : int  207 224 193 223 198 210 211 180 206 206 ...
+##  $ total_percent_correct: chr  "41%" "45%" "39%" "45%" ...
+```
+
+---
+class: inverse
+background-image:url(../img/dplyr_hex.png)
+background-size:contain
+
+---
+# Oddity
+
+
+```r
+reads %&gt;%
+ count(student_id) 
+```
+
+```
+## # A tibble: 46 x 2
+##    student_id                 n
+##    &lt;chr&gt;                  &lt;int&gt;
+##  1 All Students (Average)     3
+##  2 Jones 1                    1
+##  3 Jones 10                   1
+##  4 Jones 11                   1
+##  5 Jones 12                   1
+##  6 Jones 13                   1
+##  7 Jones 14                   1
+##  8 Jones 15                   1
+##  9 Jones 2                    1
+## 10 Jones 3                    1
+## # ... with 36 more rows
+```
+
+---
+# filter
+
+Let's remove the summary rows at the end
+
+
+```r
+reads %&lt;&gt;% 
+	filter(student_id != "All Students (Average)")
+
+reads %&gt;%
+ count(student_id) 
+```
+
+```
+## # A tibble: 45 x 2
+##    student_id     n
+##    &lt;chr&gt;      &lt;int&gt;
+##  1 Jones 1        1
+##  2 Jones 10       1
+##  3 Jones 11       1
+##  4 Jones 12       1
+##  5 Jones 13       1
+##  6 Jones 14       1
+##  7 Jones 15       1
+##  8 Jones 2        1
+##  9 Jones 3        1
+## 10 Jones 4        1
+## # ... with 35 more rows
+```
+
+---
+# `select()` helper funs
+* `starts_with()`
+* `ends_with()`
+* `contains()`
+
+
+---
+# `starts_with`
+
+Let's use the Project Reads data
+
+
+```r
+reads %&gt;% 
+	select(starts_with("test"))
+```
+
+```
+## # A tibble: 45 x 3
+##    test_year              test_type test_site
+##    &lt;chr&gt;                  &lt;chr&gt;     &lt;chr&gt;    
+##  1 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  2 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  3 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  4 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  5 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  6 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  7 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  8 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+##  9 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+## 10 06/01/2016 12:00:00 AM YEAR END  VIRDEN   
+## # ... with 35 more rows
+```
+
+---
+# `ends_with`
+
+
+```r
+reads %&gt;% 
+	select(ends_with("score"))
+```
+
+```
+## # A tibble: 45 x 10
+##    pre_test_score post_test_score unit_1_score unit_2_score unit_3_score
+##             &lt;int&gt;           &lt;int&gt;        &lt;int&gt;        &lt;int&gt;        &lt;int&gt;
+##  1             43              92            3            4            6
+##  2             46             104            5            5            6
+##  3             39              75            4            4            6
+##  4             35             115            4            4            6
+##  5             46              85            2            5            6
+##  6             35              91            5            5            7
+##  7             40              96            5            5            6
+##  8             39              74            4            5            5
+##  9             40              90            6            4            5
+## 10             45              86            4            5            5
+## # ... with 35 more rows, and 5 more variables: unit_4_score &lt;int&gt;,
+## #   unit_5_6_score &lt;int&gt;, unit_7_score &lt;int&gt;, unit_8_score &lt;int&gt;,
+## #   total_score &lt;int&gt;
+```
+
+---
+# `contains`
+
+
+```r
+reads %&gt;% 
+	select(contains("test"))
+```
+
+```
+## # A tibble: 45 x 7
+##    test_year           test_type test_site pre_test_score pre_test_percent
+##    &lt;chr&gt;               &lt;chr&gt;     &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;           
+##  1 06/01/2016 12:00:0… YEAR END  VIRDEN                43 29%             
+##  2 06/01/2016 12:00:0… YEAR END  VIRDEN                46 31%             
+##  3 06/01/2016 12:00:0… YEAR END  VIRDEN                39 26%             
+##  4 06/01/2016 12:00:0… YEAR END  VIRDEN                35 23%             
+##  5 06/01/2016 12:00:0… YEAR END  VIRDEN                46 31%             
+##  6 06/01/2016 12:00:0… YEAR END  VIRDEN                35 23%             
+##  7 06/01/2016 12:00:0… YEAR END  VIRDEN                40 27%             
+##  8 06/01/2016 12:00:0… YEAR END  VIRDEN                39 26%             
+##  9 06/01/2016 12:00:0… YEAR END  VIRDEN                40 27%             
+## 10 06/01/2016 12:00:0… YEAR END  VIRDEN                45 30%             
+## # ... with 35 more rows, and 2 more variables: post_test_score &lt;int&gt;,
+## #   post_test_percent &lt;chr&gt;
+```
+
+---
+# Mix types
+
+You can mix types and helper funs. You can also use select to rearrange your columns.
+
+
+```r
+reads %&gt;% 
+	select(student_id, 1, starts_with("total"))
+```
+
+```
+## # A tibble: 45 x 4
+##    student_id test_year              total_score total_percent_correct
+##    &lt;chr&gt;      &lt;chr&gt;                        &lt;int&gt; &lt;chr&gt;                
+##  1 Virden 1   06/01/2016 12:00:00 AM         207 41%                  
+##  2 Virden 2   06/01/2016 12:00:00 AM         224 45%                  
+##  3 Virden 3   06/01/2016 12:00:00 AM         193 39%                  
+##  4 Virden 4   06/01/2016 12:00:00 AM         223 45%                  
+##  5 Virden 5   06/01/2016 12:00:00 AM         198 40%                  
+##  6 Virden 6   06/01/2016 12:00:00 AM         210 42%                  
+##  7 Virden 7   06/01/2016 12:00:00 AM         211 42%                  
+##  8 Virden 8   06/01/2016 12:00:00 AM         180 36%                  
+##  9 Virden 9   06/01/2016 12:00:00 AM         206 41%                  
+## 10 Virden 10  06/01/2016 12:00:00 AM         206 41%                  
+## # ... with 35 more rows
+```
+
+---
+# Summarizing and plotting
+
+* Calculate means by test site
+
+
+```r
+reads %&gt;%
+	group_by(test_site) %&gt;%
+	summarize(mean = mean(post_test_score))
+```
+
+```
+## # A tibble: 3 x 2
+##   test_site  mean
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 JONES      97.8
+## 2 VIRDEN     92.5
+## 3 WESTSIDE  103.
+```
+
+---
+# Plot it
+
+```r
+theme_set(theme_minimal(base_size = 25))
+
+reads %&gt;%
+	group_by(test_site) %&gt;%
+	summarize(mean = mean(post_test_score)) %&gt;%
+	ggplot(aes(test_site, mean)) +
+		geom_col(alpha = 0.8)
+```
+
+![](w3p2_files/figure-html/means-plotted-1.png)&lt;!-- --&gt;
+
+---
+# Multi-group
+
+Let's look at *ecslsk*
+
+
+```r
+eclsk %&lt;&gt;%
+	characterize() %&gt;%
+	janitor::clean_names() %&gt;%
+	tbl_df()
+
+head(eclsk)
+```
+
+```
+## # A tibble: 6 x 33
+##   child_id teacher_id school_id k_type  school_type sex   ethnic  famtype 
+##   &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   
+## 1 0842021C 0842T02    0842      full-d… public      male  BLACK … BIOLOGI…
+## 2 0905002C 0905T01    0905      full-d… private     male  ASIAN   BIOLOGI…
+## 3 0150012C 0150T01    0150      full-d… private     fema… BLACK … BIOLOGI…
+## 4 0556009C 0556T01    0556      full-d… private     fema… HISPAN… BIOLOGI…
+## 5 0089013C 0089T04    0089      full-d… public      male  WHITE,… BIOLOGI…
+## 6 1217001C 1217T13    1217      half-d… public      fema… NATIVE… BIOLOGI…
+## # ... with 25 more variables: numsibs &lt;dbl&gt;, ses_cont &lt;dbl&gt;,
+## #   ses_cat &lt;chr&gt;, age &lt;dbl&gt;, t1rscale &lt;dbl&gt;, t1mscale &lt;dbl&gt;,
+## #   t1gscale &lt;dbl&gt;, t2rscale &lt;dbl&gt;, t2mscale &lt;dbl&gt;, t2gscale &lt;dbl&gt;,
+## #   ir_treadgain &lt;dbl&gt;, ir_tmathgain &lt;dbl&gt;, ir_tgkgain &lt;dbl&gt;,
+## #   t1arslit &lt;dbl&gt;, t1arsmat &lt;dbl&gt;, t1arsgen &lt;dbl&gt;, t2arslit &lt;dbl&gt;,
+## #   t2arsmat &lt;dbl&gt;, t2arsgen &lt;dbl&gt;, ar_slitgain &lt;dbl&gt;, ar_smathgain &lt;dbl&gt;,
+## #   ar_sgkgain &lt;dbl&gt;, testdate1 &lt;date&gt;, testdate2 &lt;date&gt;, elapse &lt;dbl&gt;
+```
+
+---
+# Summarize
+
+
+```r
+ecls_smry &lt;- eclsk %&gt;%
+	group_by(sex, ethnic) %&gt;%
+	summarize(t1r_mean = mean(t1rscale))
+ecls_smry	
+```
+
+```
+## # A tibble: 16 x 3
+## # Groups:   sex [?]
+##    sex    ethnic                                  t1r_mean
+##    &lt;chr&gt;  &lt;chr&gt;                                      &lt;dbl&gt;
+##  1 female AMERICAN INDIAN OR ALASKA NATIVE            22.2
+##  2 female ASIAN                                       28.0
+##  3 female BLACK OR AFRICAN AMERICAN, NON-HISPANIC     20.8
+##  4 female HISPANIC, RACE NOT SPECIFIED                18.7
+##  5 female HISPANIC, RACE SPECIFIED                    22.2
+##  6 female MORE THAN ONE RACE, NON HISPANIC            20.3
+##  7 female NATIVE HAWAIIAN, OTHER PACIFIC ISLANDER     20.1
+##  8 female WHITE, NON-HISPANIC                         23.8
+##  9 male   AMERICAN INDIAN OR ALASKA NATIVE            16.9
+## 10 male   ASIAN                                       28.4
+## 11 male   BLACK OR AFRICAN AMERICAN, NON-HISPANIC     20.1
+## 12 male   HISPANIC, RACE NOT SPECIFIED                21.0
+## 13 male   HISPANIC, RACE SPECIFIED                    20.3
+## 14 male   MORE THAN ONE RACE, NON HISPANIC            21.6
+## 15 male   NATIVE HAWAIIAN, OTHER PACIFIC ISLANDER     23.6
+## 16 male   WHITE, NON-HISPANIC                         25.6
+```
+
+---
+# Look for gender effects
+
+
+```r
+ggplot(ecls_smry, aes(ethnic, t1r_mean)) +
+	geom_col(aes(fill = sex))
+```
+
+![](w3p2_files/figure-html/gender-effect1-1.png)&lt;!-- --&gt;
+
+---
+# Look for gender effects
+
+
+```r
+ggplot(ecls_smry, aes(ethnic, t1r_mean)) +
+	geom_col(aes(fill = sex),
+*         position = "dodge")
+```
+
+![](w3p2_files/figure-html/gender-effect2-1.png)&lt;!-- --&gt;
+
+---
+# Rotating labels
+Doesn't show up well on the slide but the relevant bit of code is
+
+
+```r
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+I have to look this up just about every time (SO answer [here](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2))
+
+
+---
+# An alternative
+
+
+```r
+ggplot(ecls_smry, aes(sex, t1r_mean)) +
+	geom_col(alpha = 0.8) +
+	facet_wrap(~ethnic)
+```
+
+![](w3p2_files/figure-html/gender-effect3-1.png)&lt;!-- --&gt;
+
+---
+Occasionally doubling up works well, I think
+
+
+
+```r
+ggplot(ecls_smry, aes(sex, t1r_mean, fill = sex)) +
+	geom_col(alpha = 0.8) +
+	facet_wrap(~ethnic)
+```
+
+![](w3p2_files/figure-html/gender-effect4-1.png)&lt;!-- --&gt;
+
+---
+# Final notes on {dplyr}
+* We'll be using it all term long
+* Verbs can help you gain fluency
+* There are also conditional and all-inclusive versions of `mutate`, `select`, and `summarize`.
+  + For example `mutate_if(is.character, as.numeric)`, `select_if(is.numeric)`, etc. 
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

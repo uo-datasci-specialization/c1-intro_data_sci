@@ -1,0 +1,390 @@
+---
+title: "Introduction to data wrangling 1"
+subtitle: "dplyr and friends"
+author: "Daniel Anderson "
+date: "Week 3, Class 1"
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "hygge", "custom1.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+```{r, setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 13, 
+                      message = FALSE, 
+                      warning = FALSE)
+```
+
+# Agenda 
+* Questions
+* Basic data wrangling
+* Lab
+
+---
+# First: Cool stuff share!
+* Equations within RMD look beautiful, but can be a pain
+  + Must use \LaTeX (see examples [here](http://www.statpower.net/Content/310/R%20Stuff/SampleMarkdown.html))
+
+
+--
+
+```
+$$ \int_0^{2\pi} \sin x-dx $$
+```
+
+--
+
+.Large[
+$$ \int_0^{2\pi} \sin x-dx $$
+]
+
+---
+# {mathpix}
+* See https://github.com/jonocarroll/mathpix
+
+<div align = "center">
+<img src = ../img/mathpix.png height = 450>
+</div>
+
+
+---
+## Surface doesn't matter
+
+.pull-left[
+
+(demo following)
+
+]
+
+.pull-right[
+<div>
+<img src = ../img/tats.png  height = 450>
+</div>
+]
+
+
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+### Failures?
+### Celebrations?
+
+
+---
+class: inverse middle center
+background-image:url(../img/sky.jpg)
+background-size:cover
+
+# tidyverse
+
+---
+# Providing a grammar for...
+* Graphics ({ggplot})
+* Data manipulations ({dplyr}, {tidyr})
+* Ever expanding specialized topics (some modeling, see [{infer}](https://github.com/tidymodels/infer))
+
+---
+# {dplyr} 
+### A grammar for data wrangling
+
+Take a guess - what do you think the following do? Discuss with your neighbor.
+
+.pull-left[
+* `select()`
+* `filter()`
+* `mutate()`
+* `arrange()`
+* `summarize()`
+* `group_by()`
+]
+<div align = "right">
+<img src = ../img/dplyr_hex.png width = 300 height = 300>
+</div>
+
+---
+# {dplyr}
+### A grammar for data wrangling
+
+* `select()`: A subset of columns
+* `filter()`: A subset of rows
+* `mutate()`: Add or modify existing columns
+* `arrange()`: Rows in a ascending or descending order
+* `summarize()`: A variable according to other functions 
+  + e.g., `mean()`, `sd()` 
+  + Often used in conjunction with `group_by()`
+
+<div align = "right">
+<img src = ../img/dplyr_hex.png width = 200 height = 200>
+</div>
+
+---
+# {janitor}: Cleaning up common dirt
+Little easier (minus maybe the first one). Guess what these do?
+
+.pull-left[
+* `clean_names()` 
+* `remove_empty_rows()` 
+* `remove_empty_cols()`
+]
+
+<div align = "right">
+<img src = ../img/janitor_hex.png width = 300 height = 300>
+</div>
+
+---
+# {janitor}: Cleaning up common dirt
+
+Little easier (minus maybe the first one). Guess what these do?
+* `clean_names()`: Styles column names with snake_case
+* `remove_empty_rows()`: Removes empty rows
+* `remove_empty_cols()`: Removes empty columns
+* `excel_numeric_to_date()`: Changes numeric dates imported from Excel to actual dates
+
+---
+class: inverse
+background-image:url(../img/dplyr_hex.png)
+background-size:contain
+
+---
+# Arguments
+* *dplyr* always takes a data frame as the first argument. 
+* Subsequent argument tell *dplyr* what to do with the data frame.
+* Returns the modified data frame
+
+---
+# `select()` 
+<div align = "center">
+<img src = ../img/select.png width = 1000 height = 400>
+</div>
+
+<br>
+
+<span style="color:gray">(Figure from Baumer, Kaplan, & Horton, 2017)</span>
+
+---
+# `filter()` 
+
+<div align = "center">
+<img src = ../img/filter.png width = 1000 height = 400>
+</div>
+
+<br>
+
+.gray[(Figure from Baumer, Kaplan, & Horton, 2017)]
+
+---
+# Examples (follow along!)
+We'll start with the presidential dataset from the *mdsr* package.
+
+```{r pres_data_echo, eval = FALSE}
+install.packages("mdsr")
+library(mdsr)
+presidential
+```
+
+```{r pres_data_eval, echo = FALSE, message = FALSE}
+library(mdsr)
+head(presidential)
+```
+
+---
+# Select president name and party
+
+```{r select_pres_party}
+select(presidential, name, party)
+```
+
+---
+# Use negation
+
+```{r rem_start}
+select(presidential, -start)
+```
+
+---
+# Use indexing
+
+```{r indexing}
+select(presidential, 1:3)
+```
+
+
+---
+class: inverse
+background-image:url(../img/filter_boolean.png)
+background-size:contain
+
+# `filter()` boolean logic
+
+.footnote[(Figure from Wickham & Grolemund, 2017)]
+
+
+---
+# filter for democrats
+
+```{r dems}
+filter(presidential, party == "Democratic")
+```
+
+Note the use of `==` not `=`
+
+---
+# Dems starting after 2000
+
+```{r dems2000}
+filter(presidential, 
+       party == "Democratic" & 
+       start > as.Date("2000-01-01"))
+```
+
+---
+# Chaining arguments
+* What if we wanted to select and filter a dataset?
+* Select name and party of presidents who began their term after 2000
+
+Two step method
+
+```{r two_step}
+after_2000 <- filter(presidential, start > as.Date("2000-01-01"))
+select(after_2000, name, party)
+```
+
+---
+# Chaining arguments
+* Alternatively, we could wrap `select` around `filter`
+
+```{r wrapped}
+select(filter(presidential, start > as.Date("2000-01-01")), name, party)
+```
+
+---
+# Chaining arguments
+* Or, we could use another function to help increase the readability of our code: `%>%`
+* Called the "pipe" operator and "piping functions"
+
+```{r piping1}
+filter(presidential, start > as.Date("2000-01-01")) %>% 
+  select(name, party)
+```
+
+---
+# Chaining arguments
+Generally when using the pipe, the first argument is the dataset, which gets piped through the corresponding functions. So the code on the prior slide would more typically be written 
+
+```{r piping2}
+presidential %>% 
+  filter(start > as.Date("2000-01-01")) %>% 
+  select(name, party)
+```
+
+Note the indentation and line breaks to help keep things straight.
+
+
+---
+# Create a new variable
+
+Let's go to a different dataset
+(we'll talk about this more next class)
+
+```{r load-reads}
+library(rio)
+library(here)
+library(janitor)
+
+reads <- import(here("data", "Project_Reads_Scores.csv"),
+                setclass = "tbl_df") %>% 
+  clean_names()
+head(reads)
+```
+
+---
+* Select the student id, test site, pre- and post-test scores
+
+```{r prepost}
+prepost <- reads %>% 
+    select(student_id, test_site, pre_test_score, post_test_score)
+
+prepost
+```
+
+---
+# Add a variable
+
+```{r mutate1, message = FALSE}
+library(magrittr)
+prepost %<>% 
+  mutate(gain = post_test_score - pre_test_score)
+ 
+prepost
+```
+
+---
+# Quick note on  `%<>%` 
+### The following are equivalent
+
+```{r mutate2}
+prepost %<>% 
+  mutate(gain = post_test_score - pre_test_score)
+```
+
+```{r mutate3}
+prepost <- prepost %>%  
+  mutate(gain = post_test_score - pre_test_score)
+```
+
+
+---
+# Order by gain: Least to greatest
+
+```{r arrange}
+prepost %>% 
+  arrange(gain)
+```
+
+---
+# Order by gain: greatest to least
+
+```{r arrange_desc}
+prepost %>% 
+  arrange(desc(gain))
+```
+
+---
+# `summarize`
+* Compute the mean and standard deviation of the gain
+
+```{r summarize}
+prepost %>% 
+  summarize(mean_gain = mean(gain),
+            sd_gain = sd(gain))
+```
+
+---
+# `group_by`
+
+* Conduct an operation *by* each level of a grouping factor
+
+Compute average wins for each team
+
+```{r av_wins}
+prepost %>% 
+  group_by(test_site) %>% 
+  summarize(mean_gain = mean(gain))
+```
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# Lab
+
