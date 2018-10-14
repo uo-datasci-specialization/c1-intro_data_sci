@@ -16,6 +16,8 @@ output:
 
 ```{r, setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 13, message = FALSE)
+library(tidyverse)
+theme_set(theme_grey(base_size = 25))
 ```
 
 # Agenda 
@@ -241,6 +243,10 @@ One of the first lines in many of my scripts is
 
 ```{r theme-set}
 theme_set(theme_minimal())
+```
+
+```{r theme-set-no-echo, echo = FALSE}
+theme_set(theme_minimal(base_size = 25))
 ```
 
 ---
