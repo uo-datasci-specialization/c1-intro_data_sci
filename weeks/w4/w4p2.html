@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro to git and GitHub</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Intro to git and GitHub
+### Daniel Anderson
+### Week 4, Class 2
+
+---
+
+
+
+
+# Agenda 
+* Questions
+* Intro to *git*/*GitHub*
+* Lab
+
+
+--
+### Learning objectives for today
+* Understand the basics of git and git vocabulary
+* Be able to create repos, push projects, commit changes
+* Begin collaborating on a project
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+
+---
+class: inverse middle
+background-image:url(../img/final-doc.png)
+background-size:contain
+
+.footnote[“Piled Higher and Deeper” by Jorge Cham, http://www.phdcomics.com]
+
+
+---
+### From swcarpentry
+![](http://swcarpentry.github.io/git-novice/fig/play-changes.svg)
+
+We can think of the changes as separate from the document
+
+---
+![](http://swcarpentry.github.io/git-novice/fig/versions.svg)
+
+This means there are many possible versions of the same document
+
+---
+![](http://swcarpentry.github.io/git-novice/fig/merge.svg)
+
+Unless there are conflicts, two changes from the same document can be merged
+together
+
+---
+# How?
+That's what we'll talk about today!
+
+--
+
+Goals: 
+* Get you to understand the structure of git
+* Actual method of completing the tasks is up to you
+  + GUI? Command line? RStudio?
+
+--
+* If you go with a GUI, I'd recommend [GitKraken](https://www.gitkraken.com)
+  + In fact, I'd recommend everybody download/use it, even if for merge
+    conflicts alone.
+
+---
+# Some basic terminology
+* Version Control System
+  + A tool to help us track changes. *git* is one such system (but there
+    are others).
+--
+* Commit
+  + Changes that have been made to the file(s)
+
+--
+* Repository (repo)
+  + The files, full commit history, and associated metadata for a project
+
+
+--
+### When working with git
+* Each collaborator has the *entire* repo on their local machine
+* There is also a cloud-based server hosing the repo (that's GitHub)
+* The online version of the repo is call the *remote*
+
+---
+# Some key points
+
+* Because *git* tracks the **entire** history of a project it is akin to
+  unlimited "undo"
+* *git* allows many people to work in parallel
+
+---
+# Creating a repository
+
+* A couple of different options...
+
+
+--
+### Rstudio
+Let's focus on the RStudio version first. 
+
+---
+# GitHub
+Go to GitHub
+* Select drop down by your profile, then "New Repository"
+* I'd suggest also adding the R .gitignore and a README
+
+&lt;div &gt;
+&lt;img src = ../img/newrepo.png height = 300&gt;
+&lt;/div&gt;
+
+
+
+---
+# Name it
+
+&lt;div &gt;
+&lt;img src = ../img/newrepo-name.png height = 500&gt;
+&lt;/div&gt;
+
+
+---
+# Copy path
+
+![](../img/clone.png)
+
+---
+### Create a new RStudio Project
+
+![](../img/new-ver-control.png)
+
+---
+
+![](../img/new-git.png)
+
+---
+
+![](../img/git-repo-rstudio.png)
+
+---
+
+![](../img/git-plugin.png)
+
+---
+class: inverse center middle
+
+# [demo]
+
+Let's look atthe git plugin
+
+---
+# Tracking
+
+Notice the hidden `.git` folder
+
+
+--
+On mac, show hidden files with
+
+```
+cmd + shift + .
+```
+
+(Note, I have hidden files shown all the time)
+
+--
+
+* As long as that folder exists, the **entire** folder will be
+tracked.
+  + **Do not create repos inside of repos**
+  + If you want a folder to show up, there needs to be something in it (e.g., 
+    a `README.md`)
+
+
+---
+# Ignoring Files
+* When we initialized the repo, we started it with a `.gitignore` file
+* The `.gitignore` file tells the repo not to track certain files
+  + e.g., proprietary data
+
+
+--
+Probably not super important for now, but if you need to ignore a file in your repo for whatever reason, just put the name of the file in the `.gitignore` 
+
+
+---
+# Adding a file
+* Let's create an R Markdown file and put it in our repo.
+* Open terminal, type `git status`. What do you see?
+* Use the RStudio `git` plugin. What do you see?
+
+---
+# Staging
+* When you add files to a repo you are *staging* them for tracking.
+
+[demo gitkraken &amp; RStudio staging]
+
+
+--
+Command line version is `git add &lt;file&gt;`
+
+---
+# Commits
+After staging, you *commit* changes to the file
+
+![](http://swcarpentry.github.io/git-novice/fig/git-staging-area.svg)
+
+
+---
+# Push
+After you've committed the changes you want, push them to the remote
+
+--
+![](https://i.kym-cdn.com/photos/images/newsfeed/001/141/162/456.gif)
+
+Wait what's a remote again?
+
+
+--
+The cloud-based repo
+
+---
+# Refresh the repo
+
+![](../img/active-repo.png)
+
+---
+class: inverse right
+background-image:url(../img/gitkraken.png)
+background-size:cover
+
+# gitkraken approach
+
+---
+# An overall view
+
+![](https://github.com/mbjoseph/git-intro/raw/master/fig/git.png)
+
+
+---
+# Revisiting some vocabulary
+* stage
+* commit
+* push
+* pull
+* clone
+
+
+--
+At least half the difficulty with *git* is all the weird words
+
+---
+### Simple git through command line
+
+90% of your workflow requires just a few commands.
+
+* `git clone &lt;path&gt;`
+  + Used once - gets the remote repo on your local.
+
+--
+* `git pull`
+  + First command each time - syncs your local repo with the remote
+
+--
+* `git add`
+  + Stages files in your local repo to be tracked
+
+--
+* `git commit &lt;file&gt; -m "my commit message"`
+  + Commits changes to files in the repository, along with a commit message
+
+--
+* `git push`
+  + Pushes the changes you've made from your local repo to the remote
+
+--
+* `git status`
+  + Gives you an update on your local repo (what files still need to be added, 
+    what changes have been made since last commit, etc.)
+
+---
+# Collaborating
+Need to get proper permissions. Two methods:
+* Add users to a repo: Settings =&gt; Collaborators =&gt; add user w/ username
+
+![](../img/add-collab.png)
+
+
+---
+# Collaborating
+Second method: 
+* Create an organization
+
+&lt;div &gt;
+&lt;img src = ../img/new-org.png height = 400&gt;
+&lt;/div&gt;
+
+---
+# Cloning
+Means you're downloading the repo
+
+--
+* Can also start a new RStudio project
+
+--
+
+
+```bash
+git clone &lt;path&gt;
+```
+
+&lt;div &gt;
+&lt;img src = ../img/clone.png height = 300&gt;
+&lt;/div&gt;
+
+---
+# Merge conflicts
+* Remember to always `git pull` first
+* Let's create a merge conflict!
+
+(Note the GUI from *gitkraken* is really nice for resolving them)
+
+---
+# Merge conflict activity
+1. Get a partner
+1. Partner1 add Partner2 as a collaborator
+1. Partner2 clone the repo
+1. Partner1 make changes to the file in the repo, commit, and push
+1. Partner2 make different changes to the same parts of the file. Commit the changes. Try to push. What happens? Why?
+1. Open up the files - do you see some weird stuff that's been added?
+
+### Wait for next steps
+
+---
+class: inverse middle center
+
+## Merge conflicts w/gitkraken
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/R1iWJNyRpQE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
+
+---
+# Some takeaways
+Basic workflow is
+* Create a repo
+* Add collaborators
+* Add files
+* Commit changes
+* Push changes to remote
+
+---
+# Advice on avoiding merge conflicts
+* Always `git pull` (or the GUI equivalent) before you start working
+* Try to stay in communication and don't work on the **exact** same thing at the same time
+* Use a GUI to help you manage what merge conflicts you do run into
+
+---
+# Remember, today is an intro
+We'll talk more about other `git` features later
+* branching
+* forking
+* pull requests
+* filing issues
+* etc.
+
+---
+# Lab
+* For lab today, just submit a link to the repo you created
+* If we still have time, work with your group to get a shared repo
+  + Discuss organization
+  + Maybe get your outline uploaded?
+* Chat with me before you leave if you're still confused (note, I expect you to
+  be at least a little confused)
+
+---
+# Additional info
+
+* Initializing a local repo through the command line
+
+
+```bash
+mkdir newrepo
+cd newrepo
+git init
+```
+
+--
+You should get a message similar to 
+`Initialized empty Git repository in /Users/Daniel/newrepo/.git/`
+
+
+---
+# Name it
+Doesn't have to be the same name as the folder on your local, but probably a
+good idea.
+
+&lt;div &gt;
+&lt;img src = ../img/newrepo-name.png height = 400&gt;
+&lt;/div&gt;
+
+---
+# Connect it
+
+![](../img/connect-remote.png)
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
