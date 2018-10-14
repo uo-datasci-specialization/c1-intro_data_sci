@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Documents 1</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link rel="stylesheet" href="custom1.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Dynamic Documents 1
+## Intro to R Markdown
+### Daniel Anderson
+### Week 4, Class 1
+
+---
+
+
+
+
+# Agenda 
+* Questions
+* R Markdown
+* Lab
+
+
+--
+### Learning objectives for today
+* Understand how to render R Markdown documents &amp; mix code with text
+* Understand different chunk options
+* Understand inline code evaluation
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+---
+# R Markdown
+From within your R Studio Project:
+![](../img/rmd_template.png )
+
+---
+# First thing: Render!
+![](../img/knit.png)
+
+
+---
+# YAML Front Matter
+
+```
+---
+title: Example Markdown document
+author: Daniel Anderson
+date: "2015-09-17"
+---
+```
+
+![frontMatter](../img/frontMatter.png)
+
+* Three dashes before and after the YAML fields
+* Case sensitive
+* Many other fields are possible.
+  + For example, you may want to include an `output:` argument (`pdf_document`,
+    `html_document`, `word_document`). Must be specified as it is rendered, if
+    not supplied.
+
+
+---
+# Code chunks versus text
+
+![code_chunks](../img/code_chunks.png)
+
+---
+# Code chunks
+
+Start a code chunk with ` ```{r}`, then produce some r code, then close the
+
+  chunk with three additional back ticks ` ``` `.
+
+![codechunk1](../img/codeChunk1.png)
+
+--
+
+
+```r
+a &lt;- 3
+b &lt;- 5
+
+a + b * (exp(a)/b)
+```
+
+```
+## [1] 23.08554
+```
+
+
+---
+# Headings and Lists 
+### Not R-lists
+
+.pull-left[
+
+```
+# Level 1
+## Level 2 
+### Level 3 (etc.)
+```
+
+&lt;br/&gt;
+
+```
+ * Unordered list
+  - inset
+    + inset more
+  - etc.
+
+1. Ordered list
+  a. blah blah
+2. More stuff
+```
+
+]
+
+.pull-right[
+
+![headersLists](../img/headersLists.png)
+
+]
+
+
+---
+# Final Product
+
+.pull-left[
+&lt;div &gt;
+&lt;img src = ../img/rMarkdownCode.png height = 500&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+&lt;div &gt;
+&lt;img src = ../img/fullRMarkdownDoc.png height = 500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# More advanced options
+
+* Chunk options
+* Setting global options
+* Inline code evaluation
+
+
+---
+# A few select chunk options
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Options &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Arguments &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Default &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Result &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; eval &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Evaluate the code? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; echo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Show the code? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; results &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; markup, asis, hold, hide &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; markup &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Render the results &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; warning &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Print warnings? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; error &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Preserve errors? (if FALSE, quit) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; message &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Print any messages? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; include &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Include any of the code or output or code? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; tidy &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tidy code? (see formatR package) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+# (and a few more)
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Options &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Arguments &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Default &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Result &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cache &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical, 0:3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cache code chunks? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cache.comments &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NULL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cache invalidated by comment changes? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; dependson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; char, num &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NULL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Current chunk depend on prior cached chunks? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; autodep &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; logical &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Depends determined automatically? &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; fig.height/fig.width &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; numeric &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 7, 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Height and width of figure &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; fig.show &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; asis, hold, animate, hide &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; asis &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; How the figure should be displayed &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; interval &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; numeric &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Animate speed &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+.footnote[For complete documentation, see http://yihui.name/knitr/options/]
+
+---
+# echo and eval
+
+.pull-left[
+
+You can show code without evaluating it, using `eval = FALSE`. 
+
+&lt;div align = "left"&gt;
+&lt;img src = ../img/codeChunk2.png height = 100&gt;
+&lt;/div&gt;
+
+
+
+```r
+a + b * (exp(a)/b)
+```
+]
+
+.pull-right[
+
+Alternatively, you can evaluate the code without displaying it, using `echo = 
+  FALSE`.
+
+&lt;div align = "left"&gt;
+&lt;img src = ../img/codeChunk3.png height = 100&gt;
+&lt;/div&gt;
+
+![](w4p1_files/figure-html/plotExample-1.png)&lt;!-- --&gt;
+
+]
+
+---
+# warning
+
+
+
+### Warning = `FALSE`
+
+```r
+ggplot(msleep, aes(sleep_rem, sleep_total)) + 
+  geom_point()
+```
+
+![](w4p1_files/figure-html/ggplotWarning2-1.png)&lt;!-- --&gt;
+Warning is printed to the console when rendering.
+
+
+---
+
+### Warning = `TRUE`
+
+```r
+ggplot(msleep, aes(sleep_rem, sleep_total)) + 
+  geom_point()
+```
+
+```
+## Warning: Removed 22 rows containing missing values (geom_point).
+```
+
+![](w4p1_files/figure-html/ggplotWarning1-1.png)&lt;!-- --&gt;
+
+---
+# Show errors
+
+`error = TRUE`
+
+```r
+ggplot(msleep, aes(sleep, sleep_total)) + 
+  geom_point()
+```
+
+```
+## Error: Aesthetics must be either length 1 or the same as the data (83): x
+```
+
+--
+
+&lt;br&gt;
+
+If `error = FALSE`, the document won't render if it encounters an error.
+
+![errorRendering](../img/errorRendering.png)
+
+---
+# Message
+Some functions will return messages. You may want to suppress these.
+
+### message = `FALSE`
+
+```r
+ggplot(msleep, aes(sleep_total)) +
+  geom_histogram()
+```
+
+![](w4p1_files/figure-html/messages2-1.png)&lt;!-- --&gt;
+
+---
+# Message
+
+### message = `TRUE`
+
+```r
+ggplot(msleep, aes(sleep_total)) +
+  geom_histogram()
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](w4p1_files/figure-html/messages1-1.png)&lt;!-- --&gt;
+
+---
+# include
+
+![includeFALSE](../img/includeFALSE.png)
+
+The `include` argument is used to evaluate code that is not included in the
+document at all. For example, when setting up your global options.
+
+
+---
+# Setting global options
+Change the default behavior
+
+
+```r
+opts_chunk$set(options)
+```
+
+For example, you can set `echo = FALSE` and `fig.width = 6.5` and `fig.height = 8` with the following code.
+
+
+```r
+opts_chunk$set(echo = FALSE, fig.width = 6.5, fig.height = 8)
+```
+
+This is most useful when producing a report for somebody who doesn't use R and has no use or knowledge of the code.
+
+
+You can always override the global options within a particular chunk, e.g.
+
+` ```{r, chunkName, echo = TRUE}` 
+
+` ``` `
+
+---
+## Other things to consider setting globally:
+* `warnings = FALSE`
+* `message = FALSE`
+* `errors = TRUE`
+* `echo = FALSE`
+* Caching options (next slides)
+
+
+---
+# Inline code
+
+A single back tick followed by `r` produces inline code to be evaluated.
+
+&lt;div align = "center"&gt;
+&lt;img src = ../img/inlineCode.png width = 1000&gt;
+&lt;/div&gt;
+&lt;br&gt;
+
+This is an example of inline code, where I want to refer to the sum of `a` and
+  `b`, which is 8.
+
+This is *extremely* useful in writing reports. Never have to update any numbers in text, regardless of changes to your models or data (if you are careful about it).
+
+---
+# Real example
+
+![ell_means](../img/ell_means.png)
+
+
+---
+# Want to customize further?
+The YAML will control a lot of how a document looks. For example, if you wanted to render with a different syntax highlighter:
+
+.pull-left[
+### Standard Rmd
+
+```
+---
+title: "Doc Title"
+output: pdf_document
+---
+```
+]
+
+
+.pull-right[
+### kate 
+
+```
+---
+title: "Doc Title"
+output: 
+  pdf_document:
+    highlight: kate
+---
+```
+]
+
+---
+# Last bit
+### Formats
+* R Markdown will render to HTML and PDF really well
+  + Word kinda-sorta supported
+  + You can also create websites, slides (like these), books, etc.
+
+--
+* Need a tex (pronounced tek) distribution
+  + My recommendation for this class, and probs everything you'll ever need: 
+    {tinytex}
+    
+--
+
+```r
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
+
+This is another amazing package by Yihui Xie. See more about it
+[here](https://yihui.name/tinytex/)
+
+---
+# Full distributions
+* MacTex: http://www.tug.org/mactex/
+* MikTex: https://miktex.org/download
+* TexLive: http://www.tug.org/texlive/
+
+
+--
+### Modify the YAML
+Get the same document to render to different formats by modifying the YAML
+
+```
+output:
+  pdf_document: 
+    highlight: kate
+  html_document: 
+    highlight: tango
+  word_document: default
+```
+
+---
+class: inverse center middle
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
