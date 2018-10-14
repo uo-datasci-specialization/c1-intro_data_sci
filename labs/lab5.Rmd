@@ -1,0 +1,82 @@
+---
+title: "Lab 6"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = FALSE)
+```
+
+1. Read in the following three datasets, using {here} and {rio}:
+  * *sesame13.sav*
+  * *star.csv*
+  * *ais.xlsx*
+  
+*Hint*: For the *ais.xlsx* dataset look at the `skip` argument within the help 
+  documentation.
+  
+```{r import}
+library(rio)
+sesame <- import(here("data", "sesame13.sav"))
+star <- import(here("data", "star.csv"))
+ais <- import(here("data", "ais.xlsx"), skip = 15)
+```
+
+1. Using the ais data, compute the average red blood cell count and average bmi by sport. Output these data as SPSS and EXCEL files. 
+
+```{r av_rbc}
+library(tidyverse)
+smry <- ais %>% 
+  group_by(sport) %>% 
+  summarize(mean_rcc = mean(rcc),
+            mean_bmi = mean(bmi))
+export(smry, "summary_measures.sav")
+export(smry, "summary_measures.xlsx")
+```
+
+1. Use the sesame dataset to answer the following question: Was the average 
+  female age higher in schools or at home? 
+
+```{r av_age}
+sesame %>% 
+  characterize() %>% 
+  filter(sex == "Female") %>% 
+  group_by(setting) %>% 
+  summarize(mean_age = mean(age))
+# Answer: School
+```
+
+1. How many rows and columns are in the *star* dataset? Remove outliers using a really poor method, just for practice, by eliminating students whose math (*tmathss*) scores were more than three standard deviations above or below the corresponding mean. How many rows are in the dataset now?
+
+```{r rem_outlier}
+dim(star) # 5748 rows, 12 columns
+star %>% 
+  filter(tmathss <= mean(tmathss) + 3*sd(tmathss) &
+         tmathss >= mean(tmathss) - 3*sd(tmathss)) %>% 
+  nrow()
+# Answer: 5743  
+```
+
+1. Use the star dataset to compute standardized versions of the math and reading scores, i.e., for each variable, subtract the mean from each observation and divide by the standard deviation: $x_s = \frac{x_i - \bar{X}}{sd(X)}$. 
+  + Check that your computations were correct by computing the mean and standard deviation of each variable (they should be 0 and 1). 
+  + Compute the mean of the standardized variable for all sex/frl combinations (I'm asking you to extend what you know, we haven't talked explicitly about how to do this yet). 
+  + What do you make of these findings? Do you see a gender effect? FRL effect? Is there evidence of an interaction? (i.e., that the effect of FRL is greater for boys versus girls). 
+
+```{r q6}
+star <- star %>% 
+  mutate(stand_math = (tmathss - mean(tmathss)) / sd(tmathss),
+         stand_rdg  = (treadss - mean(treadss)) / sd(treadss))
+
+star %>% 
+  summarize(stand_math_mean = mean(stand_math),
+            stand_math_sd   = sd(stand_math),
+            stand_rdg_mean = mean(stand_rdg),
+            stand_rdg_sd   = sd(stand_rdg))
+
+star %>% 
+  group_by(sex, frl) %>% 
+  summarize(stand_math_mean = mean(stand_math),
+            stand_math_sd   = sd(stand_math),
+            stand_rdg_mean = mean(stand_rdg),
+            stand_rdg_sd   = sd(stand_rdg))
+```
