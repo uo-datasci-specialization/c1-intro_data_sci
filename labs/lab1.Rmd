@@ -39,7 +39,6 @@ x-axis.
 
 ```{r second-plot}
 
-
 ```
 
 The *diamonds* dataset is also included with *ggplot2*. The code below will
@@ -53,6 +52,7 @@ Look at the help documentation and then use the code below to change the
 number of rows shown to 15.
 
 ```{r head-diamonds15}
+
 head(diamonds, )
 ```
 
