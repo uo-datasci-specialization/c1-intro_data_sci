@@ -1,0 +1,85 @@
+---
+title: "Lab 6 Key"
+output:
+  html_document:
+    highlight: tango
+  pdf_document:
+    highlight: kate
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.width = 6.5,
+                      fig.height = 4)
+```
+
+1. Create a new R Markdown document and modify the YAML to 
+  + Include your name
+  + Change the syntax highlighting to any scheme but the default. The options
+    are `default`, `tango`, `pygments`, `kate`, `monochrome`, `espresso`,
+    `zenburn`, `haddock`, and `textmate`. You can also use `NULL` if you want 
+    no highlighting.
+  + Include the option to make it easy to modify the rendering between PDF and
+    HTML.
+  
+
+2. Create a code chunk that
+  + Does not display the code or any warnings, messages, etc. from the code, 
+    but evaluates every function/line of the code.
+  + Loads all the packages you decide to use for the lab
+  + Sets a global chunk option to make all figures 6.5" wide and the height to
+    a value that makes sense to you.
+
+3. Load the *ecls-k_samp.sav* dataset, and produce the plot below. Do not show
+   the code you used (colors, themes, etc. don't matter here).
+
+```{r load-data}
+library(rio)
+library(here)
+library(tidyverse)
+library(janitor)
+
+theme_set(theme_minimal(base_size = 8))
+
+d <- import(here("data", "ecls-k_samp.sav"),
+            setclass = "tbl_df") %>%
+        characterize() %>%
+        clean_names() 
+
+d %>%
+  filter(ethnic == "WHITE, NON-HISPANIC" |
+         ethnic == "BLACK OR AFRICAN AMERICAN, NON-HISPANIC" |
+         ethnic == "HISPANIC, RACE SPECIFIED" |
+         ethnic == "HISPANIC, RACE NOT SPECIFIED") %>%
+ggplot(aes(t1mscale, t2mscale)) +
+  geom_point() +
+  geom_smooth(aes(color = school_type),
+              method = "lm") +
+  facet_wrap(~ethnic)
+```
+
+\newpage
+
+4. Run The following lines of code to store the mean and standard deviation of
+  `t1mscale`. Extend this code to calculate (in the same code chunk) the mean
+  and standard deviation of `t2mscale`. Note this code assumes you read the 
+  ecls-k dataset in as an object called `d`. You should substitute in whatever 
+  the name is for your data object. 
+
+
+```{r means-sd, echo = TRUE}
+t1mean <- mean(d$t1mscale, na.rm = TRUE)
+t1sd <- sd(d$t1mscale, na.rm = TRUE)
+```
+
+Using the values you calculated above, use an inline code evaluation to report
+the means/sds for the two time points. Also report the difference between the
+means (i.e., the average gain).
+
+5. Pretend you are trying to teach somebody how to load data. Describe the
+   process below that we've discussed in class, including why it helps 
+   reproducibility, and echo chunks of code as necessary without actually
+   evaluating any of it.
+

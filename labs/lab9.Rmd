@@ -1,0 +1,62 @@
+---
+title: "Lab 9"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+1. Create a new APA R Markdown document. Modify the YAML so 
+  + the odd spacing around paragraphs and headers is removed
+  + Equations are left-aligned
+2. Modify the YAML so a table of contents is included, including headers up to four levels.
+  + Include some example text in the document with at least four levels of headers.
+  + Include some text that is bold and some that is italics.
+3. Write the code to load the ecls-k data. Do not show the code in the document.
+4. The following displays a regression model. Reproduce the equation somewhere
+in your document
+
+$$
+math_{t2_i} = \alpha + \beta_1(math_{t1_i}) + \beta_2(SES_{cat_i}) + \beta_3(math_{t1_i} \times SES_{cat_i}) \epsilon
+$$
+
+5. Reproduce the following plot in your document. (Note, this is a visual display of the model above)
+
+```{r answers, echo = FALSE, warning = FALSE, message = FALSE}
+library(rio)
+library(tidyverse)
+library(here)
+
+d <- import(here("data", "ecls-k_samp.sav"),
+            setclass = "tbl_df") %>% 
+  characterize() %>% 
+  janitor::clean_names() %>% 
+  mutate(ses_cat = factor(ses_cat, 
+                          levels = c("FIRST QUINTILE",
+                                     "SECOND QUINTILE",
+                                     "THIRD QUINTILE",
+                                     "FOURTH QUINTILE",
+                                     "FIFTH QUINTILE"),
+                          labels = c("First",
+                                     "Second", 
+                                     "Third", 
+                                     "Fourth", 
+                                     "Fifth")))
+  
+
+ggplot(d, aes(t1mscale, t2mscale))  +
+  geom_point(color = "gray70") +
+  geom_smooth(aes(color = ses_cat),
+              method = "lm",
+              se = FALSE) +
+  scale_color_viridis_d("SES Quintile") +
+  labs(title = "Math scores",
+       subtitle = "Relation from Time 1 to Time 2",
+       x = "Math Score (time 1)",
+       y = "Math Score (time 2)") +
+  theme_minimal()
+```
+
+
+

@@ -1,0 +1,92 @@
+---
+title: "Lab 8"
+output: html_document
+---
+
+Note, this is a group project. You will need to work with your final project 
+group on this lab. **Each member of your group should make at least one commit**.
+Once you have completed the assignment, provide a link to the repository in the
+text box for the lab on Canvas.
+
+1. Create a shared github repo for this lab. Call it "w5-lab"
+
+### Commit 1
+1. Use {papaja} to create an APA document that renders to a PDF manuscript
+  + Give it a new title and running head
+  + Add all the authors
+  + Remove the author note
+  + Change the abstract to something else.
+  + Add some keywords
+  + Remove line numbers
+  + Remove the wordcount
+
+### Commit 2
+1. Add a data folder to the repo. Place *star.csv* into the repo.
+2. Write code in the Rmd document to load all the libraries that will be
+used in the document, and setup global options. Make the code not show anywhere 
+in the document, set figure width to 6.5 and figure height to 8.
+3. Write the code to load the data.
+
+```{r setup, include = FALSE}
+library(knitr)
+library(papaja)
+library(tidyverse)
+library(rio)
+library(here)
+
+theme_set(theme_minimal())
+opts_chunk$set(echo = FALSE,
+               fig.width = 6.5,
+               fig.height = 8)
+```
+
+```{r load-data}
+d <- import(here("data", "star.csv"),
+            setclass = "tbl_df") %>% 
+  characterize()
+```
+
+### Commit 3
+1. Create a bibliography with at least two references. 
+2. Include in-text examples of citations formatted as **Author (Year)** and 
+**(Author, Year)**. 
+3. Render the document and make sure the reference section has a level 1 header 
+of "References", with all references displayed on their own page
+
+### Commit 4
+1. Write the code to create summary statistics. Output the following table and  
+  briefly describe it in text.
+
+```{r tbls, results = "asis"}
+d %>% 
+  group_by(sex, frl) %>% 
+  summarize(math_mean = mean(tmathss),
+            math_sd   = sd(tmathss),
+            rdg_mean  = mean(treadss),
+            rdg_sd    = sd(treadss)) %>% 
+  kable(digits = 2)
+```
+
+### Commit 5
+
+1. Create the following plot, using whatever theme you'd like, and briefly
+discuss it in text.
+
+```{r plot}
+d %>% 
+  mutate(`Lunch status` = ifelse(frl == "no", "Paid Meals", "Free/Reduced Price Meals")) %>% 
+ggplot(aes(totexp, tmathss)) +
+  geom_point(color = "gray70") +
+  geom_smooth(aes(color = `Lunch status`),
+              method = "lm",
+              fill = "#8da0cb") +
+  scale_color_brewer(palette = "Set2") +
+  labs(y = "Total Math Scale Score",
+       x = "Teacher Experience (years)",
+       title = "Relation between teacher experience and math scores",
+       subtitle = "Separate regression lines displayed by free/reduced price lunch status") +
+ theme_minimal() +
+ theme(legend.position = "bottom")
+```
+
+  
