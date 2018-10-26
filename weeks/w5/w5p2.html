@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Documents 2</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom1.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Dynamic Documents 2
+## APA Manuscripts
+### Daniel Anderson
+### Week 5, Class 1
+
+---
+
+
+
+
+# Agenda 
+* Questions
+* Some leftover R Markdown
+  + bold/italicize/code
+  + TOC
+* Some {papaja} modifications
+* Equations
+* Lab
+
+
+--
+### Learning objectives for today
+* Understand how to include latex extensions in RMD
+* Be able to produce basic equations
+
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+
+---
+# Revisiting *git*
+Talk with neighbor. What do these terms mean?
+
+* clone
+* pull
+* stage
+* commit
+* push
+* repo
+* remote
+
+
+---
+# Leftover R Markdown
+* **Bold** text can be specified with double asterisks (i.e., `**bold text**`) or
+double underscores (i.e., `__bold text__`). 
+
+--
+* *Italics* are specified similarly, but with a single asterisk (i.e., 
+`*italicized text*`) or underscores (i.e., `_italicized text_`).
+
+--
+* `Code` is defined by back-ticks ` `code` `
+* This is the same as in-line code specification, but without telling it the 
+language
+
+
+---
+# Table of Contents
+You can easily specify a table of contents with
+
+```
+---
+output: 
+  html_document:
+    toc: true
+---
+```
+
+A table of contents will then be automatically generated for you based on your 
+headers
+
+---
+# Change TOC depth
+* By default, the TOC will only go down to 3 levels
+* Change that with
+
+```
+---
+output: 
+  html_document:
+    toc: true
+    toc_depth: 5
+---
+```
+
+---
+# Floating TOC
+For HTML documents, allow the TOC to float along the side as you scroll
+
+```
+---
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+```
+
+---
+# Code folding
+Provide a button for people to be able to see the code, but otherwise have it 
+hidden
+
+```
+---
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: "hide"
+---
+```
+
+[example]
+
+
+---
+# Escaping
+* Sometimes you may not want the formatting to occur, and instead just show
+what you've typed. 
+* Escape with `\`
+
+--
+# I didn't want a header
+
+--
+
+\# So I escape the pound symbol like this `\#`
+
+---
+# LaTeX vs R Markdown
+* LaTeX considerably more complicated
+  + Probably won't really ever need it
+* LaTeX is the engine behind R Markdown for rendering PDF
+  + Why we'd use some extensions from there for PDF
+
+
+--
+### Essentially
+R Markdown let's us get *most* of the benefit of LaTeX without actually having 
+to learn it.
+
+---
+# Really want to see it?
+
+```
+output:
+  pdf_document:
+    keep_tex: true
+```
+
+Open the resulting .purple[.tex] file. 
+
+---
+# Including other options
+
+Specify `header-includes` in your YAML
+
+--
+### Example from a relatively complicated doc
+
+```
+header-includes:
+  - \pagenumbering{gobble}
+  - \usepackage{placeins}
+  - \usepackage{float}
+  - \usepackage{caption}
+  - \captionsetup[figure]{labelformat = empty}
+  - \usepackage{xcolor}
+  - \definecolor{link}{rgb}{0, 0, 238}
+  - \usepackage{booktabs}
+```
+
+---
+## Option to consider for {papaja}
+
+Change
+
+```
+classoption: "man"
+```
+
+to
+
+```
+classoption: "man, fleqn"
+```
+
+To get "flush equations" (i.e., left aligned and indented, rather than centered)
+
+---
+# Even better
+
+```
+classoption: "man, fleqn, noextraspace"
+```
+
+Removes some of the extra space around headers
+
+---
+# Add some LaTeX option
+
+```
+header-includes:
+  - \raggedbottom
+  - \setlength{\parskip}{0pt}
+```
+
+This will help .gray[(save you lots of time googling)] remove the extra space
+between paragraphs.
+
+---
+# Showing the differences visually
+
+[demo]
+
+
+---
+# Equations (briefly)
+Produce inline equations using LaTeX `$` `Equation stuff here` `$`
+
+
+--
+Produce equations in "Display" mode with
+
+`$$`
+
+
+`Equation stuff here`
+
+
+`$$`
+
+---
+# Greek letters
+
+### Lower-case
+
+.pull-left[
+* `\alpha` `\(\alpha\)`
+* `\beta` `\(\beta\)`
+* `\gamma` `\(\gamma\)`
+* `\delta` `\(\delta\)`
+* `\epsilon` `\(\epsilon\)`
+* `\zeta` `\(\zeta\)`
+* `\eta` `\(\eta\)`
+* `\theta` `\(\theta\)`
+* `\iota` `\(\iota\)`
+* `\kappa` `\(\kappa\)`
+* `\lambda` `\(\lambda\)`
+* `\mu` `\(\mu\)`
+]
+
+.pull-right[
+* `\nu` `\(\nu\)`
+* `\xi` `\(\xi\)`
+* `\omicron` `\(\omicron\)`
+* `\pi` `\(\pi\)`
+* `\rho` `\(\rho\)`
+* `\sigma` `\(\sigma\)`
+* `\tau` `\(\tau\)`
+* `\upsilon` `\(\upsilon\)`
+* `\phi` `\(\phi\)`
+* `\chi` `\(\chi\)`
+* `\psi` `\(\psi\)`
+* `\omega` `\(\omega\)`
+]
+
+---
+# Greek letters
+
+### Upper-case
+
+.pull-left[
+* `\Gamma` `\(\Gamma\)`
+* `\Delta` `\(\Delta\)`
+* `\Theta` `\(\Theta\)`
+* `\Lambda` `\(\Lambda\)`
+]
+
+.pull-right[
+* `\Xi` `\(\Xi\)`
+* `\Pi` `\(\Pi\)`
+* `\Sigma` `\(\Sigma\)`
+* `\Upsilon` `\(\Upsilon\)`
+* `\Phi` `\(\Phi\)`
+* `\Psi` `\(\Psi\)`
+* `\Omega` `\(\Omega\)`
+]
+
+
+--
+### Note they're not all here... 
+
+---
+# Lots of other things
+
+* `$\sum_{i=0}^n x_i$` `\(\sum_{i=0}^n x_i\)`
+
+* `$\frac{a}{b}$` `\(\frac{a}{b}\)`
+
+* Subscript with underscores `\beta_{0i}` `\(\beta_{0i}\)`
+* Superscript with ^ `q^{(a + b)}` `\(q^{(a + b)}\)`
+
+### Many more possibilities
+
+---
+# Quick example
+
+```
+$$
+`\begin{align}
+  \sqrt{37} &amp; = \sqrt{\frac{73^2-1}{12^2}} \\\
+            &amp; = \sqrt{\frac{73^2}{12^2}\cdot\frac{73^2-1}{73^2}} \\\ 
+            &amp; = \sqrt{\frac{73^2}{12^2}}\sqrt{\frac{73^2-1}{73^2}} \\\
+            &amp; = \frac{73}{12}\sqrt{1 - \frac{1}{73^2}} \\ \
+            &amp; \approx \frac{73}{12}\left(1 - \frac{1}{2\cdot73^2}\right)
+\end{align}`
+$$
+```
+
+---
+
+$$
+`\begin{align}
+  \sqrt{37} &amp; = \sqrt{\frac{73^2-1}{12^2}} \\\
+ &amp; = \sqrt{\frac{73^2}{12^2}\cdot\frac{73^2-1}{73^2}} \\\ 
+ &amp; = \sqrt{\frac{73^2}{12^2}}\sqrt{\frac{73^2-1}{73^2}} \\\
+ &amp; = \frac{73}{12}\sqrt{1 - \frac{1}{73^2}} \\ \
+ &amp; \approx \frac{73}{12}\left(1 - \frac{1}{2\cdot73^2}\right)
+\end{align}`
+$$
+```
+
+--
+### Take home message
+You can create beautiful typeset equations. 
+[{mathpix}](https://github.com/jonocarroll/mathpix) is a great place to start!
+
+---
+# Some resources
+* Chapter 3 of [The Not So Short Introduction to LaTeX](https://www.ethz.ch/content/dam/ethz/special-interest/hest/rehabilitation-engineering-lab-dam/documents/Engineering%20Tools%20LaTeX/latex_not_so_short_intro.pdf)
+
+* [mathjax tutorial](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)
+
+
+---
+class: inverse center middle
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
