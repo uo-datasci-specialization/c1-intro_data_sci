@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Review</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom1.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Review
+### Daniel Anderson
+### Week 9, Class 1
+
+---
+
+
+
+
+# Agenda
+* Publishing slides with GitHub
+* Review where we've been
+* Lab
+
+---
+class: inverse center middle
+# Publishing slides w/GitHUb
+### Demo
+(RMarkdown Slides and a quick note on {xaringan})
+
+---
+## Tidyverse: Providing a grammar for...
+* Graphics (ggplot)
+* Data manipulations (dplyr)
+* Tidying data (tidyr)
+
+---
+class: inverse center middle
+# dplyr
+
+---
+## dplyr: A grammar for data wrangling
+* `select()`: A subset of columns
+* `filter()`: A subset of rows
+* `mutate()`: Add or modify existing columns
+* `arrange()`: Rows in a ascending or descending order
+* `summarize()`: A variable according to other functions (e.g., `mean()`, `sd()`). Often used in conjunction with `group_by()`
+* `group_by`: Group a data frame according to a specific variable (usually a factor)
+
+&lt;div align = "right"&gt;
+&lt;img src = ../img/dplyr_hex.png height = 200&gt;
+&lt;/div&gt;
+
+
+---
+# Arguments
+* *dplyr* always takes a data frame as its first argument. 
+* Subsequent argument tell *dplyr* what to do with the data frame.
+* Returns the modified data frame
+
+---
+# `select()` 
+&lt;div align = "center"&gt;
+&lt;img src = ../img/select.png width = 1000 height = 400&gt;
+&lt;/div&gt;
+
+
+.footnote[Figure from Baumer, Kaplan, &amp; Horton, 2017]
+
+---
+# `filter()` 
+
+&lt;div align = "center"&gt;
+&lt;img src = ../img/filter.png width = 1000 height = 400&gt;
+&lt;/div&gt;
+
+.footnote[Figure from Baumer, Kaplan, &amp; Horton, 2017]
+
+---
+# Helper funs
+* `starts_with()`
+* `ends_with()`
+* `contains()`
+
+--
+
+**Note:** These can be used in other functions as well (e.g., `gather`)
+
+---
+# Mix types
+
+Mix types and helper funs. Use select to rearrange columns.
+
+
+```r
+library(tidyverse)
+diamonds %&gt;% 
+    select(depth, 6, starts_with("c"), price)
+```
+
+```
+## # A tibble: 53,940 x 7
+##      depth table    carat cut       color clarity price
+##      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;int&gt;
+##  1 61.5       55 0.23     Ideal     E     SI2       326
+##  2 59.8       61 0.21     Premium   E     SI1       326
+##  3 56.9       65 0.23     Good      E     VS1       327
+##  4 62.4       58 0.290000 Premium   I     VS2       334
+##  5 63.3       58 0.31     Good      J     SI2       335
+##  6 62.8       57 0.24     Very Good J     VVS2      336
+##  7 62.3       57 0.24     Very Good I     VVS1      336
+##  8 61.9       55 0.26     Very Good H     SI1       337
+##  9 65.1000    61 0.22     Fair      E     VS2       337
+## 10 59.4       61 0.23     Very Good H     VS1       338
+## # ... with 53,930 more rows
+```
+
+---
+# `filter()` boolean logic
+Left circle == x, right circle == y
+
+&lt;div align = "center"&gt;
+&lt;img src = ../img/filter_boolean.png height = 400&gt;
+&lt;/div&gt;
+
+.footnote[Figure from Wickham &amp; Grolemund, 2017]
+
+---
+## Create or overwrite variables: `mutate`
+
+### First: Load the data
+
+
+```r
+library(rio)
+library(here)
+reads &lt;- import(here("data", "Project_Reads_Scores.csv"), 
+                setclass = "tbl_df") %&gt;%
+  janitor::clean_names()
+```
+
+---
+# Calculate gain score
+
+
+```r
+reads %&gt;% 
+  mutate(gain = post_test_score - pre_test_score) %&gt;% 
+  select(student_id, 5, 7, gain)
+```
+
+```
+## # A tibble: 48 x 4
+##    student_id pre_test_score post_test_score  gain
+##    &lt;chr&gt;               &lt;int&gt;           &lt;int&gt; &lt;int&gt;
+##  1 Virden 1               43              92    49
+##  2 Virden 2               46             104    58
+##  3 Virden 3               39              75    36
+##  4 Virden 4               35             115    80
+##  5 Virden 5               46              85    39
+##  6 Virden 6               35              91    56
+##  7 Virden 7               40              96    56
+##  8 Virden 8               39              74    35
+##  9 Virden 9               40              90    50
+## 10 Virden 10              45              86    41
+## # ... with 38 more rows
+```
+
+---
+# Overwrite a variable
+
+
+```r
+reads %&gt;% 
+  mutate(pre_test_score = scale(pre_test_score),
+         post_test_score = scale(post_test_score)) %&gt;% 
+  select(student_id, 5, 7)
+```
+
+```
+## # A tibble: 48 x 3
+##    student_id pre_test_score post_test_score
+##    &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
+##  1 Virden 1        0.2241918      -0.4333331
+##  2 Virden 2        0.6380844       0.4776153
+##  3 Virden 3       -0.3276650      -1.723843 
+##  4 Virden 4       -0.8795218       1.312651 
+##  5 Virden 5        0.6380844      -0.9647197
+##  6 Virden 6       -0.8795218      -0.5092455
+##  7 Virden 7       -0.1897008      -0.1296836
+##  8 Virden 8       -0.3276650      -1.799756 
+##  9 Virden 9       -0.1897008      -0.5851578
+## 10 Virden 10       0.5001202      -0.8888073
+## # ... with 38 more rows
+```
+
+---
+# `summarize` column(s)
+
+* Average pre/post and gain
+
+
+```r
+reads %&gt;% 
+  mutate(gain = post_test_score - pre_test_score) %&gt;% 
+  summarize(av_pre = mean(pre_test_score, na.rm = TRUE),
+            av_post = mean(post_test_score, na.rm = TRUE),
+            av_gain = mean(gain, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 3
+##   av_pre  av_post  av_gain
+##    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 41.375 97.70833 56.33333
+```
+
+---
+# Summaries by group
+* Use `group_by` to get the same summaries by a grouping factor. 
+Mean pre/post and gain by test site
+
+
+```r
+reads %&gt;% 
+  mutate(gain = post_test_score - pre_test_score) %&gt;% 
+  group_by(test_site) %&gt;% 
+  summarize(av_pre = mean(pre_test_score, na.rm = TRUE),
+            av_post = mean(post_test_score, na.rm = TRUE),
+            av_gain = mean(gain, na.rm = TRUE))
+```
+
+```
+## # A tibble: 6 x 4
+##   test_site      av_pre   av_post  av_gain
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 JONES        38.800    97.8     59      
+## 2 JONES ALL    39        98       59      
+## 3 VIRDEN       38.66667  92.46667 53.8    
+## 4 VIRDEN ALL   39        92       53      
+## 5 WESTSIDE     46.6     102.8667  56.26667
+## 6 WESTSIDE ALL 47       103       56
+```
+
+---
+# Conditional verbs
+### I mentioned these, but we never covered them
+* `*_if`, `*_all` functions can help with efficiency
+
+
+```r
+reads %&gt;% 
+  select_if(is.numeric) %&gt;% 
+  summarize_all(mean, na.rm = TRUE)
+```
+
+```
+## # A tibble: 1 x 10
+##   pre_test_score post_test_score unit_1_score unit_2_score unit_3_score
+##            &lt;dbl&gt;           &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1         41.375        97.70833     3.270833     4.270833     5.395833
+## # ... with 5 more variables: unit_4_score &lt;dbl&gt;, unit_5_6_score &lt;dbl&gt;,
+## #   unit_7_score &lt;dbl&gt;, unit_8_score &lt;dbl&gt;, total_score &lt;dbl&gt;
+```
+
+---
+
+* `*_at`
+
+
+```r
+reads %&gt;%
+  summarize_at(vars(unit_1_score, unit_3_score, unit_7_score), 
+               funs(mean, sd))
+```
+
+```
+## # A tibble: 1 x 6
+##   unit_1_score_mean unit_3_score_mean unit_7_score_mean unit_1_score_sd
+##               &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;           &lt;dbl&gt;
+## 1          3.270833          5.395833            16.375        1.267257
+## # ... with 2 more variables: unit_3_score_sd &lt;dbl&gt;, unit_7_score_sd &lt;dbl&gt;
+```
+ 
+
+---
+class: inverse center middle
+# Data visualization
+
+---
+# Reviewing ggplot2 syntax
+* `aes()` accesses the variables in your dataset.
+
+--
+* Set aesthetics globally outside of `aes()`
+
+--
+* Aesthetics set in first call to `ggplot` will bleed through to subsequent layers.
+
+--
+* Change aesthetics within a specific layer by providing arguments within that specific function.
+
+--
+* Can even change x/y axes, which can be helpful if you want it defined as categorical for one layer and continuous for a second. Or if you want to plot summary data over the top of the raw data (or vice versa).
+
+---
+# Pop Quiz 1
+What's different about these plots
+
+.pull-left[
+
+![](w9p1_files/figure-html/ggplot_color-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+![](w9p1_files/figure-html/ggplot_group-1.png)&lt;!-- --&gt;
+]
+
+---
+# Pop Quiz 2
+What went wrong here?
+
+![](w9p1_files/figure-html/change_color-1.png)&lt;!-- --&gt;
+
+---
+# Thinking about scales some
+### A bit more new stuff
+* Same plot, different scales. Which can you see the relation better?
+
+.pull-left[
+
+```r
+ggplot(gapminder, aes(year, gdpPercap, group = country)) +
+  geom_line(alpha = 0.3)
+```
+
+![](w9p1_files/figure-html/raw_y-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+
+```r
+ggplot(gapminder, aes(year, gdpPercap, group = country)) +
+  geom_line(alpha = 0.3) +
+  scale_y_log10(label = scales::dollar)
+```
+
+![](w9p1_files/figure-html/log_10_y-1.png)&lt;!-- --&gt;
+]
+
+---
+# Pop Quiz 3
+Can you reproduce this plot? (you'll need the gapminder package/data)
+
+
+```r
+# install.packages(gapminder)
+library(gapminder)
+```
+
+![](w9p1_files/figure-html/gpd_faceted1-1.png)&lt;!-- --&gt;
+
+
+---
+# What about this one?
+![](w9p1_files/figure-html/gpd_faceted2-1.png)&lt;!-- --&gt;
+
+---
+# Can you combine them?
+![](w9p1_files/figure-html/gpd_faceted3-1.png)&lt;!-- --&gt;
+
+---
+class: inverse center middle
+# tidy data and *tidyr*
+
+---
+# Review Homework 4
+* Tidy the reads dataset, minus columns 5-9
+
+
+```r
+reads %&gt;% 
+  select(-5:-9)
+```
+
+```
+## # A tibble: 48 x 20
+##    test_year    test_type test_site student_id unit_1_score unit_1_percent
+##    &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;         
+##  1 06/01/2016 … YEAR END  VIRDEN    Virden 1              3 12%           
+##  2 06/01/2016 … YEAR END  VIRDEN    Virden 2              5 20%           
+##  3 06/01/2016 … YEAR END  VIRDEN    Virden 3              4 16%           
+##  4 06/01/2016 … YEAR END  VIRDEN    Virden 4              4 16%           
+##  5 06/01/2016 … YEAR END  VIRDEN    Virden 5              2 8%            
+##  6 06/01/2016 … YEAR END  VIRDEN    Virden 6              5 20%           
+##  7 06/01/2016 … YEAR END  VIRDEN    Virden 7              5 20%           
+##  8 06/01/2016 … YEAR END  VIRDEN    Virden 8              4 16%           
+##  9 06/01/2016 … YEAR END  VIRDEN    Virden 9              6 24%           
+## 10 06/01/2016 … YEAR END  VIRDEN    Virden 10             4 16%           
+## # ... with 38 more rows, and 14 more variables: unit_2_score &lt;int&gt;,
+## #   unit_2_percent &lt;chr&gt;, unit_3_score &lt;int&gt;, unit_3_percent &lt;chr&gt;,
+## #   unit_4_score &lt;int&gt;, unit_4_percent &lt;chr&gt;, unit_5_6_score &lt;int&gt;,
+## #   unit_5_6_percent &lt;chr&gt;, unit_7_score &lt;int&gt;, unit_7_percent &lt;chr&gt;,
+## #   unit_8_score &lt;int&gt;, unit_8_percent &lt;chr&gt;, total_score &lt;int&gt;,
+## #   total_percent_correct &lt;chr&gt;
+```
+
+---
+# Common mistakes 
+* Forget to filter out summary rows
+* Multiple gathers
+
+---
+# Common thought process
+* `gather` once for raw scores, and a second time for percentages. 
+* Anything wrong with this? 
+
+
+```r
+double_gather &lt;- reads %&gt;% 
+  select(4, 1:3, 10:23) %&gt;% 
+  filter(student_id != "All Students (Average)") %&gt;% 
+  gather(unit, score, contains("score")) %&gt;% 
+  gather(unit2, percent, contains("percent")) %&gt;% 
+  mutate(unit = readr::parse_number(unit)) %&gt;% 
+  select(-unit2)
+```
+
+---
+
+```r
+double_gather
+```
+
+```
+## # A tibble: 2,205 x 7
+##    student_id test_year            test_type test_site  unit score percent
+##    &lt;chr&gt;      &lt;chr&gt;                &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;  
+##  1 Virden 1   06/01/2016 12:00:00… YEAR END  VIRDEN        1     3 12%    
+##  2 Virden 2   06/01/2016 12:00:00… YEAR END  VIRDEN        1     5 20%    
+##  3 Virden 3   06/01/2016 12:00:00… YEAR END  VIRDEN        1     4 16%    
+##  4 Virden 4   06/01/2016 12:00:00… YEAR END  VIRDEN        1     4 16%    
+##  5 Virden 5   06/01/2016 12:00:00… YEAR END  VIRDEN        1     2 8%     
+##  6 Virden 6   06/01/2016 12:00:00… YEAR END  VIRDEN        1     5 20%    
+##  7 Virden 7   06/01/2016 12:00:00… YEAR END  VIRDEN        1     5 20%    
+##  8 Virden 8   06/01/2016 12:00:00… YEAR END  VIRDEN        1     4 16%    
+##  9 Virden 9   06/01/2016 12:00:00… YEAR END  VIRDEN        1     6 24%    
+## 10 Virden 10  06/01/2016 12:00:00… YEAR END  VIRDEN        1     4 16%    
+## # ... with 2,195 more rows
+```
+
+---
+# What's going on?
+
+
+```r
+double_gather %&gt;% 
+  count(student_id) 
+```
+
+```
+## # A tibble: 45 x 2
+##    student_id     n
+##    &lt;chr&gt;      &lt;int&gt;
+##  1 Jones 1       49
+##  2 Jones 10      49
+##  3 Jones 11      49
+##  4 Jones 12      49
+##  5 Jones 13      49
+##  6 Jones 14      49
+##  7 Jones 15      49
+##  8 Jones 2       49
+##  9 Jones 3       49
+## 10 Jones 4       49
+## # ... with 35 more rows
+```
+
+---
+# n rows by n gathers
+* Assuming 7 columns are gathered each time:
+
+
+```r
+expo &lt;- tibble(gathers = 1:5, nrows = 7^(1:5))
+ggplot(expo, aes(gathers, nrows)) + geom_line()
+```
+
+![](w9p1_files/figure-html/gather_exponential-1.png)&lt;!-- --&gt;
+
+---
+# Alternative
+* Gather all, then spread. **BUT**, requires common names to parse out the variables that are currently stored in the column names.
+
+
+```r
+reads_tidy &lt;- reads %&gt;% 
+  select(4, 1:3, 10:23) %&gt;% 
+  rename("unit_56_score" = "unit_5_6_score", 
+         "unit_56_percent" = "unit_5_6_percent") %&gt;%
+  filter(student_id != "All Students (Average)") %&gt;% 
+  gather(var, val, -1:-4) %&gt;% 
+  separate(var, c("dis", "unit", "type"), sep = "_") %&gt;% 
+  select(-dis) %&gt;% 
+  spread(type, val)
+```
+
+---
+
+```r
+reads_tidy
+```
+
+```
+## # A tibble: 315 x 7
+##    student_id test_year            test_type test_site unit  percent score
+##    &lt;chr&gt;      &lt;chr&gt;                &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;
+##  1 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     1     16%     4    
+##  2 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     2     16%     4    
+##  3 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     3     20%     5    
+##  4 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     4     33%     10   
+##  5 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     56    30%     9    
+##  6 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     7     63%     22   
+##  7 Jones 1    06/01/2016 12:00:00… YEAR END  JONES     8     53%     16   
+##  8 Jones 10   06/01/2016 12:00:00… YEAR END  JONES     1     12%     3    
+##  9 Jones 10   06/01/2016 12:00:00… YEAR END  JONES     2     12%     3    
+## 10 Jones 10   06/01/2016 12:00:00… YEAR END  JONES     3     20%     5    
+## # ... with 305 more rows
+```
+
+---
+# Quick challenge (15 minutes)
+* The following plot comes from [datausa](https://datausa.io/profile/geo/oregon/#economy) for Oregon residents.
+* The data are stored in a file called *insurance_coverage.csv*
+    + Load the data into R and reproduce the plot as best you can
+
+![insurance_plot](../img/insurance_plot.png)
+
+---
+# My method
+* Load the data
+
+
+```r
+insurance &lt;- import(here("data", "insurance_coverage.csv"), 
+                         skip =  3, 
+                         setclass = "tbl_df") %&gt;% 
+  janitor::clean_names()
+insurance
+```
+
+```
+## # A tibble: 36 x 11
+##    in_oregon_csvage_bucket insurance_name  insurance   year geo_name geo  
+##    &lt;chr&gt;                   &lt;chr&gt;           &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;
+##  1 insurance_18to24        healthcare cov… has_insur…  2014 Oregon   0400…
+##  2 insurance_18to24        healthcare cov… has_insur…  2014 Oregon   0400…
+##  3 insurance_25to34        healthcare cov… has_insur…  2014 Oregon   0400…
+##  4 insurance_25to34        healthcare cov… has_insur…  2014 Oregon   0400…
+##  5 insurance_35to44        healthcare cov… has_insur…  2014 Oregon   0400…
+##  6 insurance_35to44        healthcare cov… has_insur…  2014 Oregon   0400…
+##  7 insurance_45to54        healthcare cov… has_insur…  2014 Oregon   0400…
+##  8 insurance_45to54        healthcare cov… has_insur…  2014 Oregon   0400…
+##  9 insurance_55to64        healthcare cov… has_insur…  2014 Oregon   0400…
+## 10 insurance_55to64        healthcare cov… has_insur…  2014 Oregon   0400…
+## # ... with 26 more rows, and 5 more variables: sex_name &lt;chr&gt;, sex &lt;int&gt;,
+## #   hc_pop &lt;int&gt;, hc_pop_moe &lt;dbl&gt;, hc_pop_rca &lt;dbl&gt;
+```
+
+---
+# Compute percentages
+
+```r
+smry &lt;- insurance %&gt;% 
+  group_by(in_oregon_csvage_bucket, sex_name) %&gt;% 
+  summarize(by_sex = sum(hc_pop)) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(percentage = by_sex /sum(by_sex))
+
+smry
+```
+
+```
+## # A tibble: 18 x 4
+##    in_oregon_csvage_bucket sex_name by_sex percentage
+##    &lt;chr&gt;                   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;
+##  1 insurance_18to24        Female   315069 0.04340083
+##  2 insurance_18to24        Male     308047 0.04243355
+##  3 insurance_25to34        Female   471116 0.06489635
+##  4 insurance_25to34        Male     428039 0.05896248
+##  5 insurance_35to44        Female   462859 0.06375894
+##  6 insurance_35to44        Male     447112 0.06158979
+##  7 insurance_45to54        Female   463471 0.06384325
+##  8 insurance_45to54        Male     446924 0.06156389
+##  9 insurance_55to64        Female   523872 0.07216350
+## 10 insurance_55to64        Male     476654 0.06565921
+## 11 insurance_65to74        Female   398558 0.05490146
+## 12 insurance_65to74        Male     363970 0.05013696
+## 13 insurance_6to17         Female   544234 0.07496837
+## 14 insurance_6to17         Male     573822 0.07904412
+## 15 insurance_75plus        Female   292121 0.04023974
+## 16 insurance_75plus        Male     215312 0.02965928
+## 17 insurance_under_6       Female   260425 0.03587361
+## 18 insurance_under_6       Male     267910 0.03690467
+```
+
+---
+# Reorder and re-level age ranges
+
+
+```r
+smry &lt;- smry %&gt;% 
+  separate(in_oregon_csvage_bucket, c("dis", "age_range")) %&gt;%
+  mutate(age_range = factor(age_range,
+                            levels = c("under_6", 
+                                       "6to17", 
+                                       "18to24", 
+                                       "25to34", 
+                                       "35to44", 
+                                       "45to54", 
+                                       "55to64", 
+                                       "65to74",
+                                       "75plus"),
+                            labels = c("&lt; 6", 
+                                       "6-17", 
+                                       "18-24", 
+                                       "25-34", 
+                                       "35-44",
+                                       "45-54", 
+                                       "55-64", 
+                                       "65-74", 
+                                       "75 +")))
+```
+
+---
+# Produce the plot
+
+```r
+ggplot(smry, aes(age_range, percentage, fill = sex_name)) +
+  geom_col(alpha = 0.9) +
+  scale_fill_manual(values = c("firebrick3", "#323560")) +
+  scale_y_continuous(name = "SHARE", 
+                     breaks = seq(0, 0.14, 0.02),
+                     labels = scales::percent) +
+  xlab("") +
+  ggthemes::theme_hc()
+```
+
+![](w9p1_files/figure-html/reproduce_plot-1.png)&lt;!-- --&gt;
+
+---
+# Make it interactive
+
+```r
+library(plotly)
+p &lt;- ggplot(smry, aes(age_range, percentage, fill = sex_name)) +
+  geom_bar(stat = "identity",  alpha = 0.9) +
+  scale_fill_manual(values = c("firebrick3", "#323560")) +
+  scale_y_continuous(name = "SHARE", 
+                     breaks = seq(0, 0.14, 0.02),
+                     labels = scales::percent) +
+  xlab("") +
+  ggthemes::theme_hc()
+```
+
+
+
+---
+
+```r
+ggplotly(p)
+```
+
+&lt;iframe src= "../img/p.html" width="100%" height="400" id="igraph"
+scrolling="no"
+seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+
+---
+class: inverse center middle
+# Lab
+### Get some slides published!
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
