@@ -1,0 +1,73 @@
+---
+title: "Final Project Peer-Review"
+author: "Daniel Anderson"
+date: "11/12/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The group you are assigned to review is on canvas. Each team has been assigned 
+a number, and each member of a team has been assigned another team to review.
+
+## General rubric
+
+The rubric below can used to review your own work (to be sure you have all the 
+bases covered) and when providing feedback to others (for ideas on what to 
+focus on).
+
+| Topic                                                                                | Excellent                                                                                                                                                                                    | Satisfactory                                                                                                                                                          | Needs work                                                                                                                               |
+| :----------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding style                                                                         | Student has gone beyond what was expected and required, coding manual is followed, code is well commented                                                                                    | Coding style lacks refinement and has some errors, but code is readable and has some comments                                                                         | Many errors in coding style, little attention paid to making the code human readable                                                     |
+| Coding strategy                                                                      | Complicated problem broken down into sub-problems that are individually much simpler. Code is efficient, correct, and minimal. Code checks for common errors                                 | Code is correct, but could be edited down to leaner code. Some "hacking" instead of using suitable data structure. Some checks for errors.                            | Code tackles complicated problem in one big chunk. No anticipation of errors.                                                            |
+| Presentation: graphs                                                                 | Graph(s) carefully tuned for desired purpose. One graph illustrates one point                                                                                                                | Graph(s) well chosen, but with a few minor problems: inappropriate aspect ratios, poor labels.                                                                        | Graph(s) poorly chosen to support questions.                                                                                             |
+| Presentation: tables                                                                 | Table(s) carefully constructed to make it easy to perform important comparisons. Careful styling highlights important features.                                                              | Table(s) generally appropriate but possibly some minor formatting deficiencies.                                                                                       | Table(s) with too many, or inconsistent, decimal places. Table(s) not appropriate for questions and findings. Major display problems.    |
+| Achievement, mastery, cleverness, creativity                                         | Student has gone beyond what was expected and required, e.g., extraordinary effort, additional tools not addressed by this course, unusually sophisticated application of tools from course. | Tools and techniques from the course are applied very competently and, perhaps, somewhat creatively. Chosen task was acceptable, but fairly conservative in ambition. | Student does not display the expected level of mastery of the tools and techniques in this course. Chosen task was too limited in scope. |
+| Ease of access for instructor, compliance with course conventions for submitted work | Access as easy as possible, code runs!                                                                                                                                                       | Satisfactory                                                                                                                                                          | Not an earnest effort to reduce friction and comply with conventions  and/or code does not run                                           |
+
+
+## Guidelines for peer review 
+
+This is a serious responsibility: please take the time to provide constructive
+and helpful feedback.
+
+### How to do peer review well
+
+  * Give thoughtful, constructive and considerate comments. 
+  * Be specific and concise.
+  * Use the rubric above for ideas about criteria to evaluate and comment on 
+    (its not necessary to formalize a score (e.g. "excellent") for each 
+    component).
+  * Try to learn something new and, if you succeed, point that out.
+  * If you can't find anything to praise or that you found helpful, then at 
+    least offer some suggestions in a kind way.
+
+### How to do peer review poorly
+
+  * Your review is so generic that it's hard to determine whose script
+    you're reviewing.
+  * Your review is mean.
+  * You can't find anything to praise/learn and yet you don't offer any 
+    suggestions either.
+
+### Additional resources:
+
+Peer reviewing and critiquing others' work is a useful skill to develop during 
+your studies. Although these links deal mainly with the peer review of 
+academic papers, most of the key points are applicable to our peer review 
+process.
+
+* [Reviewing academic papers by Jeff Leek](https://github.com/jtleek/reviews/blob/master/README.md)
+
+* [Edicts for peer reviewing (Ebb & Flow blog)](http://evol-eco.blogspot.ca/2014/09/edicts-for-peer-reviewing.html)
+
+* [Faculty of 1000 Research: tips for peer reviewing](http://f1000research.com/peer-reviewing-tips)
+
+* [The section entitled "How to perform the actual code review"](http://zonca.github.io/2014/08/code-review-for-scientific-computing.html)
+
+
+* * *
+
+These materials are adapted from those developed by Andrew Bray (see [here](https://github.com/ds-civic-data/course-materials/blob/master/resources.md) who adapted the materials from Jenny Bryan at UBC.
