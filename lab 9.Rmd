@@ -1,0 +1,48 @@
+---
+title: "Lab 9"
+author: "Netanel Weinstein"
+date: "December 2, 2018"
+output: 
+  html_document:
+  toc: true
+  toc_depth: 4
+---
+
+
+```{r plot, echo = FALSE}
+library(rio)
+library(tidyverse)
+library(here)
+data
+data <- import(here("data",  "ecls-k_samp.sav")) %>%
+  characterize() %>% 
+  janitor::clean_names() %>% 
+  mutate(ses_cat = factor(ses_cat, 
+                          levels = c("FIRST QUINTILE",
+                                     "SECOND QUINTILE",
+                                     "THIRD QUINTILE",
+                                     "FOURTH QUINTILE",
+                                     "FIFTH QUINTILE"),
+                          labels = c("First",
+                                     "Second", 
+                                     "Third", 
+                                     "Fourth", 
+                                     "Fifth")))
+  
+#recreation of plot:
+ggplot(data, aes(x = t1mscale, y = t2mscale))  +
+  geom_point(color = "gray") +
+  geom_smooth(aes(color = ses_cat),
+              method = "lm",
+              se = FALSE) +
+  ggtitle("Math scores", "Relation from Time 1 to Time 2") +
+  xlab("Math Score (time 1)") +
+  ylab("Math Score (time 2)")
+
+  
+```
+
+**Regression model** for *Math* Achievment:
+$$
+math_{t2_i} = \alpha + \beta_1(math_{t1_i}) + \beta_2(SES_{cat_i}) + \beta_3(math_{t1_i} \times SES_{cat_i}) \epsilon
+$$
