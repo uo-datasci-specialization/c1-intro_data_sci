@@ -1,0 +1,244 @@
+---
+title: "Finishing up with tidy data"
+author: "Daniel Anderson "
+date: "Week 7, Class 2"
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "hygge", "custom2.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+```{r, setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 13, 
+                      message = FALSE, 
+                      warning = FALSE)
+```
+
+# Agenda 
+* Discuss `gather` and `spread` more
+
+
+--
+### Learning objectives for today
+* Get more comfortable with moving from wide to long
+* Understand when you may need to "overgather", an how to best approach this
+
+
+---
+# Reasons to prefer tidy data
+* More efficient storage and retrieval 
+* More scalable 
+* The *tidyverse* of tools will work much more efficiently
+
+---
+# Read in the hiv data
+Note, you'll need to add `header = TRUE` to `import` to get it to treat the
+first row as column names instead of data.
+* Make some manipulations (just {dplyr} variety) to make the data look like the below.
+* Are these data tidy?
+* How would you add a new variable - say, percent aids?
+* Discuss how you would transform these data, if at all.
+
+```{r gapminder, echo = FALSE, message = FALSE}
+library(tidyverse)
+library(rio)
+library(here)
+theme_set(theme_minimal(base_size = 25))
+
+hiv <- import(here("data", "hiv.csv"),
+              setclass = "tbl_df", 
+              header = TRUE) 
+
+hiv <- hiv %>% 
+    rename(country = `Estimated HIV Prevalence% - (Ages 15-49)`) %>% 
+    filter(country == "France" |
+           country == "South Africa" |
+           country == "United States") %>% 
+    select(country, `1979`, `1989`, `1999`, `2009`)
+hiv
+```
+
+---
+# How do we tidy these data?
+* Use the `gather()` function from *tidyr*
+
+```{r tidy_gapminder}
+hiv_tidy <- hiv %>% 
+    gather(year, percentage, -1)
+head(hiv_tidy)
+```
+
+--
+.major-emph-green[We still have a problem here... What is it?]
+
+---
+# Trying to plot 
+
+```{r plot-fail, fig.height = 6}
+ggplot(hiv_tidy, aes(year, percentage, color = country)) +
+  geom_line()
+```
+
+---
+# Redefine year as numeric
+
+```{r numeric}
+library(magrittr)
+hiv_tidy %<>%
+  mutate(year = parse_number(year))  
+
+head(hiv_tidy)
+```
+
+---
+# Trying to plot again
+
+```{r plot-success, fig.height = 5}
+ggplot(hiv_tidy, aes(year, percentage, color = country)) +
+  geom_point(size = 4) +
+  geom_line(size = 2)
+```
+
+--
+### Why aren't the lines connecting for US?
+
+---
+# Missing data
+
+```{r miss}
+hiv_tidy
+```
+
+---
+
+```{r rem-miss}
+hiv_tidy %>% 
+  filter(!is.na(percentage))
+```
+
+---
+
+```{r rem-miss-plot}
+hiv_tidy %>% 
+  filter(!is.na(percentage)) %>% 
+  ggplot(aes(year, percentage, color = country)) +
+  geom_point(size = 4) +
+  geom_line(size = 2)
+```
+
+---
+class: 
+background-image:url(../img/gather.png)
+background-size:contain
+
+### How does `gather` work?
+
+
+---
+# Pop quiz
+
+* What would have happened if I didn't use `-1` to define the columns to gather?
+
+---
+# Country is part of the gather
+
+```{r bad_gather}
+hiv %>% 
+    gather(year, percentage)
+```
+
+---
+# Declaring columns to gather
+* I could have declared the columns to gather other ways. The important part is just being clear which columns should be part of the gather. All of the below are equivalent
+
+```{r gather1, eval = FALSE}
+hiv %>% 
+    gather(year, percentage, -1)
+```
+
+```{r gather2, eval = FALSE}
+hiv %>% 
+    gather(year, percentage, `1979`, `1989`, `1999`, `2009`)
+```
+
+```{r gather3, eval = FALSE}
+hiv %>% 
+    gather(year, percentage, `1979`:`2009`)
+```
+
+```{r gather4, eval = FALSE}
+hiv %>% 
+    gather(year, percentage, -country)
+```
+
+---
+# A few more examples (follow along)
+* Load the *votes_repub.csv* dataset.
+
+```{r load_votes_echo, message = FALSE}
+votes <- import(here("data", "votes_repub.csv"), 
+                setclass = "tbl_df")
+head(votes)
+```
+
+---
+# Discuss with neighbor
+* What's the first step to tidy these data?
+* Second?
+
+---
+# Step 1: Name state
+
+* dplyr syntax
+
+```{r rename_dplyr}
+votes <- votes %>% 
+  rename(state = V1)
+```
+
+
+---
+# Step 2: `gather()`
+
+```{r gather5}
+votes %>% 
+    gather(year, approval_rating, -1)
+```
+
+---
+# Clean up some
+
+```{r parse_number1}
+votes_tidy <- votes %>% 
+    gather(year, approval_rating, -1) %>% 
+    mutate(year = parse_number(year))
+votes_tidy
+```
+
+---
+# Exploratory plot
+* Can you plot approval ratings by year for the west coast (California, Oregon, and Washington)? 
+* What do you observe?
+
+---
+# Plot
+
+```{r plot1, warning = FALSE, fig.height = 4, fig.width = 13}
+pd <- votes_tidy %>% 
+  filter(state == "California" | 
+         state == "Oregon" | 
+         state == "Washington")
+
+ggplot(pd, aes(year, approval_rating, color = state)) + 
+  geom_line() 
+```
+
+---
+class: inverse middle center
+
+# Lab

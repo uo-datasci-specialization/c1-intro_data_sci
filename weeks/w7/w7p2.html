@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Finishing up with tidy data</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Finishing up with tidy data
+### Daniel Anderson
+### Week 7, Class 2
+
+---
+
+
+
+
+# Agenda 
+* Discuss `gather` and `spread` more
+
+
+--
+### Learning objectives for today
+* Get more comfortable with moving from wide to long
+* Understand when you may need to "overgather", an how to best approach this
+
+
+---
+# Reasons to prefer tidy data
+* More efficient storage and retrieval 
+* More scalable 
+* The *tidyverse* of tools will work much more efficiently
+
+---
+# Read in the hiv data
+Note, you'll need to add `header = TRUE` to `import` to get it to treat the
+first row as column names instead of data.
+* Make some manipulations (just {dplyr} variety) to make the data look like the below.
+* Are these data tidy?
+* How would you add a new variable - say, percent aids?
+* Discuss how you would transform these data, if at all.
+
+
+```
+## # A tibble: 3 x 5
+##   country            `1979` `1989` `1999` `2009`
+##   &lt;chr&gt;               &lt;dbl&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1 France        NA          NA        0.3    0.4
+## 2 South Africa  NA          NA       14.8   17.2
+## 3 United States  0.03176408 NA        0.5    0.6
+```
+
+---
+# How do we tidy these data?
+* Use the `gather()` function from *tidyr*
+
+
+```r
+hiv_tidy &lt;- hiv %&gt;% 
+    gather(year, percentage, -1)
+head(hiv_tidy)
+```
+
+```
+## # A tibble: 6 x 3
+##   country       year   percentage
+##   &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt;
+## 1 France        1979  NA         
+## 2 South Africa  1979  NA         
+## 3 United States 1979   0.03176408
+## 4 France        1989  NA         
+## 5 South Africa  1989  NA         
+## 6 United States 1989  NA
+```
+
+--
+.major-emph-green[We still have a problem here... What is it?]
+
+---
+# Trying to plot 
+
+
+```r
+ggplot(hiv_tidy, aes(year, percentage, color = country)) +
+  geom_line()
+```
+
+![](w7p2_files/figure-html/plot-fail-1.png)&lt;!-- --&gt;
+
+---
+# Redefine year as numeric
+
+
+```r
+library(magrittr)
+hiv_tidy %&lt;&gt;%
+  mutate(year = parse_number(year))  
+
+head(hiv_tidy)
+```
+
+```
+## # A tibble: 6 x 3
+##   country        year  percentage
+##   &lt;chr&gt;         &lt;dbl&gt;       &lt;dbl&gt;
+## 1 France         1979 NA         
+## 2 South Africa   1979 NA         
+## 3 United States  1979  0.03176408
+## 4 France         1989 NA         
+## 5 South Africa   1989 NA         
+## 6 United States  1989 NA
+```
+
+---
+# Trying to plot again
+
+
+```r
+ggplot(hiv_tidy, aes(year, percentage, color = country)) +
+  geom_point(size = 4) +
+  geom_line(size = 2)
+```
+
+![](w7p2_files/figure-html/plot-success-1.png)&lt;!-- --&gt;
+
+--
+### Why aren't the lines connecting for US?
+
+---
+# Missing data
+
+
+```r
+hiv_tidy
+```
+
+```
+## # A tibble: 12 x 3
+##    country        year  percentage
+##    &lt;chr&gt;         &lt;dbl&gt;       &lt;dbl&gt;
+##  1 France         1979 NA         
+##  2 South Africa   1979 NA         
+##  3 United States  1979  0.03176408
+##  4 France         1989 NA         
+##  5 South Africa   1989 NA         
+##  6 United States  1989 NA         
+##  7 France         1999  0.3       
+##  8 South Africa   1999 14.8       
+##  9 United States  1999  0.5       
+## 10 France         2009  0.4       
+## 11 South Africa   2009 17.2       
+## 12 United States  2009  0.6
+```
+
+---
+
+
+```r
+hiv_tidy %&gt;% 
+  filter(!is.na(percentage))
+```
+
+```
+## # A tibble: 7 x 3
+##   country        year  percentage
+##   &lt;chr&gt;         &lt;dbl&gt;       &lt;dbl&gt;
+## 1 United States  1979  0.03176408
+## 2 France         1999  0.3       
+## 3 South Africa   1999 14.8       
+## 4 United States  1999  0.5       
+## 5 France         2009  0.4       
+## 6 South Africa   2009 17.2       
+## 7 United States  2009  0.6
+```
+
+---
+
+
+```r
+hiv_tidy %&gt;% 
+  filter(!is.na(percentage)) %&gt;% 
+  ggplot(aes(year, percentage, color = country)) +
+  geom_point(size = 4) +
+  geom_line(size = 2)
+```
+
+![](w7p2_files/figure-html/rem-miss-plot-1.png)&lt;!-- --&gt;
+
+---
+class: 
+background-image:url(../img/gather.png)
+background-size:contain
+
+### How does `gather` work?
+
+
+---
+# Pop quiz
+
+* What would have happened if I didn't use `-1` to define the columns to gather?
+
+---
+# Country is part of the gather
+
+
+```r
+hiv %&gt;% 
+    gather(year, percentage)
+```
+
+```
+## # A tibble: 15 x 2
+##    year    percentage   
+##    &lt;chr&gt;   &lt;chr&gt;        
+##  1 country France       
+##  2 country South Africa 
+##  3 country United States
+##  4 1979    &lt;NA&gt;         
+##  5 1979    &lt;NA&gt;         
+##  6 1979    0.031764078  
+##  7 1989    &lt;NA&gt;         
+##  8 1989    &lt;NA&gt;         
+##  9 1989    &lt;NA&gt;         
+## 10 1999    0.3          
+## 11 1999    14.8         
+## 12 1999    0.5          
+## 13 2009    0.4          
+## 14 2009    17.2         
+## 15 2009    0.6
+```
+
+---
+# Declaring columns to gather
+* I could have declared the columns to gather other ways. The important part is just being clear which columns should be part of the gather. All of the below are equivalent
+
+
+```r
+hiv %&gt;% 
+    gather(year, percentage, -1)
+```
+
+
+```r
+hiv %&gt;% 
+    gather(year, percentage, `1979`, `1989`, `1999`, `2009`)
+```
+
+
+```r
+hiv %&gt;% 
+    gather(year, percentage, `1979`:`2009`)
+```
+
+
+```r
+hiv %&gt;% 
+    gather(year, percentage, -country)
+```
+
+---
+# A few more examples (follow along)
+* Load the *votes_repub.csv* dataset.
+
+
+```r
+votes &lt;- import(here("data", "votes_repub.csv"), 
+                setclass = "tbl_df")
+head(votes)
+```
+
+```
+## # A tibble: 6 x 32
+##   V1      X1856 X1860 X1864 X1868 X1872 X1876    X1880 X1884 X1888   X1892
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Alabama NA    NA    NA    51.44 53.19 40.02 36.98000 38.44 32.28  3.95  
+## 2 Alaska  NA    NA    NA    NA    NA    NA    NA       NA    NA    NA     
+## 3 Arizona NA    NA    NA    NA    NA    NA    NA       NA    NA    NA     
+## 4 Arkans… NA    NA    NA    53.73 52.17 39.88 39.550   40.5  38.07 32.0100
+## 5 Califo… 18.77 32.96 58.63 50.24 56.38 50.88 48.92    52.08 49.95 43.76  
+## 6 Colora… NA    NA    NA    NA    NA    NA    51.28    54.39 55.31 41.13  
+## # ... with 21 more variables: X1896 &lt;dbl&gt;, X1900 &lt;dbl&gt;, X1904 &lt;dbl&gt;,
+## #   X1908 &lt;dbl&gt;, X1912 &lt;dbl&gt;, X1916 &lt;dbl&gt;, X1920 &lt;dbl&gt;, X1924 &lt;dbl&gt;,
+## #   X1928 &lt;dbl&gt;, X1932 &lt;dbl&gt;, X1936 &lt;dbl&gt;, X1940 &lt;dbl&gt;, X1944 &lt;dbl&gt;,
+## #   X1948 &lt;dbl&gt;, X1952 &lt;dbl&gt;, X1956 &lt;dbl&gt;, X1960 &lt;dbl&gt;, X1964 &lt;dbl&gt;,
+## #   X1968 &lt;dbl&gt;, X1972 &lt;dbl&gt;, X1976 &lt;dbl&gt;
+```
+
+---
+# Discuss with neighbor
+* What's the first step to tidy these data?
+* Second?
+
+---
+# Step 1: Name state
+
+* dplyr syntax
+
+
+```r
+votes &lt;- votes %&gt;% 
+  rename(state = V1)
+```
+
+
+---
+# Step 2: `gather()`
+
+
+```r
+votes %&gt;% 
+    gather(year, approval_rating, -1)
+```
+
+```
+## # A tibble: 1,550 x 3
+##    state       year  approval_rating
+##    &lt;chr&gt;       &lt;chr&gt;           &lt;dbl&gt;
+##  1 Alabama     X1856           NA   
+##  2 Alaska      X1856           NA   
+##  3 Arizona     X1856           NA   
+##  4 Arkansas    X1856           NA   
+##  5 California  X1856           18.77
+##  6 Colorado    X1856           NA   
+##  7 Connecticut X1856           53.18
+##  8 Delaware    X1856            2.11
+##  9 Florida     X1856           NA   
+## 10 Georgia     X1856           NA   
+## # ... with 1,540 more rows
+```
+
+---
+# Clean up some
+
+
+```r
+votes_tidy &lt;- votes %&gt;% 
+    gather(year, approval_rating, -1) %&gt;% 
+    mutate(year = parse_number(year))
+votes_tidy
+```
+
+```
+## # A tibble: 1,550 x 3
+##    state        year approval_rating
+##    &lt;chr&gt;       &lt;dbl&gt;           &lt;dbl&gt;
+##  1 Alabama      1856           NA   
+##  2 Alaska       1856           NA   
+##  3 Arizona      1856           NA   
+##  4 Arkansas     1856           NA   
+##  5 California   1856           18.77
+##  6 Colorado     1856           NA   
+##  7 Connecticut  1856           53.18
+##  8 Delaware     1856            2.11
+##  9 Florida      1856           NA   
+## 10 Georgia      1856           NA   
+## # ... with 1,540 more rows
+```
+
+---
+# Exploratory plot
+* Can you plot approval ratings by year for the west coast (California, Oregon, and Washington)? 
+* What do you observe?
+
+---
+# Plot
+
+
+```r
+pd &lt;- votes_tidy %&gt;% 
+  filter(state == "California" | 
+         state == "Oregon" | 
+         state == "Washington")
+
+ggplot(pd, aes(year, approval_rating, color = state)) + 
+  geom_line() 
+```
+
+![](w7p2_files/figure-html/plot1-1.png)&lt;!-- --&gt;
+
+---
+class: inverse middle center
+
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+.code-bg-red .remark-code, .code-bg-red .remark-code * {
+ background-color: #E8D3D6 !important;
+}
+
+.major-emph-yellow {
+  display: block;
+  text-align: center;
+  width: 110%;
+  background-color: #E1E000;
+  font-family: 'Philosopher', sans-serif;
+  color: #007935;
+  padding: 20px 50px;
+  margin: 0px -100px 0px;
+  font-weight: bolder;
+  font-size: 175%;
+}
+
+.major-emph-green {
+  display: block;
+  text-align: center;
+  font-family: 'Philosopher', sans-serif;
+  width: 110%;
+  background-color: #007935;
+  color: #fff;
+  padding: 20px 50px;
+  margin: 0px -100px 0px;
+  font-weight: bolder;
+  font-size: 175%;
+}
+
+
+.remark-slide-content:after {
+    content: "Slides available at: http://www.datalorax.com/vita/ds/ds1-slides/w7p1/";
+    color: #89999E;
+    text-align: left;
+    font-size: 15px;
+    position: absolute;
+    bottom: 2px;
+    left: 20px;
+    height: 30px;
+    width: 100%;
+}
+
+.myblue { color: #56A0C3; }
