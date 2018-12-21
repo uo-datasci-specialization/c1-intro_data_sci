@@ -1,0 +1,767 @@
+---
+title: "Some data taming"
+author: "Daniel Anderson"
+date: "Week 8, Class 1"
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "hygge", "custom1.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+```{r, setup, include = FALSE}
+library(knitr)
+opts_chunk$set(fig.width = 13, 
+               message = FALSE,
+               warning = FALSE)
+library(tidyverse)
+theme_set(theme_minimal(base_size = 25))
+```
+
+
+# Agenda 
+* Discuss variable types
+* "Automatic" factor re-leveling
+* Maybe some string manipulations (if time allows)
+* Lab
+
+--
+### Learning objectives for today
+* Get more comfortable with tidy data 
+* Get more fluent with `gather`
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+---
+class: inverse center middle
+# Disclaimer
+Today we'll be covering the very basics
+
+
+---
+# Creating factors
+
+* Imagine you have a vector of months
+
+```{r months}
+months <- c("Dec", "Apr", "Jan", "Mar")
+```
+
+--
+
+* We could store this as a string, but there are issues with this. 
+	+ There are only 12 possible months 
+
+--
+		- factors will help us weed out values that don't conform to our predefined *levels*, which helps safeguard against typos, etc.
+
+--
+	+ You can't sort this vector in a meaningful way (it defaults to alphabetic)
+
+--
+
+```{r sort_months}
+sort(months)
+```
+
+---
+# Define it as a factor
+
+```{r month_levels}
+month_levels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+				  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+months <- factor(months, levels = month_levels)
+months
+```
+
+--
+
+* Now, we can sort	
+
+```{r month_fac_sort}
+sort(months)
+```
+
+---
+# Provides a safety net of sorts
+
+```{r wrong_level, warning = TRUE}
+months[5] <- "Jam"
+```
+
+--
+```{r show-wrong-level}
+months
+```
+
+---
+## What if we don't specify the levels?
+
+* If you define a factor without specifying the levels, it will assign them alphabetically
+
+--
+
+```{r no_level_spec}
+mnths <- c("Dec", "Apr", "Jan", "Mar")
+factor(mnths)
+```
+
+---
+# Accessing and modifying levels
+* Use the `levels` function
+
+```{r view_levels}
+levels(months)
+```
+
+--
+
+* Modify levels the base way
+
+```{r modify_levs}
+levels(months) <- 1:12
+months
+```
+
+---
+# If you need to, be specific
+
+```{r labels}
+months <- factor(months, levels = 1:12, labels = month_levels)
+months
+```
+
+---
+# New package
+* When working with factors, we can use the *forcats* package
+	+ *for* **cat** egorical variables *s*
+	+ anagram for factors
+* Part of the tidyverse, so should be good to go
+
+<div align = "right">
+<img src = ../img/forcats_hex.png height = 300>
+</div>
+
+---
+# Change factors 
+
+### Back to the order they appeared
+
+```{r inorder}
+c("Dec", "Apr", "Jan", "Mar") %>% 
+	factor()
+
+c("Dec", "Apr", "Jan", "Mar") %>% 
+	factor(levels = c("Jan", "Mar", "Apr", "Dec"))
+```
+... see next slide
+
+---
+
+```{r inorder2}
+library(forcats)
+c("Dec", "Apr", "Jan", "Mar") %>% 
+	factor(levels = c("Jan", "Mar", "Apr", "Dec")) %>%  
+	fct_inorder()
+```
+
+---
+# Or order by frequency
+
+```{r order_freq}
+c("b", "b", "c", "a", "a", "a") %>% 
+	fct_infreq()
+```
+
+* This can be particularly useful for plotting
+
+---
+# Words example
+
+```{r tidytext_words_out_order}
+data(sentences, package = "stringr")
+sentences <- tibble(sent_num = seq_along(sentences), 
+                    sentence = sentences)
+
+sentences
+```
+
+---
+# Word frequency
+
+```{r word-freq}
+library(tidytext)
+
+words_freq <- sentences %>% 
+  unnest_tokens(word, sentence) %>% 
+  count(word) %>% 
+  filter(n > 30)
+
+head(words_freq)
+```
+
+---
+# Try to plot frequencies
+
+```{r word_plot_fail, fig.height = 6}
+ggplot(words_freq, aes(word, n)) + 
+	geom_col()
+```
+
+---
+# Reorder according to frequency
+
+```{r words_ordered}
+words_freq2 <- sentences %>% 
+	unnest_tokens(word, sentence) %>% 
+	mutate(word = fct_infreq(word)) %>% #<<
+	count(word) %>% 
+	filter(n > 30)
+
+head(words_freq2)
+```
+
+---
+# Reproduce plot
+
+```{r word_plot_ordered, fig.height = 6}
+ggplot(words_freq2, aes(word, n)) + 
+	geom_col()
+```
+
+---
+# Looking at the levels
+
+```{r levels_check_freq}
+levels(factor(words_freq$word))
+levels(words_freq2$word) %>%
+  head()
+```
+
+---
+## When do we really want factors?
+Generally two reasons to declare a factor
+* Only finite number of categories
+	+ Treatment/control
+	+ Income categories
+	+ Performance levels
+	+ etc.
+* Use in modeling
+
+---
+# GSS
+General Social Survey
+
+```{r gss_cat1}
+gss_cat
+```
+
+---
+# Investigate factors
+Tidyverse gives you convenient  ways to evaluate factors
+* Use `count`
+* Use `geom_bar` or `geom_col` with *ggplot*
+
+---
+
+```{r count1}
+gss_cat %>% 
+	count(partyid)
+```
+
+---
+
+```{r count2}
+gss_cat %>% 
+	count(relig)
+```
+
+---
+```{r plot1}
+ggplot(gss_cat, aes(partyid)) +
+	geom_bar()
+```
+
+---
+```{r plot2}
+ggplot(gss_cat, aes(relig)) +
+	geom_bar()
+```
+
+---
+# Missing categories
+
+```{r plot3, fig.height = 6}
+ggplot(gss_cat, aes(race)) +
+	geom_bar() 
+```
+
+---
+# Include missing
+
+```{r plot4, fig.height = 6}
+ggplot(gss_cat, aes(race)) +
+	geom_bar() +
+	scale_x_discrete(drop = FALSE)
+```
+
+---
+# Reorder factors
+* Let's bring some (more) automation to the game
+* `forcats::fct_reorder`  allows you to easily reorder factors according to
+   another variable
+
+```{r relig_summ-echo}
+relig_summary <- gss_cat %>%
+  group_by(relig) %>%
+  summarise(tvhours = mean(tvhours, na.rm = TRUE),
+    		    n = n())
+
+head(relig_summary)
+```
+
+---
+```{r relig_summ}
+ggplot(relig_summary, aes(tvhours, relig)) + 
+  geom_point()
+```
+
+---
+Note - you could actually include the factor reorder right within the `ggplot` call.
+
+```{r relig_summ_reorder, fig.height = 6}
+relig_summary <- relig_summary %>% 
+	mutate(relig = fct_reorder(relig, tvhours))
+
+ggplot(relig_summary, aes(tvhours, relig)) + 
+  geom_point()
+```
+
+---
+# Quick aside
+### What if we wanted error bars?
+
+```{r errorbars}
+relig_summary2 <- gss_cat %>%
+  group_by(relig) %>%
+  summarise(tvhours_mean = mean(tvhours, na.rm = TRUE),
+            tvhours_se   = sqrt(var(tvhours, na.rm = TRUE) / 
+                                length(na.omit(tvhours))),
+            n = n())
+
+head(relig_summary2)
+```
+
+---
+```{r errorbar-plot, fig.height = 6}
+ggplot(relig_summary2, aes(tvhours_mean, 
+                           fct_reorder(relig, tvhours_mean))) + 
+  geom_errorbarh(aes(xmin = tvhours_mean - 1.96*tvhours_se,
+                     xmax = tvhours_mean + 1.96*tvhours_se),
+                 color = "gray70") +
+  geom_point() 
+```
+
+---
+## Revisiting our word frequency example
+* An easier way to do what we did before, would be to just include the reorder call right within the call to ggplot
+
+```{r fct_reorder_words, fig.height = 5}
+ggplot(words_freq, aes(fct_reorder(word, n), n)) + 
+	geom_col()
+```
+
+---
+# More on modifying factor levels
+* `forcats::fct_recode` can make modifying factors more explicit
+
+```{r basic_recode-echo, eval = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong" = "Strong republican",
+    "Republican, weak" = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak" = "Not str democrat",
+    "Democrat, strong" = "Strong democrat")) %>%
+  count(partyid) 
+```
+
+---
+```{r basic_recode-eval, echo = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong" = "Strong republican",
+    "Republican, weak" = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak" = "Not str democrat",
+    "Democrat, strong" = "Strong democrat")) %>%
+  count(partyid) 
+```
+
+---
+# Collapsing levels
+* `fct_recode` can also be used to collapse levels easily
+
+```{r reload_data1, echo = FALSE}
+data(gss_cat)
+```
+
+```{r fct_recode_collapse_echo, eval = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party")) %>%
+  count(partyid)
+```
+
+---
+```{r fct_recode_collapse_eval, echo = FALSE}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party")) %>%
+  count(partyid)
+```
+
+
+---
+# Collapse a lot of categories
+* One of the more useful functions in *forcats* 
+* Collapse all categories into *republican*, *democrat*, *independent*, or *other*.
+
+```{r reload_data2, echo = FALSE}
+data(gss_cat)
+```
+
+```{r collapse1}
+gss_cat %>%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    rep = c("Strong republican", "Not str republican"),
+    ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+    dem = c("Not str democrat", "Strong democrat")
+  )) %>%
+  count(partyid)
+```
+
+---
+# Sometimes even better
+* We can "lump" a bunch of categories together using `fct_lump`.
+* Default behavior creates an "other" group that includes all but the largest
+  group (i.e., lumps the factor into two groups).
+* Can also take optional *n* argument, where *n* represents the number of
+  groups to collapse to
+
+```{r lump1}
+gss_cat %>% 
+	mutate(rel = fct_lump(relig)) %>% 
+	count(rel)
+```
+
+---
+# Collapse to 10 religious groups
+
+```{r lump2}
+gss_cat %>% 
+	mutate(rel = fct_lump(relig, n = 10)) %>% 
+	count(rel)
+```
+
+---
+class: inverse middle center
+# Strings
+
+---
+# Strings to process
+
+```{r strings, eval = FALSE}
+library(stringr)
+fruit
+sentences
+words
+```
+
+```{r strings_eval, echo = FALSE}
+library(stringr)
+```
+
+---
+# fruit
+
+```{r fruit}
+head(fruit, n = 20)
+```
+
+---
+# sentences
+
+```{r sentences}
+sentences <- stringr::sentences
+head(sentences, n = 10)
+```
+
+---
+# words
+
+```{r words}
+head(words, n = 20)
+```
+
+---
+## Make everything upper case
+
+
+### stringr
+
+```{r upper_stringr}
+str_to_upper(fruit) %>%
+  head()
+```
+
+--
+
+### base
+
+```{r upper_base}
+toupper(fruit) %>%
+  head()
+```
+
+
+
+---
+## Make everything lower case
+
+
+### stringr
+
+```{r lower_stringr}
+str_to_lower(sentences) %>%
+  head()
+```
+
+---
+
+### base
+
+```{r lower_base}
+tolower(sentences) %>%
+  head()
+```
+
+---
+# Join strings together
+
+
+### stringr
+```{r green_apple_stringr}
+str_c("green", "apple")
+str_c("green", "apple", sep = " ")
+str_c("green", "apple", sep = " : ")
+```
+
+
+---
+
+### base
+```{r green_apple_base}
+paste0("green", "apple")
+paste("green", "apple")
+paste("green", "apple", sep = " : ")
+```
+
+---
+# Calculate string length
+
+```{r print_words}
+words[1:3]
+```
+
+### stringr
+```{r stringr_length}
+str_length(words[1:3])
+```
+
+--
+
+### base
+```{r base_length}
+nchar(words[1:3])
+```
+
+---
+# substrings: stringr
+
+```{r words2}
+words[10:13]
+```
+
+--
+
+```{r substr_stringr}
+str_sub(words[10:13], 3)
+str_sub(words[10:13], 3, 5)
+str_sub(words[10:13], -3)
+```
+
+---
+# substrings: base
+
+```{r substr_base}
+substr(words[10:13], 3, nchar(words[10:13]))
+substr(words[10:13], 3, 5)
+substr(words[10:13], nchar(words[10:13]) - 2, nchar(words[10:13]))
+```
+
+---
+# Trim white space
+
+```{r white_space}
+white_space <- c(" before", "after ", " both ")
+```
+
+--
+
+```{r stringr_trim}
+str_trim(white_space)
+str_trim(white_space, side = "left")
+str_trim(white_space, side = "right")
+```
+
+---
+# base trim white space
+
+```{r base_trim}
+trimws(white_space)
+trimws(white_space, which = "left")
+trimws(white_space, which = "right")
+```
+
+---
+# Pad white space
+
+```{r pad_strings}
+strings <- c("abc", "abcdefg")
+```
+
+--
+
+```{r pad_white_space}
+str_pad(strings, 10)
+str_pad(strings, 10, side = "right")
+str_pad(strings, 10, side = "both")
+```
+
+
+---
+# Pad w/something else
+
+```{r pad_num_strings1}
+string_nums <- as.character(1:15)
+string_nums
+```
+
+--
+
+```{r pad_num_strings2}
+str_pad(string_nums, 3, pad = "0")
+```
+
+
+---
+# Locate pattern
+
+```{r str_which}
+str_which(sentences, "red")
+```
+
+---
+# Or with `base::grep`
+
+```{r grep1}
+grep("red", sentences)
+```
+
+---
+# Extract the sentence
+
+```{r str_subset}
+str_subset(sentences, "red")
+```
+
+---
+# Or with `grep`
+
+```{r grep2}
+grep("red", sentences, value = TRUE)
+```
+
+---
+# Related - count occurrences
+
+```{r str_count}
+str_count(sentences, "the")
+```
+
+---
+# Logical tests
+* Sometimes, particularly with filtering, a logical test is best. 
+
+```{r str_detect}
+str_detect(sentences, "red")
+```
+
+---
+## Or with `grepl`
+
+```{r grepl}
+grepl("red", sentences)
+```
+
+---
+# Pattern matching summary
+* You can get a lot done with just basic pattern matching and knowing when to escape characters, particularly when you combine the basic pattern matching with other functions.
+
+--
+* Regular expressions make your pattern searching abilities much more powerful, and your code much less verbose
+
+--
+  + A whole learning curve on its own - for now, it's good to know you'll have
+  to escape certain characters.
+
+---
+## Symbols you may need to escape
+
+```{r regexpTbl, echo = FALSE}
+noquote(c("$","*","+",".","?","[","^","{","|","(","\\"))
+```
+
+---
+class: inverse middle center
+# Lab

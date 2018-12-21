@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Some data taming</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom1.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Some data taming
+### Daniel Anderson
+### Week 8, Class 1
+
+---
+
+
+
+
+
+# Agenda 
+* Discuss variable types
+* "Automatic" factor re-leveling
+* Maybe some string manipulations (if time allows)
+* Lab
+
+--
+### Learning objectives for today
+* Get more comfortable with tidy data 
+* Get more fluent with `gather`
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+---
+class: inverse center middle
+# Disclaimer
+Today we'll be covering the very basics
+
+
+---
+# Creating factors
+
+* Imagine you have a vector of months
+
+
+```r
+months &lt;- c("Dec", "Apr", "Jan", "Mar")
+```
+
+--
+
+* We could store this as a string, but there are issues with this. 
+	+ There are only 12 possible months 
+
+--
+		- factors will help us weed out values that don't conform to our predefined *levels*, which helps safeguard against typos, etc.
+
+--
+	+ You can't sort this vector in a meaningful way (it defaults to alphabetic)
+
+--
+
+
+```r
+sort(months)
+```
+
+```
+## [1] "Apr" "Dec" "Jan" "Mar"
+```
+
+---
+# Define it as a factor
+
+
+```r
+month_levels &lt;- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+				  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+months &lt;- factor(months, levels = month_levels)
+months
+```
+
+```
+## [1] Dec Apr Jan Mar
+## Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+```
+
+--
+
+* Now, we can sort	
+
+
+```r
+sort(months)
+```
+
+```
+## [1] Jan Mar Apr Dec
+## Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+```
+
+---
+# Provides a safety net of sorts
+
+
+```r
+months[5] &lt;- "Jam"
+```
+
+```
+## Warning in `[&lt;-.factor`(`*tmp*`, 5, value = "Jam"): invalid factor level,
+## NA generated
+```
+
+--
+
+```r
+months
+```
+
+```
+## [1] Dec  Apr  Jan  Mar  &lt;NA&gt;
+## Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+```
+
+---
+## What if we don't specify the levels?
+
+* If you define a factor without specifying the levels, it will assign them alphabetically
+
+--
+
+
+```r
+mnths &lt;- c("Dec", "Apr", "Jan", "Mar")
+factor(mnths)
+```
+
+```
+## [1] Dec Apr Jan Mar
+## Levels: Apr Dec Jan Mar
+```
+
+---
+# Accessing and modifying levels
+* Use the `levels` function
+
+
+```r
+levels(months)
+```
+
+```
+##  [1] "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov"
+## [12] "Dec"
+```
+
+--
+
+* Modify levels the base way
+
+
+```r
+levels(months) &lt;- 1:12
+months
+```
+
+```
+## [1] 12   4    1    3    &lt;NA&gt;
+## Levels: 1 2 3 4 5 6 7 8 9 10 11 12
+```
+
+---
+# If you need to, be specific
+
+
+```r
+months &lt;- factor(months, levels = 1:12, labels = month_levels)
+months
+```
+
+```
+## [1] Dec  Apr  Jan  Mar  &lt;NA&gt;
+## Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+```
+
+---
+# New package
+* When working with factors, we can use the *forcats* package
+	+ *for* **cat** egorical variables *s*
+	+ anagram for factors
+* Part of the tidyverse, so should be good to go
+
+&lt;div align = "right"&gt;
+&lt;img src = ../img/forcats_hex.png height = 300&gt;
+&lt;/div&gt;
+
+---
+# Change factors 
+
+### Back to the order they appeared
+
+
+```r
+c("Dec", "Apr", "Jan", "Mar") %&gt;% 
+	factor()
+```
+
+```
+## [1] Dec Apr Jan Mar
+## Levels: Apr Dec Jan Mar
+```
+
+```r
+c("Dec", "Apr", "Jan", "Mar") %&gt;% 
+	factor(levels = c("Jan", "Mar", "Apr", "Dec"))
+```
+
+```
+## [1] Dec Apr Jan Mar
+## Levels: Jan Mar Apr Dec
+```
+... see next slide
+
+---
+
+
+```r
+library(forcats)
+c("Dec", "Apr", "Jan", "Mar") %&gt;% 
+	factor(levels = c("Jan", "Mar", "Apr", "Dec")) %&gt;%  
+	fct_inorder()
+```
+
+```
+## [1] Dec Apr Jan Mar
+## Levels: Dec Apr Jan Mar
+```
+
+---
+# Or order by frequency
+
+
+```r
+c("b", "b", "c", "a", "a", "a") %&gt;% 
+	fct_infreq()
+```
+
+```
+## [1] b b c a a a
+## Levels: a b c
+```
+
+* This can be particularly useful for plotting
+
+---
+# Words example
+
+
+```r
+data(sentences, package = "stringr")
+sentences &lt;- tibble(sent_num = seq_along(sentences), 
+                    sentence = sentences)
+
+sentences
+```
+
+```
+## # A tibble: 720 x 2
+##    sent_num sentence                                   
+##       &lt;int&gt; &lt;chr&gt;                                      
+##  1        1 The birch canoe slid on the smooth planks. 
+##  2        2 Glue the sheet to the dark blue background.
+##  3        3 It's easy to tell the depth of a well.     
+##  4        4 These days a chicken leg is a rare dish.   
+##  5        5 Rice is often served in round bowls.       
+##  6        6 The juice of lemons makes fine punch.      
+##  7        7 The box was thrown beside the parked truck.
+##  8        8 The hogs were fed chopped corn and garbage.
+##  9        9 Four hours of steady work faced us.        
+## 10       10 Large size in stockings is hard to sell.   
+## # ... with 710 more rows
+```
+
+---
+# Word frequency
+
+
+```r
+library(tidytext)
+
+words_freq &lt;- sentences %&gt;% 
+  unnest_tokens(word, sentence) %&gt;% 
+  count(word) %&gt;% 
+  filter(n &gt; 30)
+
+head(words_freq)
+```
+
+```
+## # A tibble: 6 x 2
+##   word      n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 a       202
+## 2 and     118
+## 3 for      35
+## 4 he       34
+## 5 in       87
+## 6 is       81
+```
+
+---
+# Try to plot frequencies
+
+
+```r
+ggplot(words_freq, aes(word, n)) + 
+	geom_col()
+```
+
+![](w8p1_files/figure-html/word_plot_fail-1.png)&lt;!-- --&gt;
+
+---
+# Reorder according to frequency
+
+
+```r
+words_freq2 &lt;- sentences %&gt;% 
+	unnest_tokens(word, sentence) %&gt;% 
+*mutate(word = fct_infreq(word)) %&gt;%
+	count(word) %&gt;% 
+	filter(n &gt; 30)
+
+head(words_freq2)
+```
+
+```
+## # A tibble: 6 x 2
+##   word      n
+##   &lt;fct&gt; &lt;int&gt;
+## 1 the     751
+## 2 a       202
+## 3 of      132
+## 4 to      123
+## 5 and     118
+## 6 in       87
+```
+
+---
+# Reproduce plot
+
+
+```r
+ggplot(words_freq2, aes(word, n)) + 
+	geom_col()
+```
+
+![](w8p1_files/figure-html/word_plot_ordered-1.png)&lt;!-- --&gt;
+
+---
+# Looking at the levels
+
+
+```r
+levels(factor(words_freq$word))
+```
+
+```
+##  [1] "a"    "and"  "for"  "he"   "in"   "is"   "it"   "of"   "on"   "the" 
+## [11] "to"   "was"  "with"
+```
+
+```r
+levels(words_freq2$word) %&gt;%
+  head()
+```
+
+```
+## [1] "the" "a"   "of"  "to"  "and" "in"
+```
+
+---
+## When do we really want factors?
+Generally two reasons to declare a factor
+* Only finite number of categories
+	+ Treatment/control
+	+ Income categories
+	+ Performance levels
+	+ etc.
+* Use in modeling
+
+---
+# GSS
+General Social Survey
+
+
+```r
+gss_cat
+```
+
+```
+## # A tibble: 21,483 x 9
+##     year marital         age race  rincome  partyid  relig  denom  tvhours
+##    &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt;    &lt;fct&gt;  &lt;fct&gt;    &lt;int&gt;
+##  1  2000 Never married    26 White $8000 t… Ind,nea… Prote… South…      12
+##  2  2000 Divorced         48 White $8000 t… Not str… Prote… Bapti…      NA
+##  3  2000 Widowed          67 White Not app… Indepen… Prote… No de…       2
+##  4  2000 Never married    39 White Not app… Ind,nea… Ortho… Not a…       4
+##  5  2000 Divorced         25 White Not app… Not str… None   Not a…       1
+##  6  2000 Married          25 White $20000 … Strong … Prote… South…      NA
+##  7  2000 Never married    36 White $25000 … Not str… Chris… Not a…       3
+##  8  2000 Divorced         44 White $7000 t… Ind,nea… Prote… Luthe…      NA
+##  9  2000 Married          44 White $25000 … Not str… Prote… Other        0
+## 10  2000 Married          47 White $25000 … Strong … Prote… South…       3
+## # ... with 21,473 more rows
+```
+
+---
+# Investigate factors
+Tidyverse gives you convenient  ways to evaluate factors
+* Use `count`
+* Use `geom_bar` or `geom_col` with *ggplot*
+
+---
+
+
+```r
+gss_cat %&gt;% 
+	count(partyid)
+```
+
+```
+## # A tibble: 10 x 2
+##    partyid                n
+##    &lt;fct&gt;              &lt;int&gt;
+##  1 No answer            154
+##  2 Don't know             1
+##  3 Other party          393
+##  4 Strong republican   2314
+##  5 Not str republican  3032
+##  6 Ind,near rep        1791
+##  7 Independent         4119
+##  8 Ind,near dem        2499
+##  9 Not str democrat    3690
+## 10 Strong democrat     3490
+```
+
+---
+
+
+```r
+gss_cat %&gt;% 
+	count(relig)
+```
+
+```
+## # A tibble: 15 x 2
+##    relig                       n
+##    &lt;fct&gt;                   &lt;int&gt;
+##  1 No answer                  93
+##  2 Don't know                 15
+##  3 Inter-nondenominational   109
+##  4 Native american            23
+##  5 Christian                 689
+##  6 Orthodox-christian         95
+##  7 Moslem/islam              104
+##  8 Other eastern              32
+##  9 Hinduism                   71
+## 10 Buddhism                  147
+## 11 Other                     224
+## 12 None                     3523
+## 13 Jewish                    388
+## 14 Catholic                 5124
+## 15 Protestant              10846
+```
+
+---
+
+```r
+ggplot(gss_cat, aes(partyid)) +
+	geom_bar()
+```
+
+![](w8p1_files/figure-html/plot1-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+ggplot(gss_cat, aes(relig)) +
+	geom_bar()
+```
+
+![](w8p1_files/figure-html/plot2-1.png)&lt;!-- --&gt;
+
+---
+# Missing categories
+
+
+```r
+ggplot(gss_cat, aes(race)) +
+	geom_bar() 
+```
+
+![](w8p1_files/figure-html/plot3-1.png)&lt;!-- --&gt;
+
+---
+# Include missing
+
+
+```r
+ggplot(gss_cat, aes(race)) +
+	geom_bar() +
+	scale_x_discrete(drop = FALSE)
+```
+
+![](w8p1_files/figure-html/plot4-1.png)&lt;!-- --&gt;
+
+---
+# Reorder factors
+* Let's bring some (more) automation to the game
+* `forcats::fct_reorder`  allows you to easily reorder factors according to
+   another variable
+
+
+```r
+relig_summary &lt;- gss_cat %&gt;%
+  group_by(relig) %&gt;%
+  summarise(tvhours = mean(tvhours, na.rm = TRUE),
+    		    n = n())
+
+head(relig_summary)
+```
+
+```
+## # A tibble: 6 x 3
+##   relig                    tvhours     n
+##   &lt;fct&gt;                      &lt;dbl&gt; &lt;int&gt;
+## 1 No answer               2.723404    93
+## 2 Don't know              4.625       15
+## 3 Inter-nondenominational 2.870370   109
+## 4 Native american         3.461538    23
+## 5 Christian               2.790281   689
+## 6 Orthodox-christian      2.416667    95
+```
+
+---
+
+```r
+ggplot(relig_summary, aes(tvhours, relig)) + 
+  geom_point()
+```
+
+![](w8p1_files/figure-html/relig_summ-1.png)&lt;!-- --&gt;
+
+---
+Note - you could actually include the factor reorder right within the `ggplot` call.
+
+
+```r
+relig_summary &lt;- relig_summary %&gt;% 
+	mutate(relig = fct_reorder(relig, tvhours))
+
+ggplot(relig_summary, aes(tvhours, relig)) + 
+  geom_point()
+```
+
+![](w8p1_files/figure-html/relig_summ_reorder-1.png)&lt;!-- --&gt;
+
+---
+# Quick aside
+### What if we wanted error bars?
+
+
+```r
+relig_summary2 &lt;- gss_cat %&gt;%
+  group_by(relig) %&gt;%
+  summarise(tvhours_mean = mean(tvhours, na.rm = TRUE),
+            tvhours_se   = sqrt(var(tvhours, na.rm = TRUE) / 
+                                length(na.omit(tvhours))),
+            n = n())
+
+head(relig_summary2)
+```
+
+```
+## # A tibble: 6 x 4
+##   relig                   tvhours_mean tvhours_se     n
+##   &lt;fct&gt;                          &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
+## 1 No answer                   2.723404  0.3257413    93
+## 2 Don't know                  4.625     3.011511     15
+## 3 Inter-nondenominational     2.870370  0.3625038   109
+## 4 Native american             3.461538  1.130097     23
+## 5 Christian                   2.790281  0.1264124   689
+## 6 Orthodox-christian          2.416667  0.3549536    95
+```
+
+---
+
+```r
+ggplot(relig_summary2, aes(tvhours_mean, 
+                           fct_reorder(relig, tvhours_mean))) + 
+  geom_errorbarh(aes(xmin = tvhours_mean - 1.96*tvhours_se,
+                     xmax = tvhours_mean + 1.96*tvhours_se),
+                 color = "gray70") +
+  geom_point() 
+```
+
+![](w8p1_files/figure-html/errorbar-plot-1.png)&lt;!-- --&gt;
+
+---
+## Revisiting our word frequency example
+* An easier way to do what we did before, would be to just include the reorder call right within the call to ggplot
+
+
+```r
+ggplot(words_freq, aes(fct_reorder(word, n), n)) + 
+	geom_col()
+```
+
+![](w8p1_files/figure-html/fct_reorder_words-1.png)&lt;!-- --&gt;
+
+---
+# More on modifying factor levels
+* `forcats::fct_recode` can make modifying factors more explicit
+
+
+```r
+gss_cat %&gt;%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong" = "Strong republican",
+    "Republican, weak" = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak" = "Not str democrat",
+    "Democrat, strong" = "Strong democrat")) %&gt;%
+  count(partyid) 
+```
+
+---
+
+```
+## # A tibble: 10 x 2
+##    partyid                   n
+##    &lt;fct&gt;                 &lt;int&gt;
+##  1 No answer               154
+##  2 Don't know                1
+##  3 Other party             393
+##  4 Republican, strong     2314
+##  5 Republican, weak       3032
+##  6 Independent, near rep  1791
+##  7 Independent            4119
+##  8 Independent, near dem  2499
+##  9 Democrat, weak         3690
+## 10 Democrat, strong       3490
+```
+
+---
+# Collapsing levels
+* `fct_recode` can also be used to collapse levels easily
+
+
+
+
+```r
+gss_cat %&gt;%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party")) %&gt;%
+  count(partyid)
+```
+
+---
+
+```
+## # A tibble: 8 x 2
+##   partyid                   n
+##   &lt;fct&gt;                 &lt;int&gt;
+## 1 Other                   548
+## 2 Republican, strong     2314
+## 3 Republican, weak       3032
+## 4 Independent, near rep  1791
+## 5 Independent            4119
+## 6 Independent, near dem  2499
+## 7 Democrat, weak         3690
+## 8 Democrat, strong       3490
+```
+
+
+---
+# Collapse a lot of categories
+* One of the more useful functions in *forcats* 
+* Collapse all categories into *republican*, *democrat*, *independent*, or *other*.
+
+
+
+
+```r
+gss_cat %&gt;%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    rep = c("Strong republican", "Not str republican"),
+    ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+    dem = c("Not str democrat", "Strong democrat")
+  )) %&gt;%
+  count(partyid)
+```
+
+```
+## # A tibble: 4 x 2
+##   partyid     n
+##   &lt;fct&gt;   &lt;int&gt;
+## 1 other     548
+## 2 rep      5346
+## 3 ind      8409
+## 4 dem      7180
+```
+
+---
+# Sometimes even better
+* We can "lump" a bunch of categories together using `fct_lump`.
+* Default behavior creates an "other" group that includes all but the largest
+  group (i.e., lumps the factor into two groups).
+* Can also take optional *n* argument, where *n* represents the number of
+  groups to collapse to
+
+
+```r
+gss_cat %&gt;% 
+	mutate(rel = fct_lump(relig)) %&gt;% 
+	count(rel)
+```
+
+```
+## # A tibble: 2 x 2
+##   rel            n
+##   &lt;fct&gt;      &lt;int&gt;
+## 1 Protestant 10846
+## 2 Other      10637
+```
+
+---
+# Collapse to 10 religious groups
+
+
+```r
+gss_cat %&gt;% 
+	mutate(rel = fct_lump(relig, n = 10)) %&gt;% 
+	count(rel)
+```
+
+```
+## # A tibble: 10 x 2
+##    rel                         n
+##    &lt;fct&gt;                   &lt;int&gt;
+##  1 Inter-nondenominational   109
+##  2 Christian                 689
+##  3 Orthodox-christian         95
+##  4 Moslem/islam              104
+##  5 Buddhism                  147
+##  6 None                     3523
+##  7 Jewish                    388
+##  8 Catholic                 5124
+##  9 Protestant              10846
+## 10 Other                     458
+```
+
+---
+class: inverse middle center
+# Strings
+
+---
+# Strings to process
+
+
+```r
+library(stringr)
+fruit
+sentences
+words
+```
+
+
+
+---
+# fruit
+
+
+```r
+head(fruit, n = 20)
+```
+
+```
+##  [1] "apple"        "apricot"      "avocado"      "banana"      
+##  [5] "bell pepper"  "bilberry"     "blackberry"   "blackcurrant"
+##  [9] "blood orange" "blueberry"    "boysenberry"  "breadfruit"  
+## [13] "canary melon" "cantaloupe"   "cherimoya"    "cherry"      
+## [17] "chili pepper" "clementine"   "cloudberry"   "coconut"
+```
+
+---
+# sentences
+
+
+```r
+sentences &lt;- stringr::sentences
+head(sentences, n = 10)
+```
+
+```
+##  [1] "The birch canoe slid on the smooth planks." 
+##  [2] "Glue the sheet to the dark blue background."
+##  [3] "It's easy to tell the depth of a well."     
+##  [4] "These days a chicken leg is a rare dish."   
+##  [5] "Rice is often served in round bowls."       
+##  [6] "The juice of lemons makes fine punch."      
+##  [7] "The box was thrown beside the parked truck."
+##  [8] "The hogs were fed chopped corn and garbage."
+##  [9] "Four hours of steady work faced us."        
+## [10] "Large size in stockings is hard to sell."
+```
+
+---
+# words
+
+
+```r
+head(words, n = 20)
+```
+
+```
+##  [1] "a"         "able"      "about"     "absolute"  "accept"   
+##  [6] "account"   "achieve"   "across"    "act"       "active"   
+## [11] "actual"    "add"       "address"   "admit"     "advertise"
+## [16] "affect"    "afford"    "after"     "afternoon" "again"
+```
+
+---
+## Make everything upper case
+
+
+### stringr
+
+
+```r
+str_to_upper(fruit) %&gt;%
+  head()
+```
+
+```
+## [1] "APPLE"       "APRICOT"     "AVOCADO"     "BANANA"      "BELL PEPPER"
+## [6] "BILBERRY"
+```
+
+--
+
+### base
+
+
+```r
+toupper(fruit) %&gt;%
+  head()
+```
+
+```
+## [1] "APPLE"       "APRICOT"     "AVOCADO"     "BANANA"      "BELL PEPPER"
+## [6] "BILBERRY"
+```
+
+
+
+---
+## Make everything lower case
+
+
+### stringr
+
+
+```r
+str_to_lower(sentences) %&gt;%
+  head()
+```
+
+```
+## [1] "the birch canoe slid on the smooth planks." 
+## [2] "glue the sheet to the dark blue background."
+## [3] "it's easy to tell the depth of a well."     
+## [4] "these days a chicken leg is a rare dish."   
+## [5] "rice is often served in round bowls."       
+## [6] "the juice of lemons makes fine punch."
+```
+
+---
+
+### base
+
+
+```r
+tolower(sentences) %&gt;%
+  head()
+```
+
+```
+## [1] "the birch canoe slid on the smooth planks." 
+## [2] "glue the sheet to the dark blue background."
+## [3] "it's easy to tell the depth of a well."     
+## [4] "these days a chicken leg is a rare dish."   
+## [5] "rice is often served in round bowls."       
+## [6] "the juice of lemons makes fine punch."
+```
+
+---
+# Join strings together
+
+
+### stringr
+
+```r
+str_c("green", "apple")
+```
+
+```
+## [1] "greenapple"
+```
+
+```r
+str_c("green", "apple", sep = " ")
+```
+
+```
+## [1] "green apple"
+```
+
+```r
+str_c("green", "apple", sep = " : ")
+```
+
+```
+## [1] "green : apple"
+```
+
+
+---
+
+### base
+
+```r
+paste0("green", "apple")
+```
+
+```
+## [1] "greenapple"
+```
+
+```r
+paste("green", "apple")
+```
+
+```
+## [1] "green apple"
+```
+
+```r
+paste("green", "apple", sep = " : ")
+```
+
+```
+## [1] "green : apple"
+```
+
+---
+# Calculate string length
+
+
+```r
+words[1:3]
+```
+
+```
+## [1] "a"     "able"  "about"
+```
+
+### stringr
+
+```r
+str_length(words[1:3])
+```
+
+```
+## [1] 1 4 5
+```
+
+--
+
+### base
+
+```r
+nchar(words[1:3])
+```
+
+```
+## [1] 1 4 5
+```
+
+---
+# substrings: stringr
+
+
+```r
+words[10:13]
+```
+
+```
+## [1] "active"  "actual"  "add"     "address"
+```
+
+--
+
+
+```r
+str_sub(words[10:13], 3)
+```
+
+```
+## [1] "tive"  "tual"  "d"     "dress"
+```
+
+```r
+str_sub(words[10:13], 3, 5)
+```
+
+```
+## [1] "tiv" "tua" "d"   "dre"
+```
+
+```r
+str_sub(words[10:13], -3)
+```
+
+```
+## [1] "ive" "ual" "add" "ess"
+```
+
+---
+# substrings: base
+
+
+```r
+substr(words[10:13], 3, nchar(words[10:13]))
+```
+
+```
+## [1] "tive"  "tual"  "d"     "dress"
+```
+
+```r
+substr(words[10:13], 3, 5)
+```
+
+```
+## [1] "tiv" "tua" "d"   "dre"
+```
+
+```r
+substr(words[10:13], nchar(words[10:13]) - 2, nchar(words[10:13]))
+```
+
+```
+## [1] "ive" "ual" "add" "ess"
+```
+
+---
+# Trim white space
+
+
+```r
+white_space &lt;- c(" before", "after ", " both ")
+```
+
+--
+
+
+```r
+str_trim(white_space)
+```
+
+```
+## [1] "before" "after"  "both"
+```
+
+```r
+str_trim(white_space, side = "left")
+```
+
+```
+## [1] "before" "after " "both "
+```
+
+```r
+str_trim(white_space, side = "right")
+```
+
+```
+## [1] " before" "after"   " both"
+```
+
+---
+# base trim white space
+
+
+```r
+trimws(white_space)
+```
+
+```
+## [1] "before" "after"  "both"
+```
+
+```r
+trimws(white_space, which = "left")
+```
+
+```
+## [1] "before" "after " "both "
+```
+
+```r
+trimws(white_space, which = "right")
+```
+
+```
+## [1] " before" "after"   " both"
+```
+
+---
+# Pad white space
+
+
+```r
+strings &lt;- c("abc", "abcdefg")
+```
+
+--
+
+
+```r
+str_pad(strings, 10)
+```
+
+```
+## [1] "       abc" "   abcdefg"
+```
+
+```r
+str_pad(strings, 10, side = "right")
+```
+
+```
+## [1] "abc       " "abcdefg   "
+```
+
+```r
+str_pad(strings, 10, side = "both")
+```
+
+```
+## [1] "   abc    " " abcdefg  "
+```
+
+
+---
+# Pad w/something else
+
+
+```r
+string_nums &lt;- as.character(1:15)
+string_nums
+```
+
+```
+##  [1] "1"  "2"  "3"  "4"  "5"  "6"  "7"  "8"  "9"  "10" "11" "12" "13" "14"
+## [15] "15"
+```
+
+--
+
+
+```r
+str_pad(string_nums, 3, pad = "0")
+```
+
+```
+##  [1] "001" "002" "003" "004" "005" "006" "007" "008" "009" "010" "011"
+## [12] "012" "013" "014" "015"
+```
+
+
+---
+# Locate pattern
+
+
+```r
+str_which(sentences, "red")
+```
+
+```
+##  [1]  28  44  82 116 146 149 160 175 177 178 184 215 217 220 247 255 256
+## [18] 274 277 279 293 311 345 368 372 387 388 485 494 512 539 551 576 582
+## [35] 611 642 644 674 688 705
+```
+
+---
+# Or with `base::grep`
+
+
+```r
+grep("red", sentences)
+```
+
+```
+##  [1]  28  44  82 116 146 149 160 175 177 178 184 215 217 220 247 255 256
+## [18] 274 277 279 293 311 345 368 372 387 388 485 494 512 539 551 576 582
+## [35] 611 642 644 674 688 705
+```
+
+---
+# Extract the sentence
+
+
+```r
+str_subset(sentences, "red")
+```
+
+```
+##  [1] "The colt reared and threw the tall rider."         
+##  [2] "The wide road shimmered in the hot sun."           
+##  [3] "See the cat glaring at the scared mouse."          
+##  [4] "He ordered peach pie with ice cream."              
+##  [5] "Pure bred poodles have curls."                     
+##  [6] "Mud was spattered on the front of his white shirt."
+##  [7] "The sofa cushion is red and of light weight."      
+##  [8] "Torn scraps littered the stone floor."             
+##  [9] "The doctor cured him with these pills."            
+## [10] "The new girl was fired today at noon."             
+## [11] "The third act was dull and tired the players."     
+## [12] "Lire wires should be kept covered."                
+## [13] "It is hard to erase blue or red ink."              
+## [14] "The wreck occurred by the bank on Main Street."    
+## [15] "The box is held by a bright red snapper."          
+## [16] "The prince ordered his head chopped off."          
+## [17] "The houses are built of red clay bricks."          
+## [18] "The red tape bound the smuggled food."             
+## [19] "Nine men were hired to dig the ruins."             
+## [20] "The flint sputtered and lit a pine torch."         
+## [21] "The old pan was covered with hard fudge."          
+## [22] "The store walls were lined with colored frocks."   
+## [23] "The clan gathered on each dull night."             
+## [24] "The lake sparkled in the red hot sun."             
+## [25] "Mark the spot with a sign painted red."            
+## [26] "Smoke poured out of every crack."                  
+## [27] "Serve the hot rum to the tired heroes."            
+## [28] "He offered proof in the form of a lsrge chart."    
+## [29] "The sip of tea revives his tired friend."          
+## [30] "The door was barred, locked, and bolted as well."  
+## [31] "A thick coat of black paint covered all."          
+## [32] "The small red neon lamp went out."                 
+## [33] "The green light in the brown box flickered."       
+## [34] "He put his last cartridge into the gun and fired." 
+## [35] "The ram scared the school children off."           
+## [36] "Dimes showered down from all sides."               
+## [37] "The sky in the west is tinged with orange red."    
+## [38] "The red paper brightened the dim stage."           
+## [39] "The hail pattered on the burnt brown grass."       
+## [40] "The big red apple fell to the ground."
+```
+
+---
+# Or with `grep`
+
+
+```r
+grep("red", sentences, value = TRUE)
+```
+
+```
+##  [1] "The colt reared and threw the tall rider."         
+##  [2] "The wide road shimmered in the hot sun."           
+##  [3] "See the cat glaring at the scared mouse."          
+##  [4] "He ordered peach pie with ice cream."              
+##  [5] "Pure bred poodles have curls."                     
+##  [6] "Mud was spattered on the front of his white shirt."
+##  [7] "The sofa cushion is red and of light weight."      
+##  [8] "Torn scraps littered the stone floor."             
+##  [9] "The doctor cured him with these pills."            
+## [10] "The new girl was fired today at noon."             
+## [11] "The third act was dull and tired the players."     
+## [12] "Lire wires should be kept covered."                
+## [13] "It is hard to erase blue or red ink."              
+## [14] "The wreck occurred by the bank on Main Street."    
+## [15] "The box is held by a bright red snapper."          
+## [16] "The prince ordered his head chopped off."          
+## [17] "The houses are built of red clay bricks."          
+## [18] "The red tape bound the smuggled food."             
+## [19] "Nine men were hired to dig the ruins."             
+## [20] "The flint sputtered and lit a pine torch."         
+## [21] "The old pan was covered with hard fudge."          
+## [22] "The store walls were lined with colored frocks."   
+## [23] "The clan gathered on each dull night."             
+## [24] "The lake sparkled in the red hot sun."             
+## [25] "Mark the spot with a sign painted red."            
+## [26] "Smoke poured out of every crack."                  
+## [27] "Serve the hot rum to the tired heroes."            
+## [28] "He offered proof in the form of a lsrge chart."    
+## [29] "The sip of tea revives his tired friend."          
+## [30] "The door was barred, locked, and bolted as well."  
+## [31] "A thick coat of black paint covered all."          
+## [32] "The small red neon lamp went out."                 
+## [33] "The green light in the brown box flickered."       
+## [34] "He put his last cartridge into the gun and fired." 
+## [35] "The ram scared the school children off."           
+## [36] "Dimes showered down from all sides."               
+## [37] "The sky in the west is tinged with orange red."    
+## [38] "The red paper brightened the dim stage."           
+## [39] "The hail pattered on the burnt brown grass."       
+## [40] "The big red apple fell to the ground."
+```
+
+---
+# Related - count occurrences
+
+
+```r
+str_count(sentences, "the")
+```
+
+```
+##   [1] 1 2 1 0 0 0 1 0 0 0 2 0 2 1 1 1 0 1 1 1 1 1 2 0 2 1 0 1 1 0 1 2 2 1 1
+##  [36] 0 0 0 1 1 2 1 1 1 1 2 1 1 1 0 1 1 0 1 0 0 2 0 1 2 2 1 1 1 1 0 1 1 2 2
+##  [71] 2 1 1 0 0 0 2 0 0 0 1 2 0 0 0 1 1 0 1 0 1 1 0 1 0 1 0 0 0 0 0 2 0 2 3
+## [106] 0 0 1 1 2 1 1 1 1 1 0 2 1 0 1 0 1 1 0 1 0 0 2 2 0 0 1 1 0 2 1 1 1 0 0
+## [141] 1 2 0 1 0 0 0 1 1 1 1 0 0 1 0 0 2 1 1 0 2 1 2 0 1 0 0 2 0 1 1 1 0 0 1
+## [176] 2 1 0 1 2 0 0 0 1 0 2 0 1 1 1 0 0 2 0 0 1 1 1 1 1 1 0 2 0 0 2 2 1 2 1
+## [211] 0 1 1 0 0 0 0 0 0 1 0 0 0 0 3 0 0 0 2 1 2 1 0 2 0 0 0 2 0 1 2 0 1 1 0
+## [246] 0 0 0 0 2 1 2 2 1 0 0 0 0 1 0 1 3 1 0 0 1 0 1 0 1 1 2 2 1 2 1 1 0 0 2
+## [281] 0 1 1 0 1 1 0 0 2 0 2 0 0 2 1 0 0 0 0 0 1 1 1 1 0 1 1 1 0 0 0 1 0 0 1
+## [316] 1 1 0 0 0 1 0 0 1 2 1 0 1 0 2 0 0 0 2 0 2 1 1 1 0 1 2 2 0 1 0 0 1 2 0
+## [351] 3 0 2 1 1 0 0 0 1 0 1 1 2 1 2 0 0 1 1 2 1 1 0 0 0 0 0 0 0 1 0 1 0 0 0
+## [386] 1 0 2 1 1 2 1 0 2 0 1 1 0 2 0 0 2 0 0 1 0 1 0 0 0 0 0 1 1 0 0 1 2 1 0
+## [421] 1 1 0 1 0 1 3 0 0 1 1 1 1 0 1 1 1 0 0 0 1 1 1 0 0 1 2 2 0 1 0 0 1 0 1
+## [456] 1 1 2 0 0 1 0 0 2 1 2 0 1 1 0 1 0 0 0 1 1 0 0 0 1 0 2 0 1 1 1 1 0 0 2
+## [491] 1 0 0 0 1 3 1 1 1 0 1 0 1 0 2 0 0 0 0 1 1 0 0 1 0 0 0 0 0 1 1 0 1 1 2
+## [526] 0 1 0 0 0 2 0 0 2 0 1 0 1 0 0 0 1 0 2 1 0 0 1 1 1 0 0 0 1 2 1 1 0 0 1
+## [561] 2 1 0 2 1 1 2 0 1 1 0 2 0 2 1 1 1 0 3 2 0 1 2 2 2 2 0 2 2 0 1 2 2 0 0
+## [596] 1 0 0 2 2 0 1 0 1 1 1 0 1 0 1 1 1 0 3 0 0 2 0 3 1 1 1 1 0 1 2 3 2 0 0
+## [631] 1 0 1 1 1 2 1 0 0 0 0 0 1 1 0 1 1 2 0 0 1 0 0 1 1 0 0 2 0 1 0 1 1 2 1
+## [666] 1 1 0 0 0 1 2 0 1 1 2 1 0 2 1 0 0 1 1 0 1 0 1 0 0 1 2 1 1 1 0 1 1 0 1
+## [701] 1 1 1 0 1 1 1 1 0 0 0 0 1 1 0 0 0 1 0 1
+```
+
+---
+# Logical tests
+* Sometimes, particularly with filtering, a logical test is best. 
+
+
+```r
+str_detect(sentences, "red")
+```
+
+```
+##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [23] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [45] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [56] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [67] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [78] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [89] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [111] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [122] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [144] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [155] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [166] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [177]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [188] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [199] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [210] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+## [221] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [232] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [243] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [254] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [276] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [287] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [298] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [309] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [320] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [331] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [342] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [353] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [364] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [375] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [386] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [397] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [408] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [419] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [430] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [441] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [452] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [463] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [474] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [485]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [496] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [507] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [518] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [529] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [540] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [551]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [562] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [573] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [584] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [595] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [606] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [617] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [628] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [639] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [650] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [661] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [672] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [683] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [694] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [705]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [716] FALSE FALSE FALSE FALSE FALSE
+```
+
+---
+## Or with `grepl`
+
+
+```r
+grepl("red", sentences)
+```
+
+```
+##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [23] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [45] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [56] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [67] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [78] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [89] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [111] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [122] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [144] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [155] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [166] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [177]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [188] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [199] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [210] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+## [221] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [232] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [243] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [254] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [276] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [287] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [298] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [309] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [320] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [331] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [342] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [353] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [364] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [375] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [386] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [397] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [408] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [419] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [430] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [441] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [452] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [463] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [474] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [485]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [496] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [507] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [518] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [529] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [540] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [551]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [562] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [573] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [584] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [595] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [606] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [617] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [628] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [639] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [650] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [661] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [672] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [683] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [694] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [705]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [716] FALSE FALSE FALSE FALSE FALSE
+```
+
+---
+# Pattern matching summary
+* You can get a lot done with just basic pattern matching and knowing when to escape characters, particularly when you combine the basic pattern matching with other functions.
+
+--
+* Regular expressions make your pattern searching abilities much more powerful, and your code much less verbose
+
+--
+  + A whole learning curve on its own - for now, it's good to know you'll have
+  to escape certain characters.
+
+---
+## Symbols you may need to escape
+
+
+```
+##  [1] $  *  +  .  ?  [  ^  {  |  (  \\
+```
+
+---
+class: inverse middle center
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
