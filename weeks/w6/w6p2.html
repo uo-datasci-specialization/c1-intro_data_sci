@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to tidy data</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to tidy data
+## (AKA what we should have covered before Alison’s visit)
+### Daniel Anderson
+### Week 6, Class 2
+
+---
+
+
+
+
+# Agenda 
+* Introduce the concept of tidy data
+* Tidy a simple dataset together with `tidyr`
+* Summarize and transform tidy data with `dplyr`
+* Lab
+
+
+--
+### Learning objectives for today
+* Understand the concept of tidy data is useful
+* Understand and be able to apply the `gather` function
+
+
+---
+class: inverse middle center
+background-image:url(../img/chalkboard.jpg)
+background-size:cover
+
+# What questions do you have?
+
+
+---
+# Revisiting *git*
+Talk with neighbor. What do these terms mean?
+
+* clone
+* pull
+* stage
+* commit
+* push
+* repo
+* remote
+
+
+---
+class: inverse center middle
+&gt; It is often said that 80% of data analysis is spent on the process of cleaning and preparing the data.
+
+\-Hadley Wickham
+
+---
+class: middle
+
+.pull-left[
+
+* Persistent and varied challenge
+* Little research on how to do it well
+  + Enter Hadley 
+]
+
+
+.pull-right[
+
+![](../img/hadley_JSS.png)
+
+]
+
+---
+# Tidy data
+
+### Definition
+1. Each variable is a column
+2. Each observation is a row
+3. Each type of observational unit forms a table
+
+--
+
+.myblue[We won't talk about 3 so much...]
+
+![](../img/tidy_data.png)
+
+---
+# Common ways data are "messy"
+* Column headers are values, not variable names
+* Multiple variables stored in one column
+* Variables are stored in both rows and columns
+
+---
+# Some examples
+.gray[(from the JSS paper)]
+
+
+```
+## # A tibble: 18 x 11
+##    religion      `&lt;$10k` `$10-20k` `$20-30k` `$30-40k` `$40-50k` `$50-75k`
+##    &lt;chr&gt;           &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;
+##  1 Agnostic           27        34        60        81        76       137
+##  2 Atheist            12        27        37        52        35        70
+##  3 Buddhist           27        21        30        34        33        58
+##  4 Catholic          418       617       732       670       638      1116
+##  5 Don’t know/r…      15        14        15        11        10        35
+##  6 Evangelical …     575       869      1064       982       881      1486
+##  7 Hindu               1         9         7         9        11        34
+##  8 Historically…     228       244       236       238       197       223
+##  9 Jehovah's Wi…      20        27        24        24        21        30
+## 10 Jewish             19        19        25        25        30        95
+## # ... with 8 more rows, and 4 more variables: `$75-100k` &lt;int&gt;,
+## #   `$100-150k` &lt;int&gt;, `&gt;150k` &lt;int&gt;, `Don't know/refused` &lt;int&gt;
+```
+
+---
+# The tidied version
+
+
+```
+## # A tibble: 180 x 3
+##    religion income              freq
+##    &lt;chr&gt;    &lt;fct&gt;              &lt;int&gt;
+##  1 Agnostic &lt;$10k                 27
+##  2 Agnostic $10-20k               34
+##  3 Agnostic $20-30k               60
+##  4 Agnostic $30-40k               81
+##  5 Agnostic $40-50k               76
+##  6 Agnostic $50-75k              137
+##  7 Agnostic $75-100k             122
+##  8 Agnostic $100-150k            109
+##  9 Agnostic &gt;150k                 84
+## 10 Agnostic Don't know/refused    96
+## 11 Atheist  &lt;$10k                 12
+## 12 Atheist  $10-20k               27
+## # ... with 168 more rows
+```
+
+---
+# Yet another example
+
+
+```
+## # A tibble: 10 x 13
+##    country  year  m014 m1524 m2534 m3544 m4554    mu  f014 f1524 f2534
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1 AD       2000     0     0     1     0     0    NA    NA    NA    NA
+##  2 AE       2000     2     4     4     6     5    NA     3    16     1
+##  3 AF       2000    52   228   183   149   129    NA    93   414   565
+##  4 AG       2000     0     0     0     0     0    NA     1     1     1
+##  5 AL       2000     2    19    21    14    24    NA     3    11    10
+##  6 AM       2000     2   152   130   131    63    NA     1    24    27
+##  7 AN       2000     0     0     1     2     0    NA     0     0     1
+##  8 AO       2000   186   999  1003   912   482    NA   247  1142  1091
+##  9 AR       2000    97   278   594   402   419    NA   121   544   479
+## 10 AS       2000    NA    NA    NA    NA     1    NA    NA    NA    NA
+## # ... with 2 more variables: f3544 &lt;int&gt;, f4554 &lt;int&gt;
+```
+
+In this example, *M* indicates if the data came from a male, while *F* indicates female. The subsequent numbers represent the age range. Tidying these data will be a two step process.
+
+---
+## Step one
+
+
+```
+## # A tibble: 2,814 x 4
+##    country  year variable cases
+##    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;    &lt;int&gt;
+##  1 AD       2000 m014         0
+##  2 AE       2000 m014         2
+##  3 AF       2000 m014        52
+##  4 AG       2000 m014         0
+##  5 AL       2000 m014         2
+##  6 AM       2000 m014         2
+##  7 AN       2000 m014         0
+##  8 AO       2000 m014       186
+##  9 AR       2000 m014        97
+## 10 AS       2000 m014        NA
+## # ... with 2,804 more rows
+```
+Notice this is much closer to what we want, but we have a problem now in that we have **two variables stored in one column**.
+
+---
+## Step two: Tidied data
+
+
+```
+## # A tibble: 2,259 x 5
+##    country  year sex   age_range cases
+##    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;
+##  1 AD       2000 m     0-14          0
+##  2 AD       2000 m     15-24         0
+##  3 AD       2000 m     25-34         1
+##  4 AD       2000 m     35-44         0
+##  5 AD       2000 m     45-54         0
+##  6 AD       2000 m     55-64         0
+##  7 AD       2000 m     65+           0
+##  8 AE       2000 m     0-14          2
+##  9 AE       2000 m     15-24         4
+## 10 AE       2000 m     25-34         4
+## # ... with 2,249 more rows
+```
+
+---
+## Variables as rows and columns
+
+
+```
+## # A tibble: 22 x 35
+##    id       year month element    d1    d2    d3    d4    d5    d6    d7
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 MX17004  2010     1 tmax       NA  NA    NA      NA  NA      NA    NA
+##  2 MX17004  2010     1 tmin       NA  NA    NA      NA  NA      NA    NA
+##  3 MX17004  2010     2 tmax       NA  27.3  24.1    NA  NA      NA    NA
+##  4 MX17004  2010     2 tmin       NA  14.4  14.4    NA  NA      NA    NA
+##  5 MX17004  2010     3 tmax       NA  NA    NA      NA  32.1    NA    NA
+##  6 MX17004  2010     3 tmin       NA  NA    NA      NA  14.2    NA    NA
+##  7 MX17004  2010     4 tmax       NA  NA    NA      NA  NA      NA    NA
+##  8 MX17004  2010     4 tmin       NA  NA    NA      NA  NA      NA    NA
+##  9 MX17004  2010     5 tmax       NA  NA    NA      NA  NA      NA    NA
+## 10 MX17004  2010     5 tmin       NA  NA    NA      NA  NA      NA    NA
+## # ... with 12 more rows, and 24 more variables: d8 &lt;dbl&gt;, d9 &lt;dbl&gt;,
+## #   d10 &lt;dbl&gt;, d11 &lt;dbl&gt;, d12 &lt;dbl&gt;, d13 &lt;dbl&gt;, d14 &lt;dbl&gt;, d15 &lt;dbl&gt;,
+## #   d16 &lt;dbl&gt;, d17 &lt;dbl&gt;, d18 &lt;dbl&gt;, d19 &lt;dbl&gt;, d20 &lt;dbl&gt;, d21 &lt;dbl&gt;,
+## #   d22 &lt;dbl&gt;, d23 &lt;dbl&gt;, d24 &lt;dbl&gt;, d25 &lt;dbl&gt;, d26 &lt;dbl&gt;, d27 &lt;dbl&gt;,
+## #   d28 &lt;dbl&gt;, d29 &lt;dbl&gt;, d30 &lt;dbl&gt;, d31 &lt;dbl&gt;
+```
+
+---
+## Two Steps
+
+
+
+### Step 1
+
+```
+## # A tibble: 66 x 6
+##    id       year month element day_key value
+##    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+##  1 MX17004  2010    12 tmax    d1       29.9
+##  2 MX17004  2010    12 tmin    d1       13.8
+##  3 MX17004  2010     2 tmax    d2       27.3
+##  4 MX17004  2010     2 tmin    d2       14.4
+##  5 MX17004  2010    11 tmax    d2       31.3
+##  6 MX17004  2010    11 tmin    d2       16.3
+##  7 MX17004  2010     2 tmax    d3       24.1
+##  8 MX17004  2010     2 tmin    d3       14.4
+##  9 MX17004  2010     7 tmax    d3       28.6
+## 10 MX17004  2010     7 tmin    d3       17.5
+## # ... with 56 more rows
+```
+
+
+---
+### Step 2
+
+```
+## # A tibble: 33 x 4
+##    id      date         tmax  tmin
+##    &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;
+##  1 MX17004 2010-01-01 27.8    14.5
+##  2 MX17004 2010-02-02 29.7    13.4
+##  3 MX17004 2010-02-02 27.3    14.4
+##  4 MX17004 2010-02-02 29.9    10.7
+##  5 MX17004 2010-02-02 24.1    14.4
+##  6 MX17004 2010-03-03 34.5    16.8
+##  7 MX17004 2010-03-03 31.1    17.6
+##  8 MX17004 2010-03-03 32.1    14.2
+##  9 MX17004 2010-04-04 36.300  16.7
+## 10 MX17004 2010-05-05 33.2    18.2
+## # ... with 23 more rows
+```
+
+
+---
+# Defining tidy data 
+### (slightly differently)
+Two rules essentially define tidy data&lt;sup&gt;1&lt;/sup&gt;
+
+.footnote[1\. [From Modern Data Science with R](https://mdsr-book.github.io)]
+
+1. Each row is a case representing the same underlying attribute.
+2. Each column is a variable containing the same type of value for each case. 
+
+--
+
+The combination of rows and columns make each case (row) unique, even though cells may be repeated many times (e.g., student identifier).
+
+---
+# Other formats
+* There are many reasons why you might want to have "messy" data. However, tidy data is an extremely useful format generally, and particularly useful when applying tools within the *tidyverse*. 
+
+* All packages within the tidyverse are designed to either help you get your data in a tidy format, or assume your data are already in a tidy format.
+
+* Assuming a common data format leads to large jumps in efficiency, as the output from certain functions can be directly input into others.
+
+---
+class: inverse middle
+background-image:url(../img/data-science.png)
+background-size:contain
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+## tidyverse data analysis philosophy
+
+
+---
+# Load the data
+Let's look at the **exam1.csv** data
+
+
+```r
+library(tidyverse)
+library(rio)
+library(here)
+d &lt;- import(here("data", "exam1.csv"),
+            setclass = "tbl_df")
+```
+
+---
+# Pop Quiz Time
+* Are these data tidy?
+* If not, what needs to happen to make them tidy?
+* What are the variables? What are the values?
+
+
+```
+## # A tibble: 35 x 20
+##    stu_name gender item_1 item_2 item_3 item_4 item_5 item_6 item_7 item_8
+##    &lt;chr&gt;    &lt;chr&gt;   &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+##  1 Adam     M           1      1      1      1      1      1      1      0
+##  2 Anne     F           1      1      1      1      1      1      1      1
+##  3 Audrey   F           1      1      1      1      1      1      1      1
+##  4 Barbara  F           1      1      1      1      0      0      1      0
+##  5 Bert     M           1      1      1      1      1      0      1      0
+##  6 Betty    F           1      1      1      1      1      1      1      1
+##  7 Blaise   M           1      1      1      1      1      1      1      1
+##  8 Brenda   F           1      1      1      1      1      1      1      1
+##  9 Britton  F           1      1      1      0      1      1      1      1
+## 10 Carol    F           1      1      1      1      0      0      1      0
+## # ... with 25 more rows, and 10 more variables: item_9 &lt;int&gt;,
+## #   item_10 &lt;int&gt;, item_11 &lt;int&gt;, item_12 &lt;int&gt;, item_13 &lt;int&gt;,
+## #   item_14 &lt;int&gt;, item_15 &lt;int&gt;, item_16 &lt;int&gt;, item_17 &lt;int&gt;,
+## #   item_18 &lt;int&gt;
+```
+
+---
+# {dplyr} versus {tidyr}
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+
+--
+
+.pull-left[
+### {dplyr}
+Helps you manipulate your data (create, remove, summarize, etc. )
+]
+
+
+--
+
+.pull-right[
+### {tidyr} 
+Helps you get your data into a tidy format
+]
+
+---
+# Verbs: `tidyr`
+* `gather()`
+* `spread()`
+* `separate()` and `extract()`
+* `unite()`
+* `nest()`
+
+What do you think each do?
+
+
+---
+## Step 1: `gather` the item variables
+* Change all item variables into two variables: `item` and `score`
+
+&lt;br&gt;
+
+![gather](../img/gather-help.png)
+
+
+---
+class: 
+background-image:url(../img/gather.png)
+background-size:contain
+
+### How does `gather` work?
+
+---
+Try running the following code
+
+
+```r
+d %&gt;% 
+  gather(key = item, value = score, -1:-2) 
+```
+
+* Third argument to `...` says we want to omit the first and second columns in when gathering.
+
+&lt;br&gt;
+
+What do you get? Are these data tidy now?
+
+---
+* The code on the previous slide basically puts our data in a tidy format. 
+* To "clean up" some, could transform the `item` variable to numeric
+
+
+```
+## # A tibble: 630 x 4
+##    stu_name gender item   score
+##    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt;
+##  1 Adam     M      item_1     1
+##  2 Anne     F      item_1     1
+##  3 Audrey   F      item_1     1
+##  4 Barbara  F      item_1     1
+##  5 Bert     M      item_1     1
+##  6 Betty    F      item_1     1
+##  7 Blaise   M      item_1     1
+##  8 Brenda   F      item_1     1
+##  9 Britton  F      item_1     1
+## 10 Carol    F      item_1     1
+## # ... with 620 more rows
+```
+
+---
+# Finish tidying the data
+
+
+```r
+td &lt;- d %&gt;% 
+  gather(item, score, -1:-2) %&gt;% 
+  mutate(item = parse_number(item))
+```
+
+* `parse_number()` comes from the *readr* package.
+
+
+```r
+head(td)
+```
+
+```
+## # A tibble: 6 x 4
+##   stu_name gender  item score
+##   &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;
+## 1 Adam     M          1     1
+## 2 Anne     F          1     1
+## 3 Audrey   F          1     1
+## 4 Barbara  F          1     1
+## 5 Bert     M          1     1
+## 6 Betty    F          1     1
+```
+
+---
+# An alternative
+(please run this code, following the explanation)
+
+
+```r
+td &lt;- d %&gt;% 
+  gather(item, score, -1:-2) %&gt;% 
+  separate(item, c("discard", "item"), sep = "_") %&gt;% 
+  select(-discard)
+```
+
+---
+# Why are tidy data useful?
+* When used in conjunction with `dplyr`, tidy data can result in large gains in efficiency.
+
+For example, suppose we want to calculate the proportion of students responding correctly to each item.
+
+
+```r
+td %&gt;% 
+  group_by(item) %&gt;% 
+  summarize(prop = mean(score))
+```
+
+---
+
+```
+## # A tibble: 18 x 2
+##    item        prop
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 1     1         
+##  2 10    0.6857143 
+##  3 11    0.3428571 
+##  4 12    0.1714286 
+##  5 13    0.2       
+##  6 14    0.08571429
+##  7 15    0.02857143
+##  8 16    0.02857143
+##  9 17    0.02857143
+## 10 18    0         
+## 11 2     1         
+## 12 3     1         
+## 13 4     0.9142857 
+## 14 5     0.8857143 
+## 15 6     0.8571429 
+## 16 7     0.8857143 
+## 17 8     0.7714286 
+## 18 9     0.8571429
+```
+
+---
+What if we also wanted to know the standard deviation?
+
+
+```r
+td %&gt;% 
+  group_by(item) %&gt;% 
+  summarize(prop = mean(score),
+            sd = sd(score))
+```
+
+```
+## # A tibble: 18 x 3
+##    item        prop        sd
+##    &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+##  1 1     1          0        
+##  2 10    0.6857143  0.4710082
+##  3 11    0.3428571  0.4815940
+##  4 12    0.1714286  0.3823853
+##  5 13    0.2        0.4058397
+##  6 14    0.08571429 0.2840286
+##  7 15    0.02857143 0.1690309
+##  8 16    0.02857143 0.1690309
+##  9 17    0.02857143 0.1690309
+## 10 18    0          0        
+## 11 2     1          0        
+## 12 3     1          0        
+## 13 4     0.9142857  0.2840286
+## 14 5     0.8857143  0.3228029
+## 15 6     0.8571429  0.3550358
+## 16 7     0.8857143  0.3228029
+## 17 8     0.7714286  0.4260430
+## 18 9     0.8571429  0.3550358
+```
+---
+What if we wanted to know the proportion correct for each item by gender?
+
+
+```r
+td %&gt;% 
+  group_by(item, gender) %&gt;% 
+  summarize(prop = mean(score))
+```
+
+```
+## # A tibble: 36 x 3
+## # Groups:   item [?]
+##    item  gender       prop
+##    &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
+##  1 1     F      1         
+##  2 1     M      1         
+##  3 10    F      0.7222222 
+##  4 10    M      0.6470588 
+##  5 11    F      0.05555556
+##  6 11    M      0.6470588 
+##  7 12    F      0         
+##  8 12    M      0.3529412 
+##  9 13    F      0.2222222 
+## 10 13    M      0.1764706 
+## # ... with 26 more rows
+```
+
+---
+We can take the previous example further, by piping the output into a plot
+
+
+```r
+td %&gt;% 
+  group_by(item, gender) %&gt;% 
+  summarize(prop = mean(score)) %&gt;% 
+  mutate(gender = as.factor(gender)) %&gt;% 
+  ggplot(aes(x = item, y = prop, color = gender)) +
+  geom_point(size = 2) +
+  geom_line(aes(group = item))
+```
+
+![](w6p2_files/figure-html/prop_correct_by_gender_plot-1.png)&lt;!-- --&gt;
+
+
+---
+But, probably better (clearer) to do it in two steps. 
+&lt;br&gt;
+
+First produce the data
+
+
+```r
+pd &lt;- td %&gt;% 
+  group_by(item, gender) %&gt;% 
+  summarize(prop = mean(score)) %&gt;% 
+  mutate(gender = as.factor(gender))
+```
+Then produce the plot
+
+
+```r
+ggplot(pd, aes(x = item, y = prop, color = gender)) +
+  geom_point() +
+  geom_line(aes(group = item))
+```
+
+---
+# Challenge 
+
+Remember, the following code calculates the mean score for each item. 
+
+
+```r
+td %&gt;% 
+  group_by(item) %&gt;% 
+  summarize(prop = mean(score))
+```
+
+* Try to modify the above code to produce raw scores for every student. 
+* If you're successful, try to also calculate the percent correct.
+
+---
+# Calculate Raw Scores
+Modify the prior code to:
+* `group_by` *stu_name* (rather than *item*)
+* `sum` score (rather than average it with `mean`)
+
+
+```r
+td %&gt;% 
+  group_by(stu_name) %&gt;% 
+  summarize(raw_score = sum(score))
+```
+
+```
+## # A tibble: 35 x 2
+##    stu_name raw_score
+##    &lt;chr&gt;        &lt;int&gt;
+##  1 Adam             7
+##  2 Anne            10
+##  3 Audrey          11
+##  4 Barbara          6
+##  5 Bert             8
+##  6 Betty            9
+##  7 Blaise          13
+##  8 Brenda          10
+##  9 Britton          8
+## 10 Carol            6
+## # ... with 25 more rows
+```
+
+---
+class: inverse middle center
+# Lab
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
